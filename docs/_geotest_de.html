@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
+<meta name="description" content="Курсы валют СНГ и Европы, топ-20 криптовалют, конвертер. Официальные курсы ЦБ. Обновление каждые 5 минут.">
+<meta property="og:title" content="CIS Rates: курсы валют и крипто СНГ"><meta property="og:image" content="assets/banner.png">
+<link rel="icon" href="assets/avatar.png">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#000;--card:#121212;--line:#262626;--tx:#fafafa;--mut:#a8a8a8;--gold:#f5c04a;--up:#2ee08a;--dn:#ff5b6b;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+section{scroll-margin-top:58px}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;padding-bottom:84px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.wrap{max-width:640px;margin:0 auto}
+/* верхняя панель */
+.top{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px;letter-spacing:-.5px}
+.logo img{width:32px;height:32px;border-radius:9px}
+.logo b{color:var(--gold)}
+.live{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--mut)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--up);animation:pu 2s infinite}
+.stale .dot{background:var(--dn);animation:none}
+@keyframes pu{0%{box-shadow:0 0 0 0 rgba(46,224,138,.6)}70%,100%{box-shadow:0 0 0 8px transparent}}
+/* истории-страны */
+.stories{display:flex;gap:14px;overflow-x:auto;padding:16px;scrollbar-width:none;scroll-snap-type:x proximity}
+.stories::-webkit-scrollbar{display:none}
+.st{flex:0 0 auto;width:68px;text-align:center;scroll-snap-align:start}
+.ring{width:68px;height:68px;border-radius:50%;padding:3px;background:var(--line);transition:.2s}
+.st.on .ring{background:conic-gradient(var(--gold),#ffe29a,var(--gold))}
+.ring i{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--card);border:3px solid #000;font-size:28px;font-style:normal}
+.st span{display:block;margin-top:6px;font-size:11px;font-weight:700;color:var(--mut);white-space:nowrap}
+.st.on span{color:var(--tx)}
+.seg{display:flex;margin:0 16px;background:var(--card);border-radius:12px;padding:4px}
+.seg button{flex:1;padding:10px;border-radius:9px;font-weight:800;font-size:14px;color:var(--mut);transition:.15s}
+.seg button.on{background:var(--tx);color:#000}
+/* главный курс */
+.hero{padding:26px 16px 8px}
+.hero small{font-size:13px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px}
+.hero h1{font-size:clamp(46px,15vw,76px);font-weight:900;letter-spacing:-3px;line-height:1;margin:6px 0 8px;font-variant-numeric:tabular-nums}
+.hero h1 em{font-style:normal;font-size:.36em;letter-spacing:0;color:var(--gold);margin-left:8px}
+.pill{display:inline-block;font-size:13px;font-weight:800;padding:5px 11px;border-radius:99px;background:var(--card)}
+.up{color:var(--up)}.dn{color:var(--dn)}
+/* лента */
+h2{font-size:22px;font-weight:900;letter-spacing:-.6px;padding:30px 16px 12px}
+.feed{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.card .l{display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--mut)}
+.card .v{font-size:27px;font-weight:900;letter-spacing:-1px;margin:8px 0 4px;font-variant-numeric:tabular-nums}
+.card .c{font-size:12px;font-weight:800}
+.src{padding:12px 16px 0;font-size:12px;color:var(--mut)}
+/* крипта списком */
+.list{margin:0 16px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s}
+.row:last-child{border:0}.row:active,.row.on{background:#1a1a1a}
+.row img{width:36px;height:36px;border-radius:50%}
+.row .n{flex:1;min-width:0}.row .n b{display:block;font-size:16px;font-weight:900}.row .n small{font-size:12px;color:var(--mut);font-weight:600}
+.row .p{text-align:right;font-variant-numeric:tabular-nums}.row .p b{display:block;font-size:16px;font-weight:900}.row .p small{font-size:12px;font-weight:800}
+/* график и конвертер */
+.box{margin:0 16px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:800;color:var(--mut);background:#1c1c1c}
+.tab.on{background:var(--gold);color:#000}
+.conv label{display:block;font-size:12px;font-weight:800;color:var(--mut);margin:12px 0 6px}
+.conv input,.conv select{width:100%;background:#000;border:1px solid var(--line);color:var(--tx);padding:14px;border-radius:12px;font-size:17px;font-weight:700;outline:none;-webkit-appearance:none;appearance:none}
+.conv input:focus,.conv select:focus{border-color:var(--gold)}
+.swap{display:block;margin:12px auto 0;padding:8px 18px;border-radius:99px;background:#1c1c1c;font-weight:800;font-size:13px}
+.res{font-size:34px;font-weight:900;letter-spacing:-1.2px;margin-top:14px;color:var(--gold);word-break:break-word}
+/* призыв */
+.cta{margin:30px 16px 0;padding:24px 20px;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.cta h3{font-size:24px;font-weight:900;letter-spacing:-.7px}.cta p{color:var(--mut);font-size:14px;margin:8px 0 18px;line-height:1.45}
+.btn{display:inline-block;background:var(--gold);color:#000;font-weight:900;padding:14px 26px;border-radius:12px;text-decoration:none;font-size:15px}
+.btn.o{background:none;border:1px solid var(--line);color:var(--tx);margin-left:6px}
+footer{padding:26px 16px;text-align:center;font-size:11px;color:#6a6a6a;line-height:1.6}
+/* нижняя навигация как в приложении */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(0,0,0,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav div{max-width:640px;margin:0 auto;display:flex}
+nav a{flex:1;text-align:center;padding:10px 0 9px;color:var(--mut);text-decoration:none;font-size:11px;font-weight:800}
+nav a svg{display:block;margin:0 auto 3px;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav a.on{color:var(--tx)}
+@media(min-width:700px){body{padding-bottom:0}nav{display:none}.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+.hide{display:none}
+.geo{padding:10px 16px 0;font-size:12px;color:var(--mut);font-weight:700}.geo button{color:var(--gold);font-weight:800;text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo"><img src="assets/avatar.png" alt=""><span>CIS <b>Rates</b></span></div>
+    <div class="live" id="live"><div class="dot"></div><span id="upd">загрузка</span></div>
+  </div>
+
+  <div class="stories" id="stories"></div>
+  <div class="seg" id="seg"></div>
+  <div class="geo" id="geo"></div>
+
+  <section id="home">
+    <div class="hero"><small id="hl">1 USD</small><h1 id="hv">—</h1><span class="pill" id="hc"></span></div>
+    <div class="feed" id="feed"></div>
+    <div class="src" id="src"></div>
+  </section>
+
+  <section id="crypto">
+    <h2>Криптовалюты</h2>
+    <div class="list" id="clist"></div>
+  </section>
+
+  <section id="chartS">
+    <h2 id="ct">График</h2>
+    <div class="box"><div class="tabs" id="tabs"></div><canvas id="chart" height="190"></canvas></div>
+  </section>
+
+  <section id="conv">
+    <h2>Конвертер</h2>
+    <div class="box conv">
+      <label>Сумма</label><input id="amt" type="number" value="100" inputmode="decimal">
+      <label>Из</label><select id="from"></select>
+      <button class="swap" id="swap">⇅ Поменять</button>
+      <label>В</label><select id="to"></select>
+      <div class="res" id="res">—</div>
+    </div>
+  </section>
+
+  <div class="cta"><h3>Курсы в Telegram</h3><p>Бот посчитает любую сумму, пришлёт картинку курсов и сигнал при скачке.</p>
+    <a class="btn" href="https://t.me/Well_Currency_bot" target="_blank" rel="noopener">Открыть бота</a><a class="btn o" href="https://t.me/gram_corporation" target="_blank" rel="noopener">Канал</a></div>
+  <footer>Данные: ЦБ Узбекистана, России, Казахстана, Украины, Беларуси, ExchangeRate-API, CoinGecko.<br>Для стран без открытого API курс рыночный. Не является финансовым советом.</footer>
+</div>
+
+<nav><div>
+  <a href="#home" class="on" data-s="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Курсы</a>
+  <a href="#crypto" data-s="crypto"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 8h4.5a2 2 0 0 1 0 4H9m0 0h5a2 2 0 0 1 0 4H9M9 6v12"/></svg>Крипта</a>
+  <a href="#chartS" data-s="chartS"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg>График</a>
+  <a href="#conv" data-s="conv"><svg viewBox="0 0 24 24"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4m4 4H7"/></svg>Конвертер</a>
+</div></nav>
+
+<script>
+/* ТЕСТОВАЯ ПОДМЕНА: имитируем пользователя из DE */
+const _of=window.fetch;window.fetch=(u,o)=>String(u).includes('country')||String(u).includes('geojs')?Promise.resolve({json:async()=>({country:'DE'})}):_of(u,o);
+const _dt=Intl.DateTimeFormat;Intl.DateTimeFormat=function(){return{resolvedOptions:()=>({timeZone:'Europe/Berlin'})}};
+Object.defineProperty(navigator,'languages',{get:()=>['de-DE']});
+localStorage.clear();
+</script>
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(n,d)=>{if(n==null||isNaN(n))return'—';d=d??(Math.abs(n)>=1000?0:Math.abs(n)>=1?2:4);return Number(n).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d})};
+const FL={PLN:'🇵🇱',CHF:'🇨🇭',USD:'🇺🇸',EUR:'🇪🇺',RUB:'🇷🇺',CNY:'🇨🇳',TRY:'🇹🇷',KZT:'🇰🇿',UAH:'🇺🇦',GBP:'🇬🇧',AED:'🇦🇪',BYN:'🇧🇾'};
+const ORDER=['EUR','RUB','CNY','TRY','GBP','CHF','PLN','AED','KZT','UAH'];
+let R,H=[],cc=localStorage.cc||'UZ',reg=localStorage.reg||'cis',metric=null,chart;
+const cur=c=>R.countries[c].cur;
+// Единое правило, как в боте: «цена доллара» берётся из ЦБ страны, если он есть, иначе рыночная
+function perUsd(c,code){
+  if(code==='USD')return 1;
+  const off=R.official[c]?.rates;
+  if(off&&code===cur(c)&&off.USD)return off.USD.rate;
+  if(off&&off[code]&&off.USD)return off.USD.rate/off[code].rate;
+  return R.world[code]??null}
+function convert(a,f,t){
+  const loc=cur(cc),off=R.official[cc]?.rates;
+  if(off){if(t===loc&&f!==loc&&off[f])return a*off[f].rate;if(f===loc&&t!==loc&&off[t])return a/off[t].rate}
+  const usd=code=>{const p=perUsd(cc,code);if(p)return a/p;const k=R.crypto.find(x=>x.sym===code);return k?a*k.usd:null};
+  const from=(code,u)=>{const p=perUsd(cc,code);if(p)return u*p;const k=R.crypto.find(x=>x.sym===code);return k?u/k.usd:null};
+  const u=f==='USD'?a:usd(f);return u==null?null:(t==='USD'?u:from(t,u))}
+function rateOf(code){const c=cur(cc);if(code===c)return null;const o=R.official[cc]?.rates?.[code];
+  if(o)return{r:o.rate,d:o.diff};const v=convert(1,code,c);return v?{r:v,d:0}:null}
+const chgHTML=d=>d?`<span class="${d>0?'up':'dn'}">${d>0?'▲':'▼'} ${fmt(Math.abs(d),2)}</span>`:'<span style="color:var(--mut)">рыночный</span>';
+
+
+// ── Автоопределение страны: часовой пояс (мгновенно) -> IP через бесплатное API (точно). Ручной выбор имеет приоритет.
+const EURO=['DE','FR','IT','ES','NL','BE','AT','PT','IE','FI','GR','SK','SI','LT','LV','EE','LU','MT','CY','HR'];
+const TZ={'Asia/Tashkent':'UZ','Asia/Samarkand':'UZ','Europe/Moscow':'RU','Europe/Kaliningrad':'RU','Europe/Samara':'RU','Asia/Yekaterinburg':'RU','Asia/Omsk':'RU','Asia/Novosibirsk':'RU','Asia/Krasnoyarsk':'RU','Asia/Irkutsk':'RU','Asia/Yakutsk':'RU','Asia/Vladivostok':'RU','Asia/Magadan':'RU','Asia/Kamchatka':'RU',
+ 'Asia/Almaty':'KZ','Asia/Qyzylorda':'KZ','Asia/Aqtau':'KZ','Asia/Aqtobe':'KZ','Asia/Oral':'KZ','Europe/Kiev':'UA','Europe/Kyiv':'UA','Europe/Minsk':'BY','Asia/Yerevan':'AM','Asia/Baku':'AZ','Asia/Tbilisi':'GE','Asia/Bishkek':'KG','Asia/Dushanbe':'TJ','Europe/Chisinau':'MD','Asia/Ashgabat':'TM',
+ 'Europe/Warsaw':'PL','Europe/Prague':'CZ','Europe/Budapest':'HU','Europe/Bucharest':'RO','Europe/Sofia':'BG','Europe/Zurich':'CH','Europe/London':'GB','Europe/Stockholm':'SE','Europe/Oslo':'NO','Europe/Copenhagen':'DK','Europe/Belgrade':'RS'};
+const LANG={uz:'UZ',kk:'KZ',be:'BY',hy:'AM',az:'AZ',ka:'GE',ky:'KG',tg:'TJ',ro:'MD',tk:'TM',uk:'UA',pl:'PL',cs:'CZ',hu:'HU',bg:'BG'};
+function mapCountry(code,known){code=(code||'').toUpperCase();if(EURO.includes(code))code='EU';return known[code]?code:null}
+function guessLocal(known){
+  try{const t=mapCountry(TZ[Intl.DateTimeFormat().resolvedOptions().timeZone],known);if(t)return t}catch(e){}
+  for(const l of (navigator.languages||[navigator.language||''])){const r=(l.split('-')[1]||'').toUpperCase(),p=l.split('-')[0].toLowerCase();
+    const c=mapCountry(r,known)||mapCountry(LANG[p],known);if(c)return c}
+  return null}
+async function geoByIP(known){
+  const tryUrl=async(u,pick)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),3500);
+    try{const j=await fetch(u,{signal:c.signal}).then(r=>r.json());const raw=pick(j);return raw?{ok:true,code:mapCountry(raw,known)}:null}catch(e){return null}finally{clearTimeout(t)}};
+  return await tryUrl('https://api.country.is/',j=>j.country)||await tryUrl('https://get.geojs.io/v1/ip/country.json',j=>j.country)||{ok:false}}
+function guessLocalStrong(known){try{return mapCountry(TZ[Intl.DateTimeFormat().resolvedOptions().timeZone],known)}catch(e){return null}}
+async function autoGeo(){
+  if(localStorage.manual)return;                       // пользователь выбрал страну сам: не трогаем
+  const known=R.countries;
+  const apply=c=>{if(!c||c===cc)return;cc=c;reg=known[c].region;localStorage.cc=cc;localStorage.reg=reg;localStorage.geo=c;metric=null;render()};
+  if(!localStorage.geo){apply(guessLocal(known))}       // мгновенно, без запроса
+  const r=await geoByIP(known);                         // точнее: по IP
+  if(r.ok){ if(r.code){ if(r.code!==localStorage.geo)apply(r.code);else localStorage.geo=r.code }
+            else if(localStorage.geo&&!guessLocal(known)){}   // IP из страны вне списка: оставляем то, что есть
+            else if(!localStorage.geo&&cc!=='UZ'&&!guessLocalStrong(known))apply('UZ') }
+}
+
+async function load(){try{
+  const [r,h]=await Promise.all([fetch('data/rates.json?'+Date.now()).then(x=>x.json()),fetch('data/history.json?'+Date.now()).then(x=>x.json()).catch(()=>[])]);
+  R=r;H=h;render();if(!window.__geo){window.__geo=1;autoGeo()}}catch(e){$('upd').textContent='нет связи'}}
+
+function render(){
+  const age=(Date.now()-new Date(R.updated))/60000;
+  $('live').classList.toggle('stale',age>20);
+  $('upd').textContent=age>20?'данные устарели':'обновлено '+new Date(R.updated).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  if(!R.countries[cc]||R.countries[cc].region!==reg)reg=R.countries[cc]?R.countries[cc].region:'cis';
+  if(!R.countries[cc])cc='UZ';
+  const c=R.countries[cc];
+  // страны-«истории» выбранного региона
+  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${k}"><div class="ring"><i>${x.flag}</i></div><span>${x.name}</span></button>`).join('');
+  $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
+  $('seg').innerHTML=[['cis','СНГ'],['eu','Европа']].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
+  $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
+  $('geo').innerHTML=localStorage.manual?`Страна выбрана вручную · <button id="autoBtn">определить автоматически</button>`:(localStorage.geo?`📍 Определили автоматически: ${c.flag} ${c.name}`:'');
+  const ab=$('autoBtn');if(ab)ab.onclick=()=>{delete localStorage.manual;delete localStorage.geo;window.__geo=0;location.reload()};
+  // главный курс: 1 USD
+  const usd=rateOf('USD');
+  if(c.cur==='USD'){$('hl').textContent=c.name;$('hv').innerHTML='1 USD<em>= 1 USD</em>';$('hc').textContent=''}
+  else{$('hl').textContent=`${c.flag} ${c.name} · 1 USD`;$('hv').innerHTML=`${fmt(usd.r)}<em>${c.sym}</em>`;$('hc').innerHTML=chgHTML(usd.d)}
+  $('feed').innerHTML=ORDER.map(k=>[k,rateOf(k)]).filter(([k,v])=>v&&k!==c.cur).map(([k,v])=>`<div class="card"><div class="l"><span>${FL[k]||''} ${k}</span><span>${c.cur}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');
+  $('src').textContent='Источник: '+(R.official[cc]?.src||'рыночный курс (ExchangeRate-API)')+' · цены в '+c.sym;
+  // крипта
+  $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${x.sym}"><img src="${x.img}" loading="lazy" alt=""><div class="n"><b>${x.sym}</b><small>${x.name}</small></div><div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
+  $('clist').onclick=e=>{const r=e.target.closest('[data-m]');if(r){metric=r.dataset.m;render();$('chartS').scrollIntoView({behavior:'smooth'})}};
+  // конвертер
+  if(!$('from').dataset.init){
+    const list=['USD','EUR',...Object.values(R.countries).map(x=>x.cur),'CNY','TRY','AED','GBP',...R.crypto.map(x=>x.sym)].filter((v,i,a)=>a.indexOf(v)===i);
+    $('from').innerHTML=list.map(k=>`<option>${k}</option>`).join('');$('to').innerHTML=$('from').innerHTML;
+    $('from').dataset.init=1;['amt','from','to'].forEach(i=>$(i).addEventListener('input',conv));
+    $('swap').onclick=()=>{const a=$('from').value;$('from').value=$('to').value;$('to').value=a;conv()};
+  }
+  if(!$('to').dataset.set||$('to').dataset.set!==cc){$('to').value=c.cur;$('from').value=c.cur==='USD'?'EUR':'USD';$('to').dataset.set=cc}
+  conv();
+  // график
+  const keys=[c.cur,'BTC','TON','ETH','SOL'].filter((k,i,a)=>H.some(p=>p[k])&&a.indexOf(k)===i);
+  if(!metric||!keys.includes(metric)){const mv=k=>{const v=H.filter(p=>p[k]).map(p=>p[k]);return v.length>2&&Math.max(...v)!==Math.min(...v)};metric=keys.find(mv)||keys[0]}
+  $('tabs').innerHTML=keys.map(k=>`<button class="tab ${k===metric?'on':''}" data-k="${k}">${k===c.cur?'USD → '+k:k+' $'}</button>`).join('');
+  $('tabs').onclick=e=>{if(e.target.dataset.k){metric=e.target.dataset.k;render()}};
+  $('ct').textContent=metric===c.cur?'USD → '+c.cur:metric+' в долларах';
+  draw();
+}
+function conv(){const a=parseFloat($('amt').value)||0,f=$('from').value,t=$('to').value,r=convert(a,f,t);$('res').textContent=r==null?'—':fmt(r)+' '+t}
+function draw(){
+  if(!window.Chart)return;
+  const pts=H.filter(p=>p[metric]).slice(-150);if(!pts.length)return;
+  const up=pts[pts.length-1][metric]>=pts[0][metric],col=up?'#2ee08a':'#ff5b6b',ctx=$('chart').getContext('2d');
+  const g=ctx.createLinearGradient(0,0,0,240);g.addColorStop(0,up?'rgba(46,224,138,.28)':'rgba(255,91,107,.28)');g.addColorStop(1,'rgba(0,0,0,0)');
+  const vals=pts.map(p=>p[metric]),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||hi*.002;
+  if(chart)chart.destroy();
+  chart=new Chart(ctx,{type:'line',data:{labels:pts.map(p=>new Date(p.t*1000).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})),
+    datasets:[{data:pts.map(p=>p[metric]),borderColor:col,backgroundColor:g,fill:true,tension:.3,pointRadius:0,borderWidth:2.5}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{position:'right',min:lo-pad,max:hi+pad,ticks:{color:'#a8a8a8',maxTicksLimit:5,callback:v=>fmt(v,Math.abs(v)>=1000?0:Math.abs(v)>=1?2:4)},grid:{color:'#1c1c1c'},border:{display:false}}},interaction:{intersect:false,mode:'index'}}});
+}
+// подсветка вкладки при прокрутке
+const secs=['home','crypto','chartS','conv'].map($);
+addEventListener('scroll',()=>{let cur='home';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.s===cur))},{passive:true});
+load();setInterval(load,60000);
+</script>
+</body>
+</html>
