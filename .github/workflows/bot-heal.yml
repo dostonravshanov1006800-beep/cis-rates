@@ -1,0 +1,30 @@
+name: Bot heal
+# Самовосстановление бота: каждые 10 минут проверяет webhook; если пуст или рассинхронизирован, чинит и деплоит код.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: bot-heal
+  cancel-in-progress: false
+jobs:
+  heal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Check and heal webhook
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_TOKEN }}
+        run: |
+          URL=$(curl -fsS "https://api.telegram.org/bot${BOT_TOKEN}/getWebhookInfo" | python3 -c "import sys,json;print(json.load(sys.stdin)['result'].get('url') or '')")
+          if [ -n "$URL" ]; then echo "webhook на месте"; exit 0; fi
+          echo "webhook пуст, чиню"
+          npm ci --silent 2>/dev/null || npm install --silent
+          npx tgcloud push || true
+          npx tgcloud webhook sync && echo "webhook восстановлен" || { echo "облако ещё не приняло токен бота: нужно выключить/включить Serverless в BotFather"; exit 0; }
