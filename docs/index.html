@@ -85,6 +85,7 @@ nav a svg{display:block;margin:0 auto 3px;width:24px;height:24px;fill:none;strok
 nav a.on{color:var(--tx)}
 @media(min-width:700px){body{padding-bottom:0}nav{display:none}.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 .hide{display:none}
+.live.stale .dot{background:#ff5b6b}.live.stale #upd{color:#ff8a96}
 .geo{padding:10px 16px 0;font-size:12px;color:var(--mut);font-weight:700}.geo button{color:var(--gold);font-weight:800;text-decoration:underline}
 </style>
 </head>
@@ -191,14 +192,34 @@ async function autoGeo(){
             else if(!localStorage.geo&&cc!=='UZ'&&!guessLocalStrong(known))apply('UZ') }
 }
 
-async function load(){try{
-  const [r,h]=await Promise.all([fetch('data/rates.json?'+Date.now()).then(x=>x.json()),fetch('data/history.json?'+Date.now()).then(x=>x.json()).catch(()=>[])]);
-  R=r;H=h;render();if(!window.__geo){window.__geo=1;autoGeo()}}catch(e){$('upd').textContent='нет связи'}}
-
+let loading=false,lastOk=0;
+async function load(){
+  if(loading)return;loading=true;
+  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),8000),q='?t='+Date.now();
+  try{
+    const [r,h]=await Promise.all([
+      fetch('data/rates.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>{if(!x.ok)throw 0;return x.json()}),
+      fetch('data/history.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>H||[])]);
+    const fresh=!R||r.updated!==R.updated;
+    R=r;H=h;lastOk=Date.now();
+    if(fresh||!window.__rendered){render();window.__rendered=1}else tick();
+    if(!window.__geo){window.__geo=1;autoGeo()}
+  }catch(e){ if(!R)$('upd').textContent='нет связи'; else tick(true) }   // старые данные не стираем
+  finally{clearTimeout(to);loading=false}
+}
+// живая подпись: «обновлено 20:34 · 3 мин назад»; каждые 15 с пересчитывается без запроса
+function tick(offline){
+  if(!R)return;
+  const mins=Math.max(0,Math.round((Date.now()-new Date(R.updated))/60000));
+  const t=new Date(R.updated).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  const ago=mins<1?'только что':mins<60?mins+' мин назад':Math.floor(mins/60)+' ч назад';
+  $('upd').textContent=offline?`нет связи · данные от ${t}`:(mins>20?'данные устарели · '+ago:`обновлено ${t} · ${ago}`);
+  $('live').classList.toggle('stale',mins>20||offline);
+}
 function render(){
   const age=(Date.now()-new Date(R.updated))/60000;
   $('live').classList.toggle('stale',age>20);
-  $('upd').textContent=age>20?'данные устарели':'обновлено '+new Date(R.updated).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  tick();
   if(!R.countries[cc]||R.countries[cc].region!==reg)reg=R.countries[cc]?R.countries[cc].region:'cis';
   if(!R.countries[cc])cc='UZ';
   const c=R.countries[cc];
@@ -251,7 +272,15 @@ function draw(){
 const secs=['home','crypto','chartS','conv'].map($);
 addEventListener('scroll',()=>{let cur='home';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
   document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.s===cur))},{passive:true});
-load();setInterval(load,60000);
+load();
+setInterval(load,30000);                 // опрос каждые 30 с (данные на сервере меняются раз в ~4 мин)
+setInterval(()=>tick(),15000);           // подпись «N мин назад» живёт сама
+const wake=()=>{if(!document.hidden&&Date.now()-lastOk>10000)load()};
+document.addEventListener('visibilitychange',wake);   // вернулись в окно Telegram
+window.addEventListener('focus',wake);
+window.addEventListener('pageshow',e=>{if(e.persisted)load()});
+window.addEventListener('online',load);               // появилась сеть
+document.addEventListener('touchstart',wake,{passive:true});  // любое касание после «сна» вебвью
 </script>
 </body>
 </html>
