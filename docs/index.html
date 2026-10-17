@@ -281,6 +281,16 @@ window.addEventListener('focus',wake);
 window.addEventListener('pageshow',e=>{if(e.persisted)load()});
 window.addEventListener('online',load);               // появилась сеть
 document.addEventListener('touchstart',wake,{passive:true});  // любое касание после «сна» вебвью
+document.addEventListener('scroll',wake,{passive:true});     // прокрутка тоже «будит»
+document.addEventListener('click',wake,{passive:true});
+// запасной механизм: таймеры вебвью могут замирать, а кадры отрисовки идут, когда экран виден.
+// на каждом кадре (не чаще раза в 5 с) проверяем, не пора ли обновить данные и подпись.
+let _raf=0;(function frame(t){
+  if(t-_raf>5000){_raf=t;
+    if(!document.hidden){ if(Date.now()-lastOk>30000)load(); else tick() } }
+  requestAnimationFrame(frame)})(0);
+// страница висит открытой сутки и дольше: берём свежую версию сайта
+setTimeout(()=>{if(!document.hidden)location.reload()},6*3600*1000);
 </script>
 </body>
 </html>
