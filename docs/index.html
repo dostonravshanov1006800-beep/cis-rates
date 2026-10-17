@@ -13,6 +13,7 @@
 :root{--bg:#000;--card:#121212;--line:#262626;--tx:#fafafa;--mut:#a8a8a8;--gold:#f5c04a;--up:#2ee08a;--dn:#ff5b6b;--r:16px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
+section{scroll-margin-top:58px}
 body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;padding-bottom:84px}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .wrap{max-width:640px;margin:0 auto}
@@ -195,7 +196,7 @@ function render(){
   conv();
   // график
   const keys=[c.cur,'BTC','TON','ETH','SOL'].filter((k,i,a)=>H.some(p=>p[k])&&a.indexOf(k)===i);
-  if(!metric||!keys.includes(metric))metric=keys[0];
+  if(!metric||!keys.includes(metric)){const mv=k=>{const v=H.filter(p=>p[k]).map(p=>p[k]);return v.length>2&&Math.max(...v)!==Math.min(...v)};metric=keys.find(mv)||keys[0]}
   $('tabs').innerHTML=keys.map(k=>`<button class="tab ${k===metric?'on':''}" data-k="${k}">${k===c.cur?'USD → '+k:k+' $'}</button>`).join('');
   $('tabs').onclick=e=>{if(e.target.dataset.k){metric=e.target.dataset.k;render()}};
   $('ct').textContent=metric===c.cur?'USD → '+c.cur:metric+' в долларах';
@@ -207,10 +208,11 @@ function draw(){
   const pts=H.filter(p=>p[metric]).slice(-150);if(!pts.length)return;
   const up=pts[pts.length-1][metric]>=pts[0][metric],col=up?'#2ee08a':'#ff5b6b',ctx=$('chart').getContext('2d');
   const g=ctx.createLinearGradient(0,0,0,240);g.addColorStop(0,up?'rgba(46,224,138,.28)':'rgba(255,91,107,.28)');g.addColorStop(1,'rgba(0,0,0,0)');
+  const vals=pts.map(p=>p[metric]),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||hi*.002;
   if(chart)chart.destroy();
   chart=new Chart(ctx,{type:'line',data:{labels:pts.map(p=>new Date(p.t*1000).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})),
     datasets:[{data:pts.map(p=>p[metric]),borderColor:col,backgroundColor:g,fill:true,tension:.3,pointRadius:0,borderWidth:2.5}]},
-    options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{position:'right',ticks:{color:'#a8a8a8'},grid:{color:'#1c1c1c'},border:{display:false}}},interaction:{intersect:false,mode:'index'}}});
+    options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{position:'right',min:lo-pad,max:hi+pad,ticks:{color:'#a8a8a8',maxTicksLimit:5,callback:v=>fmt(v,Math.abs(v)>=1000?0:Math.abs(v)>=1?2:4)},grid:{color:'#1c1c1c'},border:{display:false}}},interaction:{intersect:false,mode:'index'}}});
 }
 // подсветка вкладки при прокрутке
 const secs=['home','crypto','chartS','conv'].map($);
