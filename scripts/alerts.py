@@ -7,6 +7,8 @@ TOKEN, CHANNEL = os.environ.get("BOT_TOKEN"), os.environ.get("CHANNEL_ID")
 if not TOKEN or not CHANNEL:
     print("BOT_TOKEN/CHANNEL_ID не заданы — алерты пропущены"); raise SystemExit
 
+# Пороги сигналов: валюты СНГ 0,3%, крипта 1% (3% срабатывали бы раз в несколько дней и канал молчал бы)
+FIAT_THR, CRYPTO_THR = 0.003, 0.01
 R = json.load(open("data/rates.json", encoding="utf-8"))
 try: last = json.load(open("data/alert_state.json", encoding="utf-8"))
 except Exception: last = {}
@@ -29,7 +31,7 @@ for cc in ("UZ", "RU", "KZ", "UA", "BY"):           # страны с офици
 for x in R["crypto"]:
     if x["sym"] not in ("BTC", "ETH", "TON", "SOL"): continue
     k = f"c:{x['sym']}"; now[k] = x["usd"]; p = last.get(k)
-    if p and abs(x["usd"] - p) / p >= 0.03:
+    if p and abs(x["usd"] - p) / p >= CRYPTO_THR:
         msgs.append(f"{'🚀' if x['usd'] > p else '🔻'} <b>{x['sym']}</b>: ${fmt(p)} → <b>${fmt(x['usd'])}</b> ({(x['usd']/p-1)*100:+.1f}%)")
 
 if msgs:
@@ -41,6 +43,6 @@ if msgs:
 # базу сравнения обновляем только при заметном движении (иначе медленный тренд никогда не сработает)
 keep = dict(last)
 for k, v in now.items():
-    thr = 0.03 if k.startswith("c:") else 0.003
+    thr = CRYPTO_THR if k.startswith("c:") else FIAT_THR
     if k not in keep or abs(v - keep[k]) / keep[k] >= thr: keep[k] = v
 json.dump(keep, open("data/alert_state.json", "w"))
