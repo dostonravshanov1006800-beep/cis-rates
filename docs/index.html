@@ -85,7 +85,7 @@ nav a svg{display:block;margin:0 auto 3px;width:24px;height:24px;fill:none;strok
 nav a.on{color:var(--tx)}
 @media(min-width:700px){body{padding-bottom:0}nav{display:none}.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 .hide{display:none}
-.sp{flex:0 0 auto;margin:0 10px 0 auto;align-self:center}.row .sp{margin:0 0 0 auto}.hsp{display:inline-flex;align-items:center;gap:8px;margin-left:10px;vertical-align:middle}.hsp small{color:var(--mut);font-weight:700;font-size:11px}
+.sp{flex:0 0 auto;margin:0 10px 0 auto;align-self:center}.row[data-m]{display:grid;grid-template-columns:36px minmax(0,1fr) 88px 92px;align-items:center;column-gap:12px}.row[data-m] .sp{margin:0;justify-self:center}.hsp{display:inline-flex;align-items:center;gap:8px;margin-left:10px;vertical-align:middle}.hsp small{color:var(--mut);font-weight:700;font-size:11px}
 .live.stale .dot{background:#ff5b6b}.live.stale #upd{color:#ff8a96}
 .geo{padding:10px 16px 0;font-size:12px;color:var(--mut);font-weight:700}.geo button{color:var(--gold);font-weight:800;text-decoration:underline}
 </style>
@@ -253,7 +253,7 @@ function render(){
   $('feed').innerHTML=ORDER.map(k=>[k,rateOf(k)]).filter(([k,v])=>v&&k!==c.cur).map(([k,v])=>`<div class="card"><div class="l"><span>${FL[k]||''} ${k}</span><span>${c.cur}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');
   $('src').textContent='Источник: '+(R.official[cc]?.src||'рыночный курс (ExchangeRate-API), официального API у ЦБ нет')+' · цены в '+c.sym;
   // крипта
-  $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${x.sym}"><img src="${x.img}" loading="lazy" alt=""><div class="n"><b>${x.sym}</b><small>${x.name}</small></div>${spark(((SR.crypto[x.sym]||[]).slice(0,-1)).concat([x.usd]),trendColor(SR.crypto[x.sym]))}<div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
+  $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${x.sym}"><img src="${x.img}" loading="lazy" alt=""><div class="n"><b>${x.sym}</b><small>${x.name}</small></div>${spark(((SR.crypto[x.sym]||[]).slice(0,-1)).concat([x.usd]),trendColor(SR.crypto[x.sym]))||'<span></span>'}<div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
   $('clist').onclick=e=>{const r=e.target.closest('[data-m]');if(r){metric=r.dataset.m;render();$('chartS').scrollIntoView({behavior:'smooth'})}};
   // конвертер
   if(!$('from').dataset.init){
