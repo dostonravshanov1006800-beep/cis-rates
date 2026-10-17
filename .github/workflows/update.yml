@@ -48,7 +48,6 @@ jobs:
           git config user.email "bot@users.noreply.github.com"
           git add -A
           git rm -rq --cached design/__pycache__ scripts/__pycache__ 2>/dev/null || true
-          git rm -q --cached docs/rates.png 2>/dev/null || true   # картинка живёт в ветке cards
           git diff --cached --quiet && exit 0
           git commit -qm "update $(date -u +%H:%M)"
           # если параллельно кто-то записал в репозиторий, подтягиваем изменения и повторяем, до 5 раз
