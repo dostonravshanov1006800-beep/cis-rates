@@ -64,5 +64,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          sleep 200
+          sleep 40
           gh workflow run update.yml --repo "$GITHUB_REPOSITORY" || true
