@@ -32,9 +32,15 @@ jobs:
           git config user.name "rates-bot"
           git config user.email "bot@users.noreply.github.com"
           git add -A
-          git diff --cached --quiet || git commit -m "update $(date -u +%H:%M)"
-          git pull --rebase -q || true
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -qm "update $(date -u +%H:%M)"
+          # если параллельно кто-то записал в репозиторий, подтягиваем изменения и повторяем, до 5 раз
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs -q origin main || { git rebase --abort 2>/dev/null; git reset -q --hard origin/main; git checkout -q origin/main -- . 2>/dev/null; true; }
+            git push -q origin HEAD:main && exit 0
+            sleep $((i * 3))
+          done
+          echo "не удалось записать после 5 попыток"; exit 1
       - name: Chain next run
         # always(): цепочка продолжается даже если сбор курсов упал, иначе одна ошибка её оборвёт
         if: always() && github.event_name != 'schedule'
