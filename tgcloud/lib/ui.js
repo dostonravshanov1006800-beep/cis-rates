@@ -11,10 +11,11 @@ export const btn = (text, data) => ({ text, callback_data: data });
 const kb = rows => ({ inline_keyboard: rows });
 const upd = R => R.updated.slice(11, 16) + ' UTC';
 const BACK = [btn('« Меню', 'menu')];
+const esc = s => String(s).replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]));
 
-export function menu(R, cc) {
+export function menu(R, cc, name) {
   const c = R.countries[cc], r = rate(R, cc, 'USD') || { r: 1, d: 0, src: '' };
-  return [`⭐ <b>CIS Rates</b> — курсы СНГ и Европы 24/7\n\n${c.flag} ${c.name}: <b>1 USD = ${fmt(r.r)} ${c.sym}</b> ${arrow(r.d)}\n<i>${r.src} · ${upd(R)}</i>\n\nВыбери раздел 👇`,
+  return [`⭐ <b>CIS Rates</b> — курсы СНГ и Европы 24/7\n${name ? `Привет, ${esc(name)}! 👋\n` : ''}\n${c.flag} ${c.name}: <b>1 USD = ${fmt(r.r)} ${c.sym}</b> ${arrow(r.d)}\n<i>${r.src} · ${upd(R)}</i>\n\nВыбери раздел 👇`,
     kb([[btn('💵 Курс валют', 'cur'), btn('🎯 Подбор', 'pick')],
         [btn('₿ Крипта', 'cry:0'), btn('🗂 Каталог стран', 'cat:cis')],
         [btn('💱 Конвертер', 'conv'), btn('🔔 Алерты', 'alerts')],
@@ -71,13 +72,32 @@ export function pick(R, amt, src, region, cc) {
 export const pickHelp = () => ['🎯 <b>Подбор обмена</b>\n\nНапиши сумму и валюту, и я покажу, сколько это будет в каждой стране СНГ и Европы + крипто-маршрут:\n\n<code>500 usd</code>\n<code>100000 rub</code>\n<code>2000 eur</code>\n\nИли выбери готовую сумму 👇',
   kb([[btn('💵 100 USD', 'pk:100:USD:all'), btn('💶 500 EUR', 'pk:500:EUR:all')], [btn('🇷🇺 50000 RUB', 'pk:50000:RUB:all'), btn('🇰🇿 500000 KZT', 'pk:500000:KZT:all')], BACK])];
 
+const bar = v => { const n = Math.max(0, Math.min(7, Math.round(Math.abs(v) / 2))); return (v >= 0 ? '🟩' : '🟥').repeat(Math.max(1, Math.min(n, 5))); };
+const sgn = v => (v > 0 ? '+' : '') + v + '%';
+const dot = v => v > 0.05 ? '🟢' : v < -0.05 ? '🔴' : '⚪';
+
 export function cry(R, p) {
   const P = 8, cs = R.crypto, pages = Math.ceil(cs.length / P); p = Math.max(0, Math.min(p, pages - 1));
   const L = ['₿ <b>Криптовалюты</b> · топ по капитализации\n'];
-  cs.slice(p * P, (p + 1) * P).forEach((x, i) => L.push(`${p * P + i + 1}. <b>${x.sym}</b>  $${fmt(x.usd)}  ${x.ch24h >= 0 ? '🟢' : '🔴'} ${x.ch24h > 0 ? '+' : ''}${x.ch24h}%`));
+  cs.slice(p * P, (p + 1) * P).forEach((x, i) => L.push(`${p * P + i + 1}. <b>${x.sym}</b>  $${fmt(x.usd)}  ${dot(x.ch24h)} ${sgn(x.ch24h)}`));
   L.push(`\n<i>24ч · CoinGecko · ${upd(R)} · ${p + 1}/${pages}</i>`);
+  const rows = []; let row = [];
+  cs.slice(p * P, (p + 1) * P).forEach(x => { row.push(btn(x.sym, 'coin:' + x.sym)); if (row.length === 4) { rows.push(row); row = []; } });
+  if (row.length) rows.push(row);
   const nav = []; if (p > 0) nav.push(btn('◀️', 'cry:' + (p - 1))); nav.push(btn('🔄', 'cry:' + p)); if (p < pages - 1) nav.push(btn('▶️', 'cry:' + (p + 1)));
-  return [L.join('\n'), kb([nav, BACK])];
+  return [L.join('\n'), kb([...rows, nav, BACK])];
+}
+
+export function coin(R, sym, cc) {
+  const x = R.crypto.find(c => c.sym === sym); if (!x) return cry(R, 0);
+  const c = R.countries[cc], loc = R.world[c.cur] ? x.usd * R.world[c.cur] : null, off = rate(R, cc, 'USD');
+  const locv = off?.off ? x.usd * off.r : loc;
+  const mood = x.ch7d > 3 ? '🚀 сильный рост' : x.ch7d > 0 ? '📈 растёт' : x.ch7d > -3 ? '📉 слегка падает' : '🔻 заметное падение';
+  const L = [`<b>${x.name}</b> · ${x.sym}\n`, `💵 <b>$${fmt(x.usd)}</b>`];
+  if (locv) L.push(`${c.flag} <b>${fmt(locv)} ${c.sym}</b>`);
+  L.push('', `1ч   ${dot(x.ch1h)} ${sgn(x.ch1h)}`, `24ч  ${dot(x.ch24h)} ${sgn(x.ch24h)}  ${bar(x.ch24h)}`, `7д   ${dot(x.ch7d)} ${sgn(x.ch7d)}  ${bar(x.ch7d)}`,
+    '', `Тренд: ${mood}`, `Капитализация: $${fmt(x.cap / 1e9, 1)} млрд`, `Объём 24ч: $${fmt(x.vol / 1e9, 2)} млрд`, `\n<i>CoinGecko · ${upd(R)}</i>`);
+  return [L.join('\n'), kb([[btn('◀️ К списку', 'cry:0'), btn('🔄', 'coin:' + sym)], [btn('🎯 Сколько получу', `pk:1:${sym}:all`), BACK[0]]])];
 }
 
 export const conv = () => ['💱 <b>Конвертер</b>\n\nПиши в чат пару валют:\n<code>5000 rub uzs</code>\n<code>0.5 btc usd</code>\n<code>1000 ton rub</code>\n\nА просто <code>500 usd</code> откроет <b>подбор</b> по всем странам СНГ и Европы.\n\nПоддерживаются 24 валюты и топ-20 крипты.', kb([[btn('🎯 Подбор', 'pick'), BACK[0]]])];

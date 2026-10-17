@@ -12,6 +12,7 @@ export async function route(chatId, data) {
     case 'ctry': return ui.ctry(R, arg || 'cis');
     case 'cat': return ui.catalog(R, arg || 'cis');
     case 'cry': return ui.cry(R, +arg || 0);
+    case 'coin': return ui.coin(R, arg, cc);
     case 'conv': return ui.conv();
     case 'about': return ui.about();
     case 'alerts': return ui.alertsScreen();

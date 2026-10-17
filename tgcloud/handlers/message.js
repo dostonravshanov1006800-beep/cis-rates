@@ -6,11 +6,12 @@ import * as ui from '../lib/ui.js';
 export default async function (message) {
   const chatId = message.chat.id, text = (message.text || '').trim();
   if (!text || message.chat.type !== 'private') return;
+  api.sendChatAction({ chat_id: chatId, action: 'typing' }).catch(() => {});
   const [R, u] = await Promise.all([getRates(), getUser(chatId)]);
   const cc = R.countries[u.country] ? u.country : 'UZ';
   const cmd = text.startsWith('/') ? text.split(/\s+/)[0].split('@')[0].toLowerCase() : '';
   let out;
-  if (['/start', '/menu', '/help'].includes(cmd)) out = ui.menu(R, cc);
+  if (['/start', '/menu', '/help'].includes(cmd)) out = ui.menu(R, cc, message.from?.first_name);
   else if (['/rates', '/cur'].includes(cmd)) out = ui.cur(R, cc);
   else if (cmd === '/crypto') out = ui.cry(R, 0);
   else if (cmd === '/catalog') out = ui.catalog(R, 'cis');
