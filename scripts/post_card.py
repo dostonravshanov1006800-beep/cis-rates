@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Держит в канале ОДНО живое сообщение с карточкой курсов: бот не спамит, а редактирует фото (editMessageMedia).
 Состояние (id сообщения) хранится в data/channel_card.json. Если сообщение удалили, публикуется новое."""
-import json, os, sys, time, uuid, urllib.request, urllib.error
+import json, os, sys, time, uuid, urllib.request, urllib.error, urllib.parse
 
 TOKEN, CHANNEL = os.environ.get("BOT_TOKEN"), os.environ.get("CHANNEL_ID")
 if not TOKEN or not CHANNEL: print("BOT_TOKEN/CHANNEL_ID не заданы, пропуск"); sys.exit(0)
@@ -28,7 +28,6 @@ def call(method, fields, img=None):
         body, ct = multipart(fields, "rates.png", img)
         req = urllib.request.Request(API + method, data=body, headers={"Content-Type": ct})
     else:
-        import urllib.parse
         req = urllib.request.Request(API + method, data=urllib.parse.urlencode(fields).encode())
     try:
         with urllib.request.urlopen(req, timeout=40) as r: return json.loads(r.read())

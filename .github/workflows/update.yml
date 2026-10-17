@@ -37,10 +37,11 @@ jobs:
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         run: python scripts/alerts.py
       - name: Live card in channel (edit one message)
+        continue-on-error: true   # сбой Telegram не должен ронять обновление курсов, но в логе будет красный шаг
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
-        run: python scripts/post_card.py || echo "карточка в канал не обновлена"
+        run: python scripts/post_card.py
       - run: mkdir -p docs/data && cp data/rates.json data/history.json data/series.json docs/data/
       - name: Commit
         run: |
