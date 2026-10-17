@@ -98,9 +98,43 @@ except Exception as e: print("crypto:", e)
 prev = {}
 try: prev = json.load(open("data/rates.json", encoding="utf-8"))
 except Exception: pass
+
+# --- Защита от мусора: значение, которое резко отличается от прошлого или нулевое, считаем сбоем источника ---
+def sane(new, old, lim):
+    if not isinstance(new, (int, float)) or new <= 0: return False
+    return not old or abs(new / old - 1) <= lim
+rejected = []
+for cur, v in list(out["world"].items()):                       # фиат: скачок >40% за минуту невозможен
+    o = prev.get("world", {}).get(cur)
+    if not sane(v, o, 0.40): rejected.append(f"world:{cur}={v} (было {o})"); out["world"][cur] = o if o else v
+for cc, blk in list(out["official"].items()):
+    for code, r in (blk.get("rates") or {}).items():
+        o = ((prev.get("official", {}).get(cc) or {}).get("rates") or {}).get(code)
+        if not sane(r.get("rate"), o and o.get("rate"), 0.40):
+            rejected.append(f"{cc}:{code}={r.get('rate')} (было {o and o.get('rate')})")
+            if o: blk["rates"][code] = o
+pc = {c["sym"]: c["usd"] for c in prev.get("crypto", [])}
+for c in out["crypto"]:                                          # крипта: >60% за минуту = сбой источника
+    if not sane(c["usd"], pc.get(c["sym"]), 0.60):
+        rejected.append(f"{c['sym']}={c['usd']} (было {pc.get(c['sym'])})")
+        if pc.get(c["sym"]): c["usd"] = pc[c["sym"]]
+# монеты и валюты с нулевой/пустой ценой, для которых нет прежнего значения, убираем совсем (лучше без строки, чем «$0»)
+out["crypto"] = [c for c in out["crypto"] if isinstance(c.get("usd"), (int, float)) and c["usd"] > 0]
+out["world"] = {k: v for k, v in out["world"].items() if isinstance(v, (int, float)) and v > 0}
+if rejected: print("ОТБРОШЕНО как мусор:", rejected)
+
+# --- Честная метка свежести: если НИ ОДИН источник не ответил, время не обновляем ---
+fresh = bool(out["official"]) or bool(out["crypto"]) or bool(out["world"])
+got_new = any([bool(out["crypto"]), bool(out["world"]), any(k not in prev.get("official", {}) or True for k in out["official"])])
 for k, v in prev.get("official", {}).items(): out["official"].setdefault(k, v)
-if not out["crypto"]: out["crypto"] = prev.get("crypto", [])
-if not out["world"]: out["world"] = prev.get("world", {})
+if not out["crypto"]: out["crypto"] = prev.get("crypto", []); crypto_stale = True
+else: crypto_stale = False
+if not out["world"]: out["world"] = prev.get("world", {}); world_stale = True
+else: world_stale = False
+if crypto_stale and world_stale and prev.get("updated"):
+    out["updated"] = prev["updated"]                                # все ключевые источники упали: показываем реальный возраст данных
+    print("ВНИМАНИЕ: крипта и мировые курсы не получены, метка времени сохранена прежней")
+out["health"] = {"crypto_ok": not crypto_stale, "world_ok": not world_stale, "official_ok": sorted(k for k in COUNTRIES if k in ("UZ","RU","UA","BY","KZ") and k in out["official"])}
 
 os.makedirs("data", exist_ok=True)
 json.dump(out, open("data/rates.json","w",encoding="utf-8"), ensure_ascii=False, separators=(",",":"))
