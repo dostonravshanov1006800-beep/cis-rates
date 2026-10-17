@@ -85,6 +85,7 @@ nav a svg{display:block;margin:0 auto 3px;width:24px;height:24px;fill:none;strok
 nav a.on{color:var(--tx)}
 @media(min-width:700px){body{padding-bottom:0}nav{display:none}.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 .hide{display:none}
+.sp{flex:0 0 auto;margin:0 10px 0 auto;align-self:center}.row .sp{margin-left:auto}.hsp{display:inline-flex;align-items:center;gap:8px;margin-left:10px;vertical-align:middle}.hsp small{color:var(--mut);font-weight:700;font-size:11px}
 .live.stale .dot{background:#ff5b6b}.live.stale #upd{color:#ff8a96}
 .geo{padding:10px 16px 0;font-size:12px;color:var(--mut);font-weight:700}.geo button{color:var(--gold);font-weight:800;text-decoration:underline}
 </style>
@@ -144,7 +145,7 @@ const $=id=>document.getElementById(id);
 const fmt=(n,d)=>{if(n==null||isNaN(n))return'—';d=d??(Math.abs(n)>=1000?0:Math.abs(n)>=1?2:4);return Number(n).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d})};
 const FL={PLN:'🇵🇱',CHF:'🇨🇭',USD:'🇺🇸',EUR:'🇪🇺',RUB:'🇷🇺',CNY:'🇨🇳',TRY:'🇹🇷',KZT:'🇰🇿',UAH:'🇺🇦',GBP:'🇬🇧',AED:'🇦🇪',BYN:'🇧🇾'};
 const ORDER=['EUR','RUB','CNY','TRY','GBP','CHF','PLN','AED','KZT','UAH'];
-let R,H=[],cc=localStorage.cc||'UZ',reg=localStorage.reg||'cis',metric=null,chart;
+let R,H=[],SR={crypto:{},fx:{}},cc=localStorage.cc||'UZ',reg=localStorage.reg||'cis',metric=null,chart;
 const cur=c=>R.countries[c].cur;
 // Единое правило, как в боте: «цена доллара» берётся из ЦБ страны, если он есть, иначе рыночная
 function perUsd(c,code){
@@ -200,6 +201,7 @@ async function load(){
     const [r,h]=await Promise.all([
       fetch('data/rates.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>{if(!x.ok)throw 0;return x.json()}),
       fetch('data/history.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>H||[])]);
+    fetch('data/series.json'+q,{cache:'no-store'}).then(x=>x.json()).then(j=>{SR=j;if(window.__rendered)render()}).catch(()=>{});
     const fresh=!R||r.updated!==R.updated;
     R=r;H=h;lastOk=Date.now();
     if(fresh||!window.__rendered){render();window.__rendered=1}else tick();
@@ -216,6 +218,19 @@ function tick(offline){
   $('upd').textContent=offline?`нет связи · данные от ${t}`:(mins>20?'данные устарели · '+ago:`обновлено ${t} · ${ago}`);
   $('live').classList.toggle('stale',mins>20||offline);
 }
+
+// мини-график 7 дней (SVG). up=true: зелёный; invert для валют: рост курса USD = местная слабее = красный
+function spark(vals,color,w=88,h=30){
+  if(!vals||vals.length<3)return '';
+  let lo=Math.min(...vals),hi=Math.max(...vals);const mid=(lo+hi)/2,span=mid*0.012;
+  if(hi-lo<span){lo=mid-span/2;hi=mid+span/2}
+  const pts=vals.map((v,i)=>[(i*(w-6)/(vals.length-1)+3).toFixed(1),(h-4-(v-lo)/(hi-lo)*(h-8)).toFixed(1)]);
+  const line=pts.map(p=>p.join(',')).join(' '),last=pts[pts.length-1];
+  const area=`${pts[0][0]},${h} ${line} ${last[0]},${h}`;
+  return `<svg class="sp" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><polygon points="${area}" fill="${color}" opacity=".16"/><polyline points="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${last[0]}" cy="${last[1]}" r="2.6" fill="${color}"/></svg>`}
+const GRN='#2ee08a',RED='#ff5b6b';
+const trendColor=v=>v&&v.length>1&&v[v.length-1]>=v[0]?GRN:RED;
+
 function render(){
   const age=(Date.now()-new Date(R.updated))/60000;
   $('live').classList.toggle('stale',age>20);
@@ -233,11 +248,11 @@ function render(){
   // главный курс: 1 USD
   const usd=rateOf('USD');
   if(c.cur==='USD'){$('hl').textContent=c.name;$('hv').innerHTML='1 USD<em>= 1 USD</em>';$('hc').textContent=''}
-  else{$('hl').textContent=`${c.flag} ${c.name} · 1 USD`;$('hv').innerHTML=`${fmt(usd.r)}<em>${c.sym}</em>`;$('hc').innerHTML=chgHTML(usd.d)}
+  else{$('hl').textContent=`${c.flag} ${c.name} · 1 USD`;$('hv').innerHTML=`${fmt(usd.r)}<em>${c.sym}</em>`;$('hc').innerHTML=chgHTML(usd.d)+' '+(SR.fx[c.cur]?`<span class="hsp">${spark(SR.fx[c.cur].slice(0,-1).concat([usd.r]),SR.fx[c.cur][SR.fx[c.cur].length-1]>=SR.fx[c.cur][0]?RED:GRN,120,34)}<small>7 дней</small></span>`:'')}
   $('feed').innerHTML=ORDER.map(k=>[k,rateOf(k)]).filter(([k,v])=>v&&k!==c.cur).map(([k,v])=>`<div class="card"><div class="l"><span>${FL[k]||''} ${k}</span><span>${c.cur}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');
-  $('src').textContent='Источник: '+(R.official[cc]?.src||'рыночный курс (ExchangeRate-API)')+' · цены в '+c.sym;
+  $('src').textContent='Источник: '+(R.official[cc]?.src||'рыночный курс (ExchangeRate-API), официального API у ЦБ нет')+' · цены в '+c.sym;
   // крипта
-  $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${x.sym}"><img src="${x.img}" loading="lazy" alt=""><div class="n"><b>${x.sym}</b><small>${x.name}</small></div><div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
+  $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${x.sym}"><img src="${x.img}" loading="lazy" alt=""><div class="n"><b>${x.sym}</b><small>${x.name}</small></div>${spark(((SR.crypto[x.sym]||[]).slice(0,-1)).concat([x.usd]),trendColor(SR.crypto[x.sym]))}<div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
   $('clist').onclick=e=>{const r=e.target.closest('[data-m]');if(r){metric=r.dataset.m;render();$('chartS').scrollIntoView({behavior:'smooth'})}};
   // конвертер
   if(!$('from').dataset.init){

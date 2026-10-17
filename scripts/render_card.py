@@ -7,13 +7,18 @@ from art import *
 R = json.load(open("../data/rates.json", encoding="utf-8"))
 try: H = json.load(open("../data/history.json", encoding="utf-8"))
 except Exception: H = []
+try: SR = json.load(open("../data/series.json", encoding="utf-8"))
+except Exception: SR = {"crypto": {}, "fx": {}}
 S = 2                                   # рисуем в 2x и уменьшаем: сглаженные линии и текст
 W, HH = 1280, 1100
 BG, CARD, LINE = (8, 10, 18), (17, 21, 34), (42, 50, 74)
 TX, MUT, DIM = (244, 246, 252), (138, 150, 182), (84, 96, 128)
 UP, DN = (46, 224, 138), (255, 91, 107)
 
-fmt = lambda n: (f"{n:,.0f}" if abs(n) >= 100 else f"{n:,.2f}" if abs(n) >= 1 else f"{n:.4f}").replace(",", " ")
+def fmt(n):
+    a = abs(n)
+    t = f"{n:,.0f}" if a >= 1000 else f"{n:,.2f}" if a >= 1 else f"{n:.4f}"
+    return t.replace(",", " ")
 img = gradient(W * S, HH * S, (11, 14, 26), (5, 6, 12), 0.25)
 img = glow(img, (200 * S, 40 * S, 300 * S), (60, 100, 255), 0.14, 120 * S)
 img = glow(img, (1120 * S, 60 * S, 260 * S), (255, 190, 60), 0.12, 120 * S)
@@ -24,9 +29,11 @@ def box(x, y, w, h, r=16, fill=CARD, ol=LINE): d.rounded_rectangle([x * S, y * S
 
 def spark(x, y, w, h, vals, col):
     """Мини-график: линия + мягкая заливка. Шкала по min/max самого ряда."""
-    if len(vals) < 3 or max(vals) == min(vals):
+    if len(vals) < 3:
         d.line([x * S, (y + h / 2) * S, (x + w) * S, (y + h / 2) * S], fill=DIM + (255,), width=2 * S); return
     lo, hi = min(vals), max(vals)
+    mid = (lo + hi) / 2; MINSPAN = mid * 0.012       # минимальный масштаб 1,2% от цены: копеечные колебания стейблов не выглядят обвалом
+    if hi - lo < MINSPAN: lo, hi = mid - MINSPAN / 2, mid + MINSPAN / 2
     pts = [((x + i * w / (len(vals) - 1)) * S, (y + h - (v - lo) / (hi - lo) * h) * S) for i, v in enumerate(vals)]
     lay = Image.new("RGBA", img.size, (0, 0, 0, 0)); ld = ImageDraw.Draw(lay)
     ld.polygon(pts + [(pts[-1][0], (y + h) * S), (pts[0][0], (y + h) * S)], fill=col + (46,))
@@ -34,8 +41,13 @@ def spark(x, y, w, h, vals, col):
     d.line(pts, fill=col + (255,), width=int(2.4 * S), joint="curve")
     px, py = pts[-1]; d.ellipse([px - 4 * S, py - 4 * S, px + 4 * S, py + 4 * S], fill=col + (255,))
 
-def series(key, n=36):
-    v = [p[key] for p in H if p.get(key)]; return v[-n:]
+def series(key, n=48, now=None):
+    """Ряд для мини-графика: 7 дней. Последняя точка = число на карточке, чтобы линия и цифра совпадали."""
+    v = list(SR["crypto"].get(key) or SR["fx"].get(key) or [])
+    if len(v) < 3:                      # запасной вариант: накопленная история
+        v = [p[key] for p in H if p.get(key)][-n:]
+    if now and v: v = v[:-1] + [now]
+    return v[-n:]
 def tri(cx, cy, up, col):
     d.polygon([((cx - 6) * S, (cy + 4) * S), ((cx + 6) * S, (cy + 4) * S), (cx * S, (cy - 6) * S)] if up else [((cx - 6) * S, (cy - 4) * S), ((cx + 6) * S, (cy - 4) * S), (cx * S, (cy + 6) * S)], fill=col + (255,))
 
@@ -53,30 +65,31 @@ T(W - 48, 78, now.strftime("%d.%m.%Y") + "  ·  время Ташкента", f(
 # ── левая колонка: 12 стран СНГ
 LX, LW, TOP, RH, GAP = 48, 600, 138, 60, 8
 T(LX, TOP - 4, "1 USD  =", f("mont", 17, 700), MUT)
-T(LX + LW, TOP - 4, "тренд · ЦБ обновляет раз в сутки", f("mont", 15, 500), DIM, "ra")
+T(LX + LW, TOP - 4, "7 дней · ЦБ обновляет раз в сутки", f("mont", 15, 500), DIM, "ra")
 cis = [(k, c) for k, c in R["countries"].items() if c["region"] == "cis"]
 for i, (k, c) in enumerate(cis):
     y = TOP + 26 + i * (RH + GAP); box(LX, y, LW, RH, 14)
     d.rounded_rectangle([(LX + 12) * S, (y + 14) * S, (LX + 58) * S, (y + 46) * S], radius=8 * S, fill=GOLD2 + (255,))
     T(LX + 35, y + 30, k, f("mont", 19, 800), (22, 14, 4), "mm")
-    T(LX + 72, y + 22, c["name"], f("mont", 19, 700), TX, "lm"); T(LX + 72, y + 44, c["cur"], f("mont", 13, 600), MUT, "lm")
-    o = R["official"].get(k, {}).get("rates", {}).get("USD")
+    T(LX + 72, y + 22, c["name"], f("mont", 19, 700), TX, "lm");     o = R["official"].get(k, {}).get("rates", {}).get("USD")
     val = o["rate"] if o else R["world"][c["cur"]]
     T(LX + 372, y + 30, fmt(val), f("mont", 25, 800), TX, "rm"); sym = c["sym"] if all(ord(ch) < 0x530 or ord(ch) in (0x20B8, 0x20B4, 0x20BD) for ch in c["sym"]) else c["cur"]
     T(LX + 380, y + 33, sym, f("mont", 13, 600), MUT, "lm")
-    sv = series(c["cur"])
-    spark(LX + 440, y + 14, 100, 32, sv, DIM if (len(sv) < 3 or max(sv) == min(sv)) else (UP if sv[-1] >= sv[0] else DN))
+    sv = series(c["cur"], now=val)
+    # линия растёт = доллар дорожает = местная валюта слабеет: красная; падает = местная валюта крепнет: зелёная
+    spark(LX + 440, y + 14, 100, 32, sv, DIM if (len(sv) < 3 or max(sv) == min(sv)) else (DN if sv[-1] >= sv[0] else UP))
+    T(LX + 72, y + 44, c["cur"] + ("  ·  ЦБ" if o else "  ·  рынок"), f("mont", 13, 600), MUT, "lm")
     if o and o.get("diff"):
         up = o["diff"] > 0; tri(LX + 570, y + 30, up, DN if up else UP)   # курс доллара вырос = валюта слабее
 
 # ── правая колонка: крипта
 RX, RW = 692, 540
 T(RX, TOP - 4, "КРИПТОВАЛЮТЫ  ·  USD", f("mont", 17, 700), MUT)
-T(RX + RW, TOP - 4, "24 ч", f("mont", 15, 500), DIM, "ra")
+T(RX + RW, TOP - 4, "график 7 дней · плашка 24 ч", f("mont", 15, 500), DIM, "ra")
 for i, x in enumerate(R["crypto"][:12]):
     y = TOP + 26 + i * (RH + GAP); box(RX, y, RW, RH, 14)
     T(RX + 18, y + 22, x["sym"], f("mont", 20, 800), GOLD2, "lm"); T(RX + 18, y + 44, x["name"][:13], f("mont", 13, 600), MUT, "lm")
-    sv = series(x["sym"]); ch = x["ch24h"]; col = UP if ch >= 0 else DN
+    sv = series(x["sym"], now=x["usd"]); ch = x["ch24h"]; col = UP if ch >= 0 else DN
     spark(RX + 150, y + 14, 90, 32, sv, col if len(sv) > 2 else DIM)
     T(RX + 392, y + 30, "$" + fmt(x["usd"]), f("mont", 24, 800), TX, "rm")
     d.rounded_rectangle([(RX + 408) * S, (y + 17) * S, (RX + 522) * S, (y + 43) * S], radius=8 * S, fill=(col[0] // 3, col[1] // 3, col[2] // 3, 255), outline=col + (255,), width=S)

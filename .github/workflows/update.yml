@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: python scripts/fetch_rates.py
+      - name: 7-day series (sparklines)
+        run: python scripts/fetch_series.py || true
       - run: pip install -q pillow numpy
       - name: Rates card image
         run: python scripts/render_card.py || echo 'карточка не обновлена, остаётся предыдущая'
@@ -26,7 +28,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         run: python scripts/alerts.py
-      - run: mkdir -p docs/data && cp data/rates.json data/history.json docs/data/
+      - run: mkdir -p docs/data && cp data/rates.json data/history.json data/series.json docs/data/
       - name: Commit
         run: |
           git config user.name "rates-bot"
