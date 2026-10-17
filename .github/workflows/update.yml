@@ -13,6 +13,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -23,17 +24,31 @@ jobs:
       - run: pip install -q pillow numpy
       - name: Rates card image
         run: python scripts/render_card.py || echo 'карточка не обновлена, остаётся предыдущая'
+      - name: Publish card image to orphan branch (history never grows)
+        run: |
+          [ -f docs/rates.png ] || exit 0
+          d=$(mktemp -d); cp docs/rates.png "$d/rates.png"
+          cd "$d" && git init -q -b cards && git config user.name rates-bot && git config user.email bot@users.noreply.github.com
+          git add rates.png && git commit -qm "card $(date -u +%H:%M)"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" cards || echo "ветка cards не обновлена"
       - name: Signals to channel
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         run: python scripts/alerts.py
+      - name: Live card in channel (edit one message)
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+        run: python scripts/post_card.py || echo "карточка в канал не обновлена"
       - run: mkdir -p docs/data && cp data/rates.json data/history.json data/series.json docs/data/
       - name: Commit
         run: |
           git config user.name "rates-bot"
           git config user.email "bot@users.noreply.github.com"
           git add -A
+          git rm -rq --cached design/__pycache__ scripts/__pycache__ 2>/dev/null || true
+          git rm -q --cached docs/rates.png 2>/dev/null || true   # картинка живёт в ветке cards
           git diff --cached --quiet && exit 0
           git commit -qm "update $(date -u +%H:%M)"
           # если параллельно кто-то записал в репозиторий, подтягиваем изменения и повторяем, до 5 раз

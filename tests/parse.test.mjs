@@ -1,8 +1,8 @@
 import { register } from 'node:module';
 register('./loader.mjs', import.meta.url);
 import fs from 'fs';
-const R = JSON.parse(fs.readFileSync('/app/conversations/6ad37e329db9e88d5cb968f9/uz-rates/data/rates.json','utf8'));
-const ui = await import('./tgcloud/lib/ui.js');
+const R = JSON.parse(fs.readFileSync(new URL('../data/rates.json', import.meta.url),'utf8'));
+const ui = await import('../tgcloud/lib/ui.js');
 const strip = h => h.replace(/<[^>]+>/g,'');
 console.log('--- разбор ввода');
 for (const t of ['500 usd','500usd','500 $','$500','1 000 usd','1,5 btc usd','0.5 btc','1.000,50 eur','1 000,50 usd','500 долларов','100 евро в рубли','5000 rub uzs','5 000 000 uzs','-100 usd','0 usd','1e3 usd','100 usd usd','10 usdt rub','100 доллар сум','20000 руб','1000 сум','500 USD в сум','500 dollars']) {

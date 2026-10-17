@@ -1,8 +1,8 @@
 import { register } from 'node:module';
 register('./loader.mjs', import.meta.url);
 import fs from 'fs';
-const R = JSON.parse(fs.readFileSync('/app/conversations/6ad37e329db9e88d5cb968f9/uz-rates/data/rates.json','utf8'));
-const ui = await import('./tgcloud/lib/ui.js');
+const R = JSON.parse(fs.readFileSync(new URL('../data/rates.json', import.meta.url),'utf8'));
+const ui = await import('../tgcloud/lib/ui.js');
 const S = h => h.replace(/<[^>]+>/g,'').replace(/&amp;/g,'&');
 const N = s => parseFloat(s.replace(/\s/g,'').replace(',','.'));
 let bad=0;

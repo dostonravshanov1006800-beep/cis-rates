@@ -1,8 +1,8 @@
 import { register } from 'node:module';
 register('./loader.mjs', import.meta.url);
 import fs from 'fs';
-const R = JSON.parse(fs.readFileSync('/app/conversations/6ad37e329db9e88d5cb968f9/uz-rates/data/rates.json','utf8'));
-const { convert } = await import('./tgcloud/lib/rates.js');
+const R = JSON.parse(fs.readFileSync(new URL('../data/rates.json', import.meta.url),'utf8'));
+const { convert } = await import('../tgcloud/lib/rates.js');
 const all=[...Object.keys(R.world),...R.crypto.map(x=>x.sym)];
 let bad=0,n=0,worst=0;
 for (const cc of ['UZ','RU','KZ','UA','BY','AM','GE','PL','DE']) for (const s of all) for (const d of all) {

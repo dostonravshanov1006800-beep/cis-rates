@@ -5,7 +5,8 @@ import { getRates } from './rates.js';
 import { RATES_URL } from './config.js';
 
 const COOLDOWN = 20;          // секунд между картинками для одного пользователя
-const IMG_URL = RATES_URL.replace('data/rates.json', 'rates.png');
+// Картинка живёт в отдельной ветке cards (одна версия, история репозитория не растёт)
+const IMG_URL = 'https://raw.githubusercontent.com/dostonravshanov1006800-beep/cis-rates/cards/rates.png';
 
 // Присылает свежую картинку курсов. Картинку рисует GitHub Actions при каждом обновлении, ключей не нужно.
 export async function sendCard(q, chatId) {
