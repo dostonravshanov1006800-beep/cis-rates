@@ -198,11 +198,12 @@ async function load(){
   if(loading)return;loading=true;
   const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),8000),q='?t='+Date.now();
   try{
-    const [r,h]=await Promise.all([
+    const [r,h,sr]=await Promise.all([
       fetch('data/rates.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>{if(!x.ok)throw 0;return x.json()}),
-      fetch('data/history.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>H||[])]);
-    fetch('data/series.json'+q,{cache:'no-store'}).then(x=>x.json()).then(j=>{SR=j;if(window.__rendered)render()}).catch(()=>{});
-    const fresh=!R||r.updated!==R.updated;
+      fetch('data/history.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>H||[]),
+      fetch('data/series.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>SR)]);   // ряды обязательно ДО первого рендера
+    SR=sr&&sr.crypto?sr:SR;
+    const fresh=!R||r.updated!==R.updated||(SR.ts&&SR.ts!==window.__srts);window.__srts=SR.ts;
     R=r;H=h;lastOk=Date.now();
     if(fresh||!window.__rendered){render();window.__rendered=1}else tick();
     if(!window.__geo){window.__geo=1;autoGeo()}
