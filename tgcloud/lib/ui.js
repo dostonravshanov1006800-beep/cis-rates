@@ -26,7 +26,7 @@ export function menu(R, cc, name) {
         [btn('₿ Крипта', 'cry:0'), btn('🗂 Каталог стран', 'cat:cis')],
         [btn('💱 Конвертер', 'conv'), btn('🔔 Алерты', 'alerts')],
         [btn('🌍 Моя страна', 'ctry'), btn('ℹ️ О боте', 'about')],
-        [{ text: '📢 Наш канал', url: `https://t.me/${ALERT_CHANNEL}` }]])];
+        [btn('🖼 Картинка курсов', 'img'), { text: '📢 Наш канал', url: `https://t.me/${ALERT_CHANNEL}` }]])];
 }
 
 export function cur(R, cc) {

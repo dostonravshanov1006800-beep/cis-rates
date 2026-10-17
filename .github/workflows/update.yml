@@ -18,6 +18,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: python scripts/fetch_rates.py
+      - run: pip install -q pillow numpy
+      - name: Rates card image
+        run: python scripts/render_card.py || echo 'карточка не обновлена, остаётся предыдущая'
       - name: Signals to channel
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}

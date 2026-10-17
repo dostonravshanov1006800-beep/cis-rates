@@ -1,10 +1,12 @@
 import { api, BotApiError } from 'sdk';
 import { route } from '../lib/router.js';
 import { setCountry } from '../lib/users.js';
+import { sendCard } from '../lib/card.js';
 
 export default async function (q) {
   if (!q.message) return;
   const chatId = q.message.chat.id, mid = q.message.message_id; let data = q.data || 'menu', note = '';
+  if (data === 'img') { await sendCard(q, chatId); return; }
   if (data.startsWith('cc:')) { await setCountry(chatId, data.slice(3)); note = 'Страна выбрана ✅'; data = 'cur'; }
   const [text, markup] = await route(chatId, data);
   await api.answerCallbackQuery({ callback_query_id: q.id, text: note }).catch(() => {});
