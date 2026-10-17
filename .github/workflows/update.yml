@@ -2,9 +2,11 @@ name: Update rates
 on:
   schedule:
     - cron: "*/5 * * * *"
+    - cron: "2-57/5 * * * *"
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: update
   cancel-in-progress: false
@@ -30,3 +32,11 @@ jobs:
           git diff --cached --quiet || git commit -m "update $(date -u +%H:%M)"
           git pull --rebase -q || true
           git push
+      - name: Chain next run
+        if: github.event_name != 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Страховка от пропусков cron: ждём и перезапускаем себя (только для ручных/цепочных запусков)
+          sleep 240
+          gh workflow run update.yml --repo "$GITHUB_REPOSITORY" || true

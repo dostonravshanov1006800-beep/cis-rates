@@ -9,7 +9,13 @@ export const fmt = (n, d) => {
 const arrow = d => d > 0 ? '🟢▲' : d < 0 ? '🔴▼' : '⚪';
 export const btn = (text, data) => ({ text, callback_data: data });
 const kb = rows => ({ inline_keyboard: rows });
-const upd = R => R.updated.slice(11, 16) + ' UTC';
+// Время обновления + честная пометка, если данные устарели (>30 мин)
+const age = R => Math.max(0, Math.round((Date.now() - Date.parse(R.updated)) / 60000));
+export const upd = R => {
+  const m = age(R), t = R.updated.slice(11, 16) + ' UTC';
+  if (m < 30) return t;
+  return t + (m < 120 ? ` ⚠️ ${m} мин назад` : ` ⚠️ ${Math.round(m / 60)} ч назад`);
+};
 const BACK = [btn('« Меню', 'menu')];
 const esc = s => String(s).replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]));
 
@@ -115,4 +121,4 @@ export function parse(text) {
   const amt = parseFloat(m[1].replace(/\s/g, '').replace(',', '.')); if (!amt) return null;
   return { amt, src: norm(m[2]), dst: m[3] ? norm(m[3]) : null };
 }
-export { convert, upd };
+export { convert };
