@@ -1,0 +1,32 @@
+name: Update stickers
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+concurrency:
+  group: stickers
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -q pillow numpy
+      - name: Fonts
+        run: |
+          mkdir -p design/fonts
+          cp -n design/fonts/* design/fonts/ 2>/dev/null || true
+      - name: Render pack
+        working-directory: design
+        run: python stickers.py pack
+      - name: Replace in Telegram
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          STICKER_OWNER_ID: ${{ secrets.STICKER_OWNER_ID }}
+        run: python scripts/update_stickers.py

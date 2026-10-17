@@ -111,14 +111,46 @@ export const about = () => ['⭐ <b>CIS Rates</b>\n\n• 24 страны: СНГ
 export const alertsScreen = () => [`🔔 <b>Сигналы о скачках курса</b>\n\nПодпишись на канал: бот публикует там мгновенные сигналы, когда USD в СНГ меняется ≥0.3% или BTC/ETH/TON/SOL ≥3%.\n\nУведомления приходят всем подписчикам канала, настраивать ничего не нужно.`,
   { inline_keyboard: [[{ text: '📢 Открыть канал', url: `https://t.me/${ALERT_CHANNEL}` }], [btn('« Меню', 'menu')]] }];
 
-// парсер «500 usd», «5000 rub uzs»
-const ALIAS = {'доллар':'USD','долл':'USD','доллары':'USD','$':'USD','бакс':'USD','евро':'EUR','€':'EUR','руб':'RUB','рубль':'RUB','рублей':'RUB','₽':'RUB',
-  'сум':'UZS','сумов':'UZS','тенге':'KZT','₸':'KZT','гривна':'UAH','грн':'UAH','юань':'CNY','лира':'TRY','фунт':'GBP','злотый':'PLN','франк':'CHF',
-  'биткоин':'BTC','биткойн':'BTC','тон':'TON','эфир':'ETH','солана':'SOL'};
-const norm = w => { w = w.toLowerCase().replace(/[.,]$/, ''); return ALIAS[w] || w.toUpperCase(); };
+// парсер «500 usd», «$500», «100 евро в рубли», «1.000,50 eur»
+const ALIAS = {};
+const add = (code, ...words) => words.forEach(w => ALIAS[w] = code);
+add('USD','доллар','доллара','долларов','доллары','долл','дол','бакс','баксов','баксы','$','dollar','dollars','usd','бакинский');
+add('EUR','евро','€','eur','euro','euros');
+add('RUB','руб','рубль','рубля','рублей','рубли','руб.','₽','р','rub','rur','рубл');
+add('UZS','сум','сума','сумов','сумы','сомов','uzs','so\u02bbm','som');
+add('KZT','тенге','₸','kzt','тг');
+add('UAH','гривна','гривны','гривен','гривну','грн','₴','uah');
+add('BYN','белрубль','белруб','byn','белорусский');
+add('CNY','юань','юаня','юаней','юани','cny','¥');
+add('TRY','лира','лиры','лир','try','₺');
+add('GBP','фунт','фунта','фунтов','фунты','gbp','£');
+add('PLN','злотый','злотых','злотого','злотые','pln','зл');
+add('CHF','франк','франка','франков','франки','chf');
+add('GEL','лари','gel','₾'); add('AMD','драм','драма','драмов','amd'); add('AZN','манат','маната','манатов','azn');
+add('KGS','сом','сома','сомов','kgs'); add('TJS','сомони','tjs'); add('MDL','лей','лея','леев','mdl'); add('TMT','тмт','tmt');
+add('BTC','биткоин','биткоина','биткоинов','биткойн','битка','бтс','btc','bitcoin','₿');
+add('ETH','эфир','эфира','эфиров','эфириум','eth','ethereum'); add('TON','тон','тона','тонов','тонкоин','ton','toncoin');
+add('SOL','солана','соланы','sol','solana'); add('USDT','тезер','юсдт','usdt','tether');
+const norm = w => { w = w.toLowerCase().replace(/[.,;:!?]+$/, ''); return ALIAS[w] || w.toUpperCase(); };
+const SYM = '[$€₽₸₴£¥₺₾₿]';
+function num(s) {
+  s = s.replace(/[\s\u00a0]/g, '');
+  const lc = s.lastIndexOf(','), ld = s.lastIndexOf('.');
+  if (lc >= 0 && ld >= 0) { const dec = lc > ld ? ',' : '.'; s = dec === ',' ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, ''); }
+  else if (lc >= 0) s = /,\d{3}$/.test(s) && !/^0,/.test(s) && s.split(',').length > 2 ? s.replace(/,/g, '') : s.replace(',', '.');
+  else if (ld >= 0 && (s.match(/\./g) || []).length > 1) s = s.replace(/\./g, '');
+  const v = Number(s); return Number.isFinite(v) ? v : NaN;
+}
 export function parse(text) {
-  const m = text.match(/^\s*([\d\s]+(?:[.,]\d+)?)\s*([^\s\d]+)(?:\s+(?:в|to|->|→)?\s*([^\s\d]+))?\s*$/); if (!m) return null;
-  const amt = parseFloat(m[1].replace(/\s/g, '').replace(',', '.')); if (!amt) return null;
-  return { amt, src: norm(m[2]), dst: m[3] ? norm(m[3]) : null };
+  let t = String(text || '').trim().replace(/[\s\u00a0]+/g, ' ');
+  t = t.replace(new RegExp(`^(${SYM})\\s*(\\d[\\d.,\\s]*)`), (_, s, n) => n.trim() + ' ' + s + ' ');   // «$500» → «500 $» (дальше число может «прилипнуть» к валюте)
+  // число = цифры, пробелы-разделители тысяч, точки и запятые; дальше идут слова
+  const m = t.match(/^(\d(?:[\d.,]|\s(?=\d{3}(?!\d)))*)\s*(.*)$/); if (!m) return null;
+  if (/^\d+(\.\d+){2,}$/.test(m[1].replace(/\s/g, '')) && !/^\d{1,3}(\.\d{3}){2,}$/.test(m[1].replace(/\s/g, ''))) return null;
+  const amt = num(m[1]); if (!(amt > 0) || amt > 1e15) return null;
+  const words = m[2].split(' ').filter(w => w && !/^(в|на|to|in|->|→|=|и)$/i.test(w));
+  if (!words.length || words.length > 2 || words.some(w => /\d/.test(w))) return null;
+  const src = norm(words[0]), dst = words[1] ? norm(words[1]) : null;
+  return { amt, src, dst: dst && dst !== src ? dst : null };
 }
 export { convert };

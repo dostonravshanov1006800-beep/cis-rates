@@ -37,12 +37,31 @@ export function rate(R, cc, ccy) {
   return a && b ? { r: a * b, d: 0, off: false, src: 'рыночный курс' } : null;
 }
 
+// Единое правило: всё считаем через USD, а «цена доллара» в каждой валюте берётся из ЦБ страны,
+// если он её публикует, иначе из рынка. Тогда любые цепочки A→B→C замыкаются без расхождений.
+export function localPerUsd(R, cc) {
+  const cur = R.countries[cc]?.cur; if (!cur) return null;
+  if (cur === 'USD') return 1;
+  return R.official[cc]?.rates?.USD?.rate ?? R.world[cur] ?? null;
+}
+// сколько единиц валюты c даёт 1 USD (с приоритетом ЦБ выбранной страны)
+function perUsd(R, c, cc) {
+  if (c === 'USD') return 1;
+  const off = R.official[cc]?.rates;
+  if (off && c === R.countries[cc]?.cur) return localPerUsd(R, cc);          // валюта самой страны
+  if (off?.[c] && off.USD) return off.USD.rate / off[c].rate;                // кросс из двух курсов ЦБ
+  return R.world[c] ?? null;
+}
 export function convert(R, amt, src, dst, cc) {
+  const k = s => R.crypto.find(x => x.sym === s);
+  const usdOf = (c, a) => { const p = perUsd(R, c, cc); if (p) return a / p; const x = k(c); return x ? a * x.usd : null; };
+  const fromUsd = (c, u) => { const p = perUsd(R, c, cc); if (p) return u * p; const x = k(c); return x ? u / x.usd : null; };
+  // прямой официальный курс пары «валюта страны ↔ иностранная» даёт точное значение ЦБ
   const loc = R.countries[cc]?.cur;
-  if (loc) {
+  if (loc && R.official[cc]) {
     if (dst === loc && src !== loc) { const r = rate(R, cc, src); if (r?.off) return amt * r.r; }
     if (src === loc && dst !== loc) { const r = rate(R, cc, dst); if (r?.off) return amt / r.r; }
   }
-  const a = toUSD(R, src), b = toUSD(R, dst);
-  return a && b ? amt * a / b : null;
+  const u = usdOf(src, amt); if (u == null) return null;
+  return fromUsd(dst, u);
 }
