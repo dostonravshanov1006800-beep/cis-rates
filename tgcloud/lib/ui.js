@@ -25,7 +25,8 @@ export function menu(R, cc, name) {
     kb([[btn('💵 Курс валют', 'cur'), btn('🎯 Подбор', 'pick')],
         [btn('₿ Крипта', 'cry:0'), btn('🗂 Каталог стран', 'cat:cis')],
         [btn('💱 Конвертер', 'conv'), btn('🔔 Алерты', 'alerts')],
-        [btn('🌍 Моя страна', 'ctry'), btn('ℹ️ О боте', 'about')]])];
+        [btn('🌍 Моя страна', 'ctry'), btn('ℹ️ О боте', 'about')],
+        [{ text: '📢 Наш канал', url: `https://t.me/${ALERT_CHANNEL}` }]])];
 }
 
 export function cur(R, cc) {
@@ -108,7 +109,7 @@ export function coin(R, sym, cc) {
 
 export const conv = () => ['💱 <b>Конвертер</b>\n\nПиши в чат пару валют:\n<code>5000 rub uzs</code>\n<code>0.5 btc usd</code>\n<code>1000 ton rub</code>\n\nА просто <code>500 usd</code> откроет <b>подбор</b> по всем странам СНГ и Европы.\n\nПоддерживаются 24 валюты и топ-20 крипты.', kb([[btn('🎯 Подбор', 'pick'), BACK[0]]])];
 export const about = () => ['⭐ <b>CIS Rates</b>\n\n• 24 страны: СНГ + Европа\n• Официальные ЦБ: 🇺🇿 🇷🇺 🇰🇿 🇺🇦 🇧🇾\n• ТОП-20 криптовалют\n• Подбор лучшего обмена, конвертер, алерты\n• Обновление каждые 5 минут\n\n/start /rates /pick /crypto /catalog', kb([BACK])];
-export const alertsScreen = () => [`🔔 <b>Сигналы о скачках курса</b>\n\nПодпишись на канал: бот публикует там мгновенные сигналы, когда USD в СНГ меняется ≥0.3% или BTC/ETH/TON/SOL ≥3%.\n\nУведомления приходят всем подписчикам канала, настраивать ничего не нужно.`,
+export const alertsScreen = () => [`🔔 <b>Сигналы о скачках курса</b>\n\nПодпишись на наш канал: бот публикует там мгновенные сигналы, когда USD в СНГ меняется ≥0.3% или BTC/ETH/TON/SOL ≥3%.\n\nУведомления приходят всем подписчикам канала, настраивать ничего не нужно.`,
   { inline_keyboard: [[{ text: '📢 Открыть канал', url: `https://t.me/${ALERT_CHANNEL}` }], [btn('« Меню', 'menu')]] }];
 
 // парсер «500 usd», «$500», «100 евро в рубли», «1.000,50 eur»
