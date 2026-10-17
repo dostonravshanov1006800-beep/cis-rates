@@ -85,6 +85,7 @@ nav a svg{display:block;margin:0 auto 3px;width:24px;height:24px;fill:none;strok
 nav a.on{color:var(--tx)}
 @media(min-width:700px){body{padding-bottom:0}nav{display:none}.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 .hide{display:none}
+.geo{padding:10px 16px 0;font-size:12px;color:var(--mut);font-weight:700}.geo button{color:var(--gold);font-weight:800;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -96,6 +97,7 @@ nav a.on{color:var(--tx)}
 
   <div class="stories" id="stories"></div>
   <div class="seg" id="seg"></div>
+  <div class="geo" id="geo"></div>
 
   <section id="home">
     <div class="hero"><small id="hl">1 USD</small><h1 id="hv">—</h1><span class="pill" id="hc"></span></div>
@@ -160,9 +162,38 @@ function rateOf(code){const c=cur(cc);if(code===c)return null;const o=R.official
   if(o)return{r:o.rate,d:o.diff};const v=convert(1,code,c);return v?{r:v,d:0}:null}
 const chgHTML=d=>d?`<span class="${d>0?'up':'dn'}">${d>0?'▲':'▼'} ${fmt(Math.abs(d),2)}</span>`:'<span style="color:var(--mut)">рыночный</span>';
 
+
+// ── Автоопределение страны: часовой пояс (мгновенно) -> IP через бесплатное API (точно). Ручной выбор имеет приоритет.
+const EURO=['DE','FR','IT','ES','NL','BE','AT','PT','IE','FI','GR','SK','SI','LT','LV','EE','LU','MT','CY','HR'];
+const TZ={'Asia/Tashkent':'UZ','Asia/Samarkand':'UZ','Europe/Moscow':'RU','Europe/Kaliningrad':'RU','Europe/Samara':'RU','Asia/Yekaterinburg':'RU','Asia/Omsk':'RU','Asia/Novosibirsk':'RU','Asia/Krasnoyarsk':'RU','Asia/Irkutsk':'RU','Asia/Yakutsk':'RU','Asia/Vladivostok':'RU','Asia/Magadan':'RU','Asia/Kamchatka':'RU',
+ 'Asia/Almaty':'KZ','Asia/Qyzylorda':'KZ','Asia/Aqtau':'KZ','Asia/Aqtobe':'KZ','Asia/Oral':'KZ','Europe/Kiev':'UA','Europe/Kyiv':'UA','Europe/Minsk':'BY','Asia/Yerevan':'AM','Asia/Baku':'AZ','Asia/Tbilisi':'GE','Asia/Bishkek':'KG','Asia/Dushanbe':'TJ','Europe/Chisinau':'MD','Asia/Ashgabat':'TM',
+ 'Europe/Warsaw':'PL','Europe/Prague':'CZ','Europe/Budapest':'HU','Europe/Bucharest':'RO','Europe/Sofia':'BG','Europe/Zurich':'CH','Europe/London':'GB','Europe/Stockholm':'SE','Europe/Oslo':'NO','Europe/Copenhagen':'DK','Europe/Belgrade':'RS'};
+const LANG={uz:'UZ',kk:'KZ',be:'BY',hy:'AM',az:'AZ',ka:'GE',ky:'KG',tg:'TJ',ro:'MD',tk:'TM',uk:'UA',pl:'PL',cs:'CZ',hu:'HU',bg:'BG'};
+function mapCountry(code,known){code=(code||'').toUpperCase();if(EURO.includes(code))code='EU';return known[code]?code:null}
+function guessLocal(known){
+  try{const t=mapCountry(TZ[Intl.DateTimeFormat().resolvedOptions().timeZone],known);if(t)return t}catch(e){}
+  for(const l of (navigator.languages||[navigator.language||''])){const r=(l.split('-')[1]||'').toUpperCase(),p=l.split('-')[0].toLowerCase();
+    const c=mapCountry(r,known)||mapCountry(LANG[p],known);if(c)return c}
+  return null}
+async function geoByIP(known){
+  const tryUrl=async(u,pick)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),3500);
+    try{const j=await fetch(u,{signal:c.signal}).then(r=>r.json());const raw=pick(j);return raw?{ok:true,code:mapCountry(raw,known)}:null}catch(e){return null}finally{clearTimeout(t)}};
+  return await tryUrl('https://api.country.is/',j=>j.country)||await tryUrl('https://get.geojs.io/v1/ip/country.json',j=>j.country)||{ok:false}}
+function guessLocalStrong(known){try{return mapCountry(TZ[Intl.DateTimeFormat().resolvedOptions().timeZone],known)}catch(e){return null}}
+async function autoGeo(){
+  if(localStorage.manual)return;                       // пользователь выбрал страну сам: не трогаем
+  const known=R.countries;
+  const apply=c=>{if(!c||c===cc)return;cc=c;reg=known[c].region;localStorage.cc=cc;localStorage.reg=reg;localStorage.geo=c;metric=null;render()};
+  if(!localStorage.geo){apply(guessLocal(known))}       // мгновенно, без запроса
+  const r=await geoByIP(known);                         // точнее: по IP
+  if(r.ok){ if(r.code){ if(r.code!==localStorage.geo)apply(r.code);else localStorage.geo=r.code }
+            else if(localStorage.geo&&!guessLocal(known)){}   // IP из страны вне списка: оставляем то, что есть
+            else if(!localStorage.geo&&cc!=='UZ'&&!guessLocalStrong(known))apply('UZ') }
+}
+
 async function load(){try{
   const [r,h]=await Promise.all([fetch('data/rates.json?'+Date.now()).then(x=>x.json()),fetch('data/history.json?'+Date.now()).then(x=>x.json()).catch(()=>[])]);
-  R=r;H=h;render()}catch(e){$('upd').textContent='нет связи'}}
+  R=r;H=h;render();if(!window.__geo){window.__geo=1;autoGeo()}}catch(e){$('upd').textContent='нет связи'}}
 
 function render(){
   const age=(Date.now()-new Date(R.updated))/60000;
@@ -173,9 +204,11 @@ function render(){
   const c=R.countries[cc];
   // страны-«истории» выбранного региона
   $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${k}"><div class="ring"><i>${x.flag}</i></div><span>${x.name}</span></button>`).join('');
-  $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;metric=null;render()}};
+  $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
   $('seg').innerHTML=[['cis','СНГ'],['eu','Европа']].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
-  $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;metric=null;render()}};
+  $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
+  $('geo').innerHTML=localStorage.manual?`Страна выбрана вручную · <button id="autoBtn">определить автоматически</button>`:(localStorage.geo?`📍 Определили автоматически: ${c.flag} ${c.name}`:'');
+  const ab=$('autoBtn');if(ab)ab.onclick=()=>{delete localStorage.manual;delete localStorage.geo;window.__geo=0;location.reload()};
   // главный курс: 1 USD
   const usd=rateOf('USD');
   if(c.cur==='USD'){$('hl').textContent=c.name;$('hv').innerHTML='1 USD<em>= 1 USD</em>';$('hc').textContent=''}
