@@ -8,7 +8,7 @@ R = json.load(open("../data/rates.json", encoding="utf-8"))
 try: H = json.load(open("../data/history.json", encoding="utf-8"))
 except Exception: H = []
 S = 2                                   # рисуем в 2x и уменьшаем: сглаженные линии и текст
-W, HH = 1280, 960
+W, HH = 1280, 1100
 BG, CARD, LINE = (8, 10, 18), (17, 21, 34), (42, 50, 74)
 TX, MUT, DIM = (244, 246, 252), (138, 150, 182), (84, 96, 128)
 UP, DN = (46, 224, 138), (255, 91, 107)
@@ -53,7 +53,7 @@ T(W - 48, 78, now.strftime("%d.%m.%Y") + "  ·  время Ташкента", f(
 # ── левая колонка: 12 стран СНГ
 LX, LW, TOP, RH, GAP = 48, 600, 138, 60, 8
 T(LX, TOP - 4, "1 USD  =", f("mont", 17, 700), MUT)
-T(LX + LW, TOP - 4, "за 24 ч / тренд", f("mont", 15, 500), DIM, "ra")
+T(LX + LW, TOP - 4, "тренд · ЦБ обновляет раз в сутки", f("mont", 15, 500), DIM, "ra")
 cis = [(k, c) for k, c in R["countries"].items() if c["region"] == "cis"]
 for i, (k, c) in enumerate(cis):
     y = TOP + 26 + i * (RH + GAP); box(LX, y, LW, RH, 14)
@@ -62,7 +62,8 @@ for i, (k, c) in enumerate(cis):
     T(LX + 72, y + 22, c["name"], f("mont", 19, 700), TX, "lm"); T(LX + 72, y + 44, c["cur"], f("mont", 13, 600), MUT, "lm")
     o = R["official"].get(k, {}).get("rates", {}).get("USD")
     val = o["rate"] if o else R["world"][c["cur"]]
-    T(LX + 372, y + 30, fmt(val), f("mont", 25, 800), TX, "rm"); T(LX + 380, y + 33, c["sym"], f("mont", 13, 600), MUT, "lm")
+    T(LX + 372, y + 30, fmt(val), f("mont", 25, 800), TX, "rm"); sym = c["sym"] if all(ord(ch) < 0x530 or ord(ch) in (0x20B8, 0x20B4, 0x20BD) for ch in c["sym"]) else c["cur"]
+    T(LX + 380, y + 33, sym, f("mont", 13, 600), MUT, "lm")
     sv = series(c["cur"])
     spark(LX + 440, y + 14, 100, 32, sv, DIM if (len(sv) < 3 or max(sv) == min(sv)) else (UP if sv[-1] >= sv[0] else DN))
     if o and o.get("diff"):
@@ -78,8 +79,8 @@ for i, x in enumerate(R["crypto"][:12]):
     sv = series(x["sym"]); ch = x["ch24h"]; col = UP if ch >= 0 else DN
     spark(RX + 150, y + 14, 90, 32, sv, col if len(sv) > 2 else DIM)
     T(RX + 392, y + 30, "$" + fmt(x["usd"]), f("mont", 24, 800), TX, "rm")
-    d.rounded_rectangle([(RX + 408) * S, (y + 17) * S, (RX + 522) * S, (y + 43) * S], radius=8 * S, fill=col + (44,))
-    T(RX + 465, y + 30, f"{ch:+.2f}%", f("mont", 17, 800), col, "mm")
+    d.rounded_rectangle([(RX + 408) * S, (y + 17) * S, (RX + 522) * S, (y + 43) * S], radius=8 * S, fill=(col[0] // 3, col[1] // 3, col[2] // 3, 255), outline=col + (255,), width=S)
+    T(RX + 465, y + 30, f"{ch:+.2f}%", f("mont", 17, 800), (255, 255, 255), "mm")
 
 # ── шкала настроения рынка
 avg = sum(x["ch24h"] for x in R["crypto"][:10]) / 10
