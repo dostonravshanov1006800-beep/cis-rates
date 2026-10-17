@@ -1,0 +1,28 @@
+name: Watchdog
+# Сторож: если данные старше 12 минут, а цепочка обновлений не идёт, запускает её заново.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: watchdog
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Revive chain if stale
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUNNING=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow update.yml --json status -q '[.[]|select(.status=="in_progress" or .status=="queued" or .status=="pending")]|length')
+          LAST=$(curl -fsS "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/data/rates.json" | python3 -c "import sys,json,datetime as d;u=d.datetime.fromisoformat(json.load(sys.stdin)['updated']);print(int((d.datetime.now(d.timezone.utc)-u).total_seconds()/60))" || echo 999)
+          echo "в работе: $RUNNING, возраст данных: $LAST мин"
+          if [ "$RUNNING" = "0" ] || [ "$LAST" -gt 12 ]; then
+            gh workflow run update.yml --repo "$GITHUB_REPOSITORY"; echo "цепочка перезапущена"
+          fi

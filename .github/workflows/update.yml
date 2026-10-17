@@ -33,10 +33,10 @@ jobs:
           git pull --rebase -q || true
           git push
       - name: Chain next run
-        if: github.event_name != 'schedule'
+        # always(): цепочка продолжается даже если сбор курсов упал, иначе одна ошибка её оборвёт
+        if: always() && github.event_name != 'schedule'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Страховка от пропусков cron: ждём и перезапускаем себя (только для ручных/цепочных запусков)
-          sleep 240
+          sleep 200
           gh workflow run update.yml --repo "$GITHUB_REPOSITORY" || true
