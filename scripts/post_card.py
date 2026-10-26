@@ -2,6 +2,11 @@
 """Держит в канале ОДНО живое сообщение с карточкой курсов: бот не спамит, а редактирует фото (editMessageMedia).
 Состояние (id сообщения) хранится в data/channel_card.json. Если сообщение удалили, публикуется новое."""
 import json, os, sys, time, uuid, urllib.request, urllib.error, urllib.parse
+import re as _re
+def _mask(x):
+    """прячем токен бота из любого текста ошибки (URL вида /bot<токен>/метод)"""
+    return _re.sub(r"/bot[^/\s'\"]+/", "/bot<скрыто>/", str(x))
+
 
 TOKEN, CHANNEL = os.environ.get("BOT_TOKEN"), os.environ.get("CHANNEL_ID")
 if not TOKEN or not CHANNEL: print("BOT_TOKEN/CHANNEL_ID не заданы, пропуск"); sys.exit(0)
@@ -34,7 +39,7 @@ def call(method, fields, img=None):
     except urllib.error.HTTPError as e:
         try: return json.loads(e.read())
         except Exception: return {"ok": False, "description": f"http {e.code}"}
-    except Exception as e: return {"ok": False, "description": str(e)}
+    except Exception as e: return {"ok": False, "description": _mask(e)}
 
 img = open("docs/rates.png", "rb").read()
 mid = st.get("message_id")

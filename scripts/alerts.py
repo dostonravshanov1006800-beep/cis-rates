@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """Публикует сигналы в Telegram-канал, если курс заметно изменился.
 Нужны секреты репозитория: BOT_TOKEN и CHANNEL_ID (например @cis_rates_alerts). Бот должен быть админом канала."""
-import json, os, time, urllib.error, urllib.request, urllib.parse
+import json, os, time, html, urllib.error, urllib.request, urllib.parse
+import re as _re
+def _mask(x):
+    """прячем токен бота из любого текста ошибки (URL вида /bot<токен>/метод)"""
+    return _re.sub(r"/bot[^/\s'\"]+/", "/bot<скрыто>/", str(x))
+
 
 TOKEN, CHANNEL = os.environ.get("BOT_TOKEN"), os.environ.get("CHANNEL_ID")
 if not TOKEN or not CHANNEL:
@@ -26,13 +31,13 @@ for cc in ("UZ", "RU", "KZ", "UA", "BY"):           # страны с офици
     v = usd_rate(cc)
     if not v: continue
     now[f"{cc}:USD"] = v; c = R["countries"][cc]; p = last.get(f"{cc}:USD")
-    if p and abs(v - p) / p >= 0.003:
-        msgs.append(f"{'📈' if v > p else '📉'} {c['flag']} <b>USD</b>: {fmt(p)} → <b>{fmt(v)}</b> {c['sym']} ({(v/p-1)*100:+.2f}%)")
+    if p and abs(v - p) / p >= 0.003 - 1e-9:
+        msgs.append(f"{'📈' if v > p else '📉'} {html.escape(str(c['flag']))} <b>USD</b>: {fmt(p)} → <b>{fmt(v)}</b> {html.escape(str(c['sym']))} ({(v/p-1)*100:+.2f}%)")
 for x in R["crypto"]:
     if x["sym"] == "USDT": continue                    # стейблкоин: скачков нет
     k = f"c:{x['sym']}"; now[k] = x["usd"]; p = last.get(k)
-    if p and abs(x["usd"] - p) / p >= CRYPTO_THR:
-        msgs.append(f"{'🚀' if x['usd'] > p else '🔻'} <b>{x['sym']}</b>: ${fmt(p)} → <b>${fmt(x['usd'])}</b> ({(x['usd']/p-1)*100:+.1f}%)")
+    if p and abs(x["usd"] - p) / p >= CRYPTO_THR - 1e-9:
+        msgs.append(f"{'🚀' if x['usd'] > p else '🔻'} <b>{html.escape(str(x['sym']))}</b>: ${fmt(p)} → <b>${fmt(x['usd'])}</b> ({(x['usd']/p-1)*100:+.1f}%)")
 
 sent_ok = True
 CARD = "docs/rates.png"
@@ -66,10 +71,10 @@ def send(text):
                 try: time.sleep(min(30, json.loads(body)["parameters"]["retry_after"] + 1))
                 except Exception: time.sleep(5)
             else:
-                print("ошибка отправки:", e.code, body[:120]); time.sleep(2)
+                print("ошибка отправки:", e.code, _mask(body[:120])); time.sleep(2)
                 if IMG and e.code == 400: globals()["IMG"] = None   # фото не принято: дальше обычным текстом, чтобы сигнал дошёл
         except Exception as e:
-            print("ошибка отправки:", e); time.sleep(2)
+            print("ошибка отправки:", _mask(e)); time.sleep(2)
     return False
 
 if msgs:
@@ -91,5 +96,5 @@ keep = dict(last)
 if sent_ok:
     for k, v in now.items():
         thr = CRYPTO_THR if k.startswith("c:") else FIAT_THR
-        if k not in keep or abs(v - keep[k]) / keep[k] >= thr: keep[k] = v
+        if k not in keep or abs(v - keep[k]) / keep[k] >= thr - 1e-9: keep[k] = v
 json.dump(keep, open("data/alert_state.json", "w"))

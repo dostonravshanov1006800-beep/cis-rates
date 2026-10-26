@@ -2,6 +2,11 @@
 """Заменяет стикеры в премиум-паке CIS Rates на свежие (по текущим курсам).
 Нужны секреты: BOT_TOKEN, STICKER_OWNER_ID. Набор создаётся один раз вручную."""
 import json, os, sys, time, urllib.request, urllib.parse, uuid, glob
+import re as _re
+def _mask(x):
+    """прячем токен бота из любого текста ошибки (URL вида /bot<токен>/метод)"""
+    return _re.sub(r"/bot[^/\s'\"]+/", "/bot<скрыто>/", str(x))
+
 
 T, OWNER = os.environ.get("BOT_TOKEN"), os.environ.get("STICKER_OWNER_ID")
 NAME = os.environ.get("STICKER_SET", "cisrates_v1_by_Well_Currency_bot")

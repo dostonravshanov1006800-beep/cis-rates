@@ -96,7 +96,8 @@ for i, x in enumerate(R["crypto"][:12]):
     T(RX + 465, y + 30, f"{ch:+.2f}%", f("mont", 17, 800), (255, 255, 255), "mm")
 
 # ── шкала настроения рынка
-avg = sum(x["ch24h"] for x in R["crypto"][:10]) / 10
+_shown = R["crypto"][:12]
+avg = (sum(x["ch24h"] for x in _shown) / len(_shown)) if _shown else 0.0
 by = TOP + 26 + 12 * (RH + GAP) + 6
 box(48, by, W - 96, 66, 16)
 T(70, by + 22, "НАСТРОЕНИЕ РЫНКА КРИПТЫ  ·  24 ч", f("mont", 14, 700), MUT, "lm")
@@ -109,7 +110,7 @@ d.ellipse([(x1 - 9) * S, (byy - 9) * S, (x1 + 9) * S, (byy + 9) * S], fill=TX + 
 d.line([mid * S, (byy - 11) * S, mid * S, (byy + 11) * S], fill=MUT + (255,), width=S)
 T(bx0, by + 8, "", f("mont", 10), MUT)
 mood = "Рынок растёт" if avg > 1 else "Рынок падает" if avg < -1 else "Боковик"
-T(800, by + 33, mood, f("mont", 24, 800), col, "lm"); T(W - 70, by + 33, f"{avg:+.2f}%", f("unb", 26, 800), col, "rm")
+T(800, by + 33, mood, f("mont", 24, 800), col, "lm"); T(W - 72, by + 33, f"{avg:+.2f}%", f("unb", 26, 800), col, "rm")
 
 T(48, HH - 26, "t.me/Well_Currency_bot", f("mont", 17, 700), MUT, "lm")
 T(W - 48, HH - 26, "ЦБ стран СНГ · ExchangeRate-API · CoinGecko", f("mont", 14, 500), DIM, "rm")
