@@ -71,11 +71,20 @@ jobs:
             sleep $((i * 3))
           done
           echo "не удалось записать после 5 попыток"; exit 1
-      - name: Chain next run
+      - name: Chain next run (с проверкой и запасным токеном)
         # always(): цепочка продолжается даже если сбор курсов упал, иначе одна ошибка её оборвёт
         if: always() && github.event_name != 'schedule'
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_TOKEN2: ${{ secrets.CISRATES_GH_TOKEN }}
         run: |
           sleep 40
-          gh workflow run update.yml --repo "$GITHUB_REPOSITORY" || true
+          # сколько запусков уже стоит в очереди/идёт (кроме текущего)
+          waiting() { gh run list --repo "$GITHUB_REPOSITORY" --workflow update.yml --json status,databaseId -q "[.[]|select((.status==\"queued\" or .status==\"pending\" or .status==\"waiting\") and .databaseId!=${{ github.run_id }})]|length" 2>/dev/null || echo 0; }
+          for i in 1 2 3; do
+            [ "$(waiting)" != "0" ] && { echo "следующий запуск уже в очереди"; exit 0; }
+            gh workflow run update.yml --repo "$GITHUB_REPOSITORY" && echo "звено $i: запущен основным токеном" || {
+              [ -n "$GH_TOKEN2" ] && GH_TOKEN="$GH_TOKEN2" gh workflow run update.yml --repo "$GITHUB_REPOSITORY" && echo "звено $i: запущен запасным токеном"; }
+            sleep 8
+          done
+          [ "$(waiting)" != "0" ] && exit 0 || echo "ВНИМАНИЕ: следующий запуск не подтверждён, подхватит Watchdog"; exit 0
