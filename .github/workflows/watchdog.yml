@@ -26,3 +26,11 @@ jobs:
           if [ "$RUNNING" = "0" ] || [ "$LAST" -gt 6 ]; then
             gh workflow run update.yml --repo "$GITHUB_REPOSITORY"; echo "цепочка перезапущена"
           fi
+
+      - name: Revive long history if stale
+        env:
+          GH_TOKEN: ${{ secrets.CISRATES_GH_TOKEN || github.token }}
+        run: |
+          AGE=$(curl -fsS "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/data/longhist.json" | python3 -c "import sys,json,time;print(int((time.time()-json.load(sys.stdin)['ts'])/3600))" || echo 999)
+          echo "возраст длинной истории: $AGE ч"
+          if [ "$AGE" -gt 30 ]; then gh workflow run longhist.yml --repo "$GITHUB_REPOSITORY"; echo "сбор запущен"; fi

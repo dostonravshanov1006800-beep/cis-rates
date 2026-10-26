@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-+wPM5HAR/Nvg6Zggn6C/0XPLmKUfsD7WexdBbB/8S6o=' 'sha256-TfnjJT03ytvz7y3fr1jE60oZxSwPWGKAdz4fESN/WyY=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-+wPM5HAR/Nvg6Zggn6C/0XPLmKUfsD7WexdBbB/8S6o=' 'sha256-ZsJ8hnclPYllXIkSsraXn1vJh5yrONAXxFhUF54LsrY=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="898d5aadf7">
+<meta name="app-version" content="5c6a2170e0">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -287,6 +287,18 @@ html.lite .nv .drop{transition-duration:.25s}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms;animation-iteration-count:1;transition-duration:.01ms}}
 @media (max-width:359px){.card .v{font-size:24px}.cta-row{grid-template-columns:1fr}.row{grid-template-columns:36px minmax(0,1fr) 72px auto}}
 
+
+/* ---------- интерактивный график: подсказка, период, пустое состояние ---------- */
+.dt-ch{position:relative;touch-action:pan-y;-webkit-user-select:none;user-select:none;cursor:crosshair}
+.dt-tip{position:absolute;z-index:3;top:8px;left:0;transform:translate3d(calc(var(--tx,50%) - 50%),0,0);padding:6px 12px;border-radius:var(--r-m);text-align:center;pointer-events:none;opacity:0;transition:opacity var(--d1) var(--ease);
+  background:rgba(20,24,48,.92);box-shadow:var(--g-rim),0 6px 18px rgba(0,0,0,.4);white-space:nowrap}
+.dt-tip.on{opacity:1}
+.dt-tip b{display:block;font-size:var(--t-m);font-weight:700;font-variant-numeric:tabular-nums}
+.dt-tip small{display:block;font-size:var(--t-xs);color:var(--tx2)}
+.dt-pc{display:flex;align-items:center;justify-content:space-between;padding:0 var(--s2) var(--s3);font-size:var(--t-s);color:var(--tx2);font-weight:600}
+.dt-pc .up,.dt-pc .dn{text-shadow:none;font-weight:700;font-variant-numeric:tabular-nums}
+.dt-empty{display:grid;place-items:center;height:170px;color:var(--tx3);font-size:var(--t-s);text-align:center;padding:0 var(--s5)}
+.dt-rng button{min-width:0;padding:0 2px}
 </style>
 </head>
 <body>
@@ -883,100 +895,132 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
   place();
 })();
 
-// ===== ЭКРАН ДЕТАЛЕЙ: нажатие на монету или валюту =====
+// ===== ЭКРАН ДЕТАЛЕЙ v2: периоды 1Д/1Н/1М/3М/1Г, интерактивный график =====
 (function(){
-  const D={ru:{ch1:'1 ч',ch24:'24 ч',ch7:'7 дн',cap:'Капитализация',vol:'Объём 24 ч',rank:'Место по капитализации',share:'Доля в топ-20',hi:'Максимум',lo:'Минимум',avg:'Среднее',loc:'В местной валюте',uzs:'В сумах',btc:'Цена в BTC',vc:'Объём к капитализации',per:{d:'24 ч',w:'7 дн'},src:'Источник',cb:'Центральный банк',mk:'Рыночный курс',per1:'За 1',conv:'Открыть в конвертере',rate:'Курс',chg:'Изменение за день',nodata:'Нет данных за этот период',rng:'Диапазон',of:'из',liveN:'Цена обновляется в реальном времени',fxN:'Данные центральных банков обновляются раз в сутки, рыночный курс каждые 30 секунд.',close:'Закрыть'},
-        uz:{ch1:'1 soat',ch24:'24 soat',ch7:'7 kun',cap:'Kapitalizatsiya',vol:'Hajm 24 soat',rank:'Kapitalizatsiya bo\'yicha o\'rin',share:'Top-20 dagi ulush',hi:'Maksimum',lo:'Minimum',avg:'O\'rtacha',loc:'Mahalliy valyutada',uzs:'So\'mda',btc:'BTC dagi narx',vc:'Hajm / kapitalizatsiya',per:{d:'24 soat',w:'7 kun'},src:'Manba',cb:'Markaziy bank',mk:'Bozor kursi',per1:'1 uchun',conv:'Konvertyerda ochish',rate:'Kurs',chg:'Kunlik o\'zgarish',nodata:'Bu davr uchun ma\'lumot yo\'q',rng:'Diapazon',of:'dan',liveN:'Narx real vaqtda yangilanadi',fxN:'Markaziy bank ma\'lumotlari kuniga bir marta, bozor kursi har 30 soniyada yangilanadi.',close:'Yopish'},
-        en:{ch1:'1h',ch24:'24h',ch7:'7d',cap:'Market cap',vol:'24h volume',rank:'Market cap rank',share:'Share of top 20',hi:'High',lo:'Low',avg:'Average',loc:'In local currency',uzs:'In UZS',btc:'Price in BTC',vc:'Volume / market cap',per:{d:'24h',w:'7d'},src:'Source',cb:'Central bank',mk:'Market rate',per1:'Per 1',conv:'Open in converter',rate:'Rate',chg:'Daily change',nodata:'No data for this period',rng:'Range',of:'of',liveN:'Price updates in real time',fxN:'Central bank data updates daily, market rate every 30 seconds.',close:'Close'}};
-  const L=()=>D[UL]||D.ru;
-  const el=document.createElement('div');el.className='dt';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.hidden=false;
+  const D={ru:{p1:'1Д',p7:'1Н',p30:'1М',p90:'3М',p365:'1Г',cap:'Капитализация',vol:'Объём 24 ч',rank:'Место по капитализации',share:'Доля в топ-20',hi:'Максимум',lo:'Минимум',avg:'Среднее',rng:'Размах',vc:'Объём к капитализации',src:'Источник',cb:'Центральный банк',mk:'Рыночный курс',per1:'За 1',conv:'Открыть в конвертере',chg:'Изменение за день',nodata:'Нет данных за этот период',of:'из',liveN:'Цена обновляется в реальном времени',fxN:'Данные центральных банков обновляются раз в сутки, рыночный курс каждые 30 секунд.',close:'Закрыть',ch1:'1 ч',ch24:'24 ч',ch7:'7 дн',period:'За период',loading:'Загружаем историю…',hint:'Проведите пальцем по графику'},
+        uz:{p1:'1K',p7:'1H',p30:'1O',p90:'3O',p365:'1Y',cap:'Kapitalizatsiya',vol:'Hajm 24 soat',rank:'Kapitalizatsiya bo\'yicha o\'rin',share:'Top-20 dagi ulush',hi:'Maksimum',lo:'Minimum',avg:'O\'rtacha',rng:'Diapazon',vc:'Hajm / kapitalizatsiya',src:'Manba',cb:'Markaziy bank',mk:'Bozor kursi',per1:'1 uchun',conv:'Konvertyerda ochish',chg:'Kunlik o\'zgarish',nodata:'Bu davr uchun ma\'lumot yo\'q',of:'dan',liveN:'Narx real vaqtda yangilanadi',fxN:'Markaziy bank ma\'lumotlari kuniga bir marta, bozor kursi har 30 soniyada yangilanadi.',close:'Yopish',ch1:'1 soat',ch24:'24 soat',ch7:'7 kun',period:'Davr uchun',loading:'Tarix yuklanmoqda…',hint:'Grafik bo\'ylab barmoq suring'},
+        en:{p1:'1D',p7:'1W',p30:'1M',p90:'3M',p365:'1Y',cap:'Market cap',vol:'24h volume',rank:'Market cap rank',share:'Share of top 20',hi:'High',lo:'Low',avg:'Average',rng:'Range',vc:'Volume / market cap',src:'Source',cb:'Central bank',mk:'Market rate',per1:'Per 1',conv:'Open in converter',chg:'Daily change',nodata:'No data for this period',of:'of',liveN:'Price updates in real time',fxN:'Central bank data updates daily, market rate every 30 seconds.',close:'Close',ch1:'1h',ch24:'24h',ch7:'7d',period:'Over period',loading:'Loading history…',hint:'Slide a finger across the chart'}};
+  const L=()=>D[UL]||D.ru, PER=[1,7,30,90,365];
+  const el=document.createElement('div');el.className='dt';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');
   el.innerHTML='<div class="dt-b" id="dtB"></div>';document.body.appendChild(el);
-  const B=el.querySelector('#dtB');let cur_=null,rng=48,openAt=0;
+  const B=el.querySelector('#dtB');let cur_=null,per=7,openAt=0,LH=null,LHp=null;
   const X='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';
   const sgn=v=>v==null||!isFinite(v)?'<span>—</span>':`<span class="${v>=0?'up':'dn'}">${v>=0?'▲':'▼'} ${fmt(Math.abs(v),2)}%</span>`;
-  const money=n=>{if(n==null||!isFinite(n))return'—';const a=Math.abs(n);return a>=1e12?'$'+fmt(n/1e12,2)+' T':a>=1e9?'$'+fmt(n/1e9,2)+' B':a>=1e6?'$'+fmt(n/1e6,2)+' M':'$'+fmt(n,0)}
+  const money=n=>{if(n==null||!isFinite(n))return'—';const a=Math.abs(n);return a>=1e12?'$'+fmt(n/1e12,2)+' T':a>=1e9?'$'+fmt(n/1e9,2)+' B':a>=1e6?'$'+fmt(n/1e6,2)+' M':'$'+fmt(n,0)};
   const usdFmt=v=>'$'+fmt(v,v>=1000?0:v>=1?2:4);
-  // большой график: градиентная заливка, сетка, светящаяся точка, минимум и максимум подписаны
-  function bigChart(vals,color){
-    if(!vals||vals.length<3)return `<div class="dt-note" style="text-align:center;padding:60px 0">${esc(L().nodata)}</div>`;
-    const W=340,H=170,pl=6,pr=6,pt=14,pb=14;let lo=Math.min(...vals),hi=Math.max(...vals);
-    const mid=(lo+hi)/2,span=Math.abs(mid)*0.01||1e-9;if(hi-lo<span){lo=mid-span/2;hi=mid+span/2}
-    const X_=i=>pl+i*(W-pl-pr)/(vals.length-1),Y_=v=>pt+(hi-v)/(hi-lo)*(H-pt-pb);
-    const pts=vals.map((v,i)=>[X_(i).toFixed(1),Y_(v).toFixed(1)]),line=pts.map(p=>p.join(',')).join(' '),last=pts[pts.length-1];
-    const gid='dg'+(Math.random()*1e6|0);
-    const grid=[0,1,2,3].map(k=>{const y=(pt+k*(H-pt-pb)/3).toFixed(1);return `<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.07)" stroke-width="1"/>`}).join('');
-    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".38"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>${grid}<polygon points="${pl},${H-pb} ${line} ${W-pr},${H-pb}" fill="url(#${gid})"/><polyline points="${line}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${last[0]}" cy="${last[1]}" r="9" fill="${color}" opacity=".25"/><circle cx="${last[0]}" cy="${last[1]}" r="4" fill="${color}"/></svg>`;
-  }
-  function stats(vals){if(!vals||!vals.length)return null;const hi=Math.max(...vals),lo=Math.min(...vals);return{hi,lo,avg:vals.reduce((a,b)=>a+b,0)/vals.length,first:vals[0],last:vals[vals.length-1]}}
+  // длинная история: один файл, грузится при первом открытии и кэшируется
+  function loadLH(){if(LH||LHp)return LHp;LHp=fetch('data/longhist.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{LH=j&&j.days?j:null;try{if(LH)localStorage.lhcache=JSON.stringify({t:Date.now(),d:LH})}catch(e){}return LH}).catch(()=>null);return LHp}
+  try{const c=JSON.parse(localStorage.lhcache||'null');if(c&&c.d&&Date.now()-c.t<864e5*2)LH=c.d}catch(e){}
+  const dayLabel=d=>{try{return new Date(d).toLocaleDateString(UL==='uz'?'uz-UZ':UL==='en'?'en-GB':'ru-RU',{day:'numeric',month:'short',year:'2-digit'})}catch(e){return d}};
+  const hourLabel=(t)=>{try{return new Date(t).toLocaleString(UL==='uz'?'uz-UZ':UL==='en'?'en-GB':'ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return''}};
+  // ряд для периода: [{v,label}] ; для 1Д и 1Н берём то, что есть у приложения, для 1М+ длинную историю
+  function seriesFor(kind,id,days,liveNow){
+    const out={pts:[],note:null};
+    if(days<=7){
+      const raw=kind==='c'?((SR.crypto&&SR.crypto[id])||[]):(fxSeries(id)||[]);
+      if(!raw.length)return out;
+      let v=raw.slice();if(liveNow!=null&&isFinite(liveNow))v[v.length-1]=liveNow;
+      if(kind==='c'){const n=days===1?Math.max(6,Math.round(v.length/7)):v.length;v=v.slice(-n);
+        const span=(days===1?1:7)*864e5,end=Date.now();out.pts=v.map((x,i)=>({v:x,t:end-span+(i/(Math.max(1,v.length-1)))*span,h:1}))}
+      else{ if(days===1)return out;                                  // для фиата внутри дня данных нет
+        const end=Date.now();out.pts=v.map((x,i)=>({v:x,t:end-(v.length-1-i)*864e5}))}
+      return out}
+    if(!LH)return out;
+    let arr=kind==='c'?LH.crypto&&LH.crypto[id]:LH.fx&&LH.fx[id];if(!arr||arr.length<5)return out;
+    // фиат в длинной истории это «единиц за 1 USD»; приводим к курсу выбранной валюты к местной
+    if(kind==='f')arr=fxLong(id,arr);if(!arr)return out;
+    const n=Math.min(days,arr.length),vs=arr.slice(-n),ds=LH.days.slice(-arr.length).slice(-n);
+    out.pts=vs.map((x,i)=>({v:x,d:ds[i]}));if(liveNow!=null&&isFinite(liveNow)&&out.pts.length)out.pts[out.pts.length-1].v=liveNow;
+    if(arr.length<days)out.note=arr.length;return out}
+  // фиат: ряд 1 единицы code в местной валюте
+  function fxSeries(code){const base=cur(cc),sf=SR.fx&&SR.fx[code],sb=SR.fx&&SR.fx[base];
+    if(base==='USD'&&sf)return sf.map(v=>v?1/v:null).filter(v=>v);
+    if(code==='USD'&&sb)return sb.slice();
+    if(sf&&sb&&sf.length===sb.length)return sf.map((v,i)=>v&&sb[i]?sb[i]/v:null).filter(v=>v);return null}
+  function fxLong(code,arrCode){const base=cur(cc);if(!LH||!LH.fx)return null;
+    const A=code==='USD'?null:LH.fx[code],Bs=base==='USD'?null:LH.fx[base];
+    if(code!=='USD'&&!A)return null;if(base!=='USD'&&!Bs)return null;
+    const n=Math.min(A?A.length:1e9,Bs?Bs.length:1e9,LH.days.length);const out=[];
+    for(let i=0;i<n;i++){const a=A?A[A.length-n+i]:1,b=Bs?Bs[Bs.length-n+i]:1;out.push(a&&b?b/a:null)}   // base за 1 code = (base/USD)/(code/USD)
+    return out.every(v=>v==null)?null:out.map((v,i,ar)=>v==null?(ar[i-1]||ar.find(x=>x)):v)}
+  const stats=p=>{if(!p||!p.length)return null;const v=p.map(x=>x.v),hi=Math.max(...v),lo=Math.min(...v);return{hi,lo,avg:v.reduce((a,b)=>a+b,0)/v.length,first:v[0],last:v[v.length-1]}};
+  // график: градиентная заливка, сетка, светящаяся точка, невидимая зона касания для интерактива
+  function chartSVG(pts,color){
+    const W=340,H=180,pl=4,pr=4,pt=16,pb=16;if(!pts||pts.length<3)return null;
+    const v=pts.map(p=>p.v);let lo=Math.min(...v),hi=Math.max(...v);const mid=(lo+hi)/2,span=Math.abs(mid)*.01||1e-9;if(hi-lo<span){lo=mid-span/2;hi=mid+span/2}
+    const px=i=>pl+i*(W-pl-pr)/(v.length-1),py=y=>pt+(hi-y)/(hi-lo)*(H-pt-pb);
+    const P=v.map((y,i)=>[px(i),py(y)]),line=P.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' '),last=P[P.length-1],gid='dg'+(Math.random()*1e6|0);
+    const grid=[0,1,2,3].map(k=>{const y=(pt+k*(H-pt-pb)/3).toFixed(1);return `<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.07)"/>`}).join('');
+    return {W,H,P,html:`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true" id="dtSvg"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".38"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>${grid}<polygon points="${pl},${H-pb} ${line} ${W-pr},${H-pb}" fill="url(#${gid})"/><polyline points="${line}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><g id="dtCur" style="display:none"><line id="dtLn" y1="${pt}" y2="${H-pb}" stroke="rgba(255,255,255,.45)" stroke-width="1" vector-effect="non-scaling-stroke"/></g><circle id="dtDotG" cx="${last[0]}" cy="${last[1]}" r="9" fill="${color}" opacity=".25"/><circle id="dtDot" cx="${last[0]}" cy="${last[1]}" r="4" fill="${color}"/></svg>`}}
+  function periodBar(){const l=L(),list=cur_&&cur_.k==='f'?PER.filter(d=>d>1):PER;return `<div class="dt-rng">${list.map(d=>`<button type="button" data-r="${d}" class="${per===d?'on':''}">${l['p'+d]}</button>`).join('')}</div>`}
+  function chartBlock(kind,id,liveNow){
+    const l=L(),s=seriesFor(kind,id,per,liveNow),st=stats(s.pts),col=st&&st.last>=st.first?GRN:RED,ch=chartSVG(s.pts,col);
+    if(!ch){const wait=per>7&&!LH;return {st:null,pts:[],html:`<div class="dt-ch"><div class="dt-empty">${esc(wait?l.loading:l.nodata)}</div></div>`}}
+    const chg=st.first?(st.last/st.first-1)*100:null;
+    return {st,pts:s.pts,ch,chg,note:s.note,html:`<div class="dt-ch" id="dtChart"><div class="dt-tip" id="dtTip"><b id="dtTipV"></b><small id="dtTipD"></small></div>${ch.html}</div>
+      <div class="dt-pc"><span>${esc(l.period)}</span>${sgn(chg)}</div>${s.note?`<p class="dt-note">${s.note} ${UL==='en'?'days of history available':UL==='uz'?'kunlik tarix mavjud':'дн. истории доступно'}</p>`:''}`}}
   function coinHTML(sym){
-    const c=R.crypto.find(x=>x.sym===sym);if(!c)return'';
-    const full=((SR.crypto&&SR.crypto[sym])||[]).slice(0,-1).concat([c.usd]);
-    const vals=rng===48?full:full.slice(-Math.max(6,Math.round(full.length/7)));       // 7 дн = весь ряд, 24 ч = последняя седьмая часть
-    const st=stats(vals),col=st&&st.last>=st.first?GRN:RED;
-    const rank=[...R.crypto].sort((a,b)=>(b.cap||0)-(a.cap||0)).findIndex(x=>x.sym===sym)+1;
-    const tot=R.crypto.reduce((s,x)=>s+(x.cap||0),0),share=tot&&c.cap?c.cap/tot:null;
-    const loc=cur(cc),pL=convert(c.usd,'USD',loc),pU=cc==='UZ'?null:convert(c.usd,'USD','UZS'),btc=R.crypto.find(x=>x.sym==='BTC');
-    const l=L(),isStable=['USDT','USDC','DAI'].includes(sym);
-    // вторая валютная ячейка: сумы (если страна не UZ), иначе цена в BTC, а для самой BTC и для UZ: евро
-    const pE=convert(c.usd,'USD','EUR');
+    const c=R.crypto.find(x=>x.sym===sym);if(!c)return'';const l=L(),cb=chartBlock('c',sym,c.usd),st=cb.st;
+    const rank=[...R.crypto].sort((a,b)=>(b.cap||0)-(a.cap||0)).findIndex(x=>x.sym===sym)+1,tot=R.crypto.reduce((s,x)=>s+(x.cap||0),0),share=tot&&c.cap?c.cap/tot:null;
+    const loc=cur(cc),pL=convert(c.usd,'USD',loc),pU=cc==='UZ'?null:convert(c.usd,'USD','UZS'),btc=R.crypto.find(x=>x.sym==='BTC'),pE=convert(c.usd,'USD','EUR'),isStable=['USDT','USDC','DAI'].includes(sym);
     const second=pU!=null?{l:'UZS',v:fmt(pU,0)}:(btc&&sym!=='BTC'&&btc.usd?{l:'BTC',v:fmt(c.usd/btc.usd,sym==='ETH'?5:8)}:{l:'EUR',v:pE!=null?fmt(pE):'—'});
     return `<div class="dt-h"><img src="${safeUrl(c.img)}" alt=""><div class="dt-t"><b>${esc(c.sym)}</b><small>${esc(c.name)}</small></div><button class="dt-x" type="button" data-x aria-label="${esc(l.close)}">${X}</button></div>
     <div class="dt-px" id="dtPx">${usdFmt(c.usd)}</div>
     <div class="dt-chg"><span><em>${l.ch1}</em>${sgn(c.ch1h)}</span><span><em>${l.ch24}</em>${sgn(c.ch24h)}</span><span><em>${l.ch7}</em>${sgn(c.ch7d)}</span></div>
-    <div class="dt-ch">${bigChart(vals,col)}</div>
-    <div class="dt-rng"><button type="button" data-r="12" class="${rng===12?'on':''}">${l.per.d}</button><button type="button" data-r="48" class="${rng===48?'on':''}">${l.per.w}</button></div>
+    ${periodBar()}${cb.html}
     <div class="dt-g">
       <div><small>${l.hi}</small><b>${st?usdFmt(st.hi):'—'}</b></div><div><small>${l.lo}</small><b>${st?usdFmt(st.lo):'—'}</b></div>
       <div><small>${l.avg}</small><b>${st?usdFmt(st.avg):'—'}</b></div><div><small>${l.rng}</small><b>${st&&st.lo?fmt((st.hi-st.lo)/st.lo*100,2)+'%':'—'}</b></div>
       <div><small>${l.cap}</small><b>${money(c.cap)}</b></div><div><small>${l.vol}</small><b>${money(c.vol)}</b></div>
       <div><small>${l.rank}</small><b>${rank} ${l.of} ${R.crypto.length}</b></div><div><small>${l.vc}</small><b>${c.cap&&c.vol?fmt(c.vol/c.cap*100,2)+'%':'—'}</b></div>
       <div class="w"><small>${l.share}</small><b>${share!=null?fmt(share*100,2)+'%':'—'}</b><div class="dt-bar"><i style="--p:${share!=null?Math.min(1,share):0}"></i></div></div>
-      <div><small>${esc(loc)}</small><b>${pL!=null?fmt(pL):'—'}</b></div>
-      <div><small>${second.l}</small><b>${second.v}</b></div>
-    </div><p class="dt-note">${isStable?'':l.liveN+'. '}${l.src}: CoinGecko, Gate.io, Binance.</p>`;
-  }
+      <div><small>${esc(loc)}</small><b>${pL!=null?fmt(pL):'—'}</b></div><div><small>${second.l}</small><b>${second.v}</b></div>
+    </div><p class="dt-note">${isStable?'':l.liveN+'. '}${l.src}: CoinGecko, Binance, Gate.io.</p>`}
   function fxHTML(code){
-    const base=cur(cc),o=R.official[cc]&&R.official[cc].rates&&R.official[cc].rates[code],rv=rateOf(code);if(!rv)return'';
-    const l=L(),official=!!o;
-    // ряд за 7 дней: курс 1 единицы code в местной валюте; считаем через USD, как и весь список
-    const sf=(SR.fx&&SR.fx[code]),sb=(SR.fx&&SR.fx[base]);
-    let vals=null;
-    if(base==='USD'&&sf)vals=sf.map(v=>v?1/v:null);
-    else if(code==='USD'&&sb)vals=sb.slice();
-    else if(sf&&sb&&sf.length===sb.length)vals=sf.map((v,i)=>v&&sb[i]?sb[i]/v:null);
-    if(vals){vals=vals.filter(v=>v!=null&&isFinite(v));if(vals.length)vals[vals.length-1]=rv.r}
-    const st=stats(vals),col=st&&st.last>=st.first?GRN:RED;
-    const qk=[1,10,100,1000];
-    return `<div class="dt-h">${flagImg(code).replace('class="mf"','class="dt-fl-i" style="width:46px;height:46px;border-radius:50%"')}<div class="dt-t"><b>${esc(code)} → ${esc(base)}</b><small>${esc(l.per1)} ${esc(code)}</small></div><button class="dt-x" type="button" data-x aria-label="${esc(l.close)}">${X}</button></div>
-    <div class="dt-px">${fmt(rv.r)} <span style="font-size:20px;opacity:.6">${esc(base)}</span></div>
+    const base=cur(cc),o=R.official[cc]&&R.official[cc].rates&&R.official[cc].rates[code],rv=rateOf(code);if(!rv)return'';const l=L(),official=!!o,cb=chartBlock('f',code,rv.r),st=cb.st,qk=[1,10,100,1000];
+    return `<div class="dt-h">${flagImg(code).replace('class="mf"','class="dt-fl-i"')}<div class="dt-t"><b>${esc(code)} → ${esc(base)}</b><small>${esc(l.per1)} ${esc(code)}</small></div><button class="dt-x" type="button" data-x aria-label="${esc(l.close)}">${X}</button></div>
+    <div class="dt-px" id="dtPx">${fmt(rv.r)} <span style="font-size:20px;opacity:.6">${esc(base)}</span></div>
     <div class="dt-chg"><span><em>${l.chg}</em>${rv.d?`<span class="${rv.d>0?'up':'dn'}">${rv.d>0?'▲':'▼'} ${fmt(Math.abs(rv.d),2)}</span>`:'—'}</span><span>${official?esc(bn(R.official[cc].src)):esc(l.mk)}</span></div>
-    <div class="dt-ch">${bigChart(vals,col)}</div>
+    ${periodBar()}${cb.html}
     <div class="dt-g">
-      <div><small>${l.hi} (7)</small><b>${st?fmt(st.hi):'—'}</b></div><div><small>${l.lo} (7)</small><b>${st?fmt(st.lo):'—'}</b></div>
-      <div><small>${l.avg} (7)</small><b>${st?fmt(st.avg):'—'}</b></div><div><small>${l.rng}</small><b>${st&&st.lo?fmt((st.hi-st.lo)/st.lo*100,2)+'%':'—'}</b></div>
+      <div><small>${l.hi}</small><b>${st?fmt(st.hi):'—'}</b></div><div><small>${l.lo}</small><b>${st?fmt(st.lo):'—'}</b></div>
+      <div><small>${l.avg}</small><b>${st?fmt(st.avg):'—'}</b></div><div><small>${l.rng}</small><b>${st&&st.lo?fmt((st.hi-st.lo)/st.lo*100,2)+'%':'—'}</b></div>
       <div class="w"><small>${l.src}</small><b>${official?esc(l.cb)+': '+esc(bn(R.official[cc].src)):esc(l.mk)+' (ExchangeRate-API)'}</b></div>
     </div>
     <div class="dt-q">${qk.map(n=>`<div><small>${n} ${esc(code)}</small><b>${fmt(rv.r*n,rv.r*n>=1000?0:2)}</b></div>`).join('')}</div>
-    <button class="dt-go" type="button" data-go="${esc(code)}">${esc(l.conv)}</button><p class="dt-note">${l.fxN}</p>`;
+    <button class="dt-go" type="button" data-go="${esc(code)}">${esc(l.conv)}</button><p class="dt-note">${l.fxN}</p>`}
+  // ---- интерактив: палец ведёт линию, сверху точная цена и дата; на отпускании возвращаем текущую ----
+  let ptsNow=[],chNow=null,rafI=0;
+  function bindChart(){const box=document.getElementById('dtChart');if(!box||!chNow)return;const svg=document.getElementById('dtSvg'),ln=document.getElementById('dtLn'),g=document.getElementById('dtCur'),dot=document.getElementById('dtDot'),glow=document.getElementById('dtDotG'),tip=document.getElementById('dtTip'),tv=document.getElementById('dtTipV'),td=document.getElementById('dtTipD'),isC=cur_.k==='c';
+    const last=chNow.P[chNow.P.length-1];
+    const fmtV=v=>isC?usdFmt(v):fmt(v);
+    const move=cx=>{const r=svg.getBoundingClientRect();let f=(cx-r.left)/r.width;f=Math.max(0,Math.min(1,f));const i=Math.round(f*(ptsNow.length-1)),p=chNow.P[i],pt=ptsNow[i];
+      ln.setAttribute('x1',p[0]);ln.setAttribute('x2',p[0]);g.style.display='';dot.setAttribute('cx',p[0]);dot.setAttribute('cy',p[1]);glow.setAttribute('cx',p[0]);glow.setAttribute('cy',p[1]);
+      tv.textContent=fmtV(pt.v);td.textContent=pt.d?dayLabel(pt.d):hourLabel(pt.t);tip.classList.add('on');
+      const left=Math.max(8,Math.min(r.width-8,f*r.width));tip.style.setProperty('--tx',left+'px')};
+    const end=()=>{g.style.display='none';dot.setAttribute('cx',last[0]);dot.setAttribute('cy',last[1]);glow.setAttribute('cx',last[0]);glow.setAttribute('cy',last[1]);tip.classList.remove('on')};
+    const h=e=>{e.preventDefault();const t=e.touches?e.touches[0]:e;cancelAnimationFrame(rafI);rafI=requestAnimationFrame(()=>move(t.clientX))};
+    box.addEventListener('pointerdown',e=>{box.setPointerCapture&&box.setPointerCapture(e.pointerId);move(e.clientX)});
+    box.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch'){cancelAnimationFrame(rafI);rafI=requestAnimationFrame(()=>move(e.clientX))}});
+    ['pointerup','pointercancel','pointerleave'].forEach(n=>box.addEventListener(n,end));
   }
-  function draw(){if(!cur_)return;const top=B.scrollTop;B.innerHTML=cur_.k==='c'?coinHTML(cur_.id):fxHTML(cur_.id);B.scrollTop=top}
-  function open(k,id){cur_={k,id};rng=48;openAt=Date.now();draw();el.classList.add('open');document.body.style.overflow='hidden';try{Telegram.WebApp.HapticFeedback.impactOccurred('light')}catch(e){}
-    try{Telegram.WebApp.BackButton.show()}catch(e){}}
+  function draw(){if(!cur_)return;const top=B.scrollTop;B.innerHTML=cur_.k==='c'?coinHTML(cur_.id):fxHTML(cur_.id);B.scrollTop=top;
+    // данные графика для интерактива: пересчитываем тем же способом, что и при отрисовке
+    const live=cur_.k==='c'?(R.crypto.find(x=>x.sym===cur_.id)||{}).usd:(rateOf(cur_.id)||{}).r,s=seriesFor(cur_.k,cur_.id,per,live);ptsNow=s.pts;
+    const st=stats(ptsNow);chNow=ptsNow.length>=3?chartSVG(ptsNow,st&&st.last>=st.first?GRN:RED):null;bindChart()}
+  function open(k,id){cur_={k,id};per=7;openAt=Date.now();draw();el.classList.add('open');document.body.style.overflow='hidden';try{Telegram.WebApp.HapticFeedback.impactOccurred('light')}catch(e){}try{Telegram.WebApp.BackButton.show()}catch(e){}
+    loadLH().then(()=>{if(cur_&&cur_.id===id&&per>7)draw()})}
   function close(){cur_=null;el.classList.remove('open');document.body.style.overflow='';try{Telegram.WebApp.BackButton.hide()}catch(e){}}
   try{Telegram.WebApp.BackButton.onClick(close)}catch(e){}
   el.addEventListener('click',e=>{
     if(e.target===el||e.target.closest('[data-x]')){close();return}
-    const r=e.target.closest('[data-r]');if(r){rng=+r.dataset.r;draw();return}
-    const g=e.target.closest('[data-go]');if(g){const code=g.dataset.go;close();try{const f=$('from'),tt=$('to');if(f&&tt){f.value=cur(cc);tt.value=code;f.dispatchEvent(new Event('change'));tt.dispatchEvent(new Event('change'))}}catch(_){}location.hash='#conv'}
-  });
+    const r=e.target.closest('[data-r]');if(r){per=+r.dataset.r;try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}draw();if(per>7&&!LH)loadLH().then(()=>{if(cur_)draw()});return}
+    const g=e.target.closest('[data-go]');if(g){const code=g.dataset.go;close();try{const f=$('from'),tt=$('to');if(f&&tt){f.value=cur(cc);tt.value=code;f.dispatchEvent(new Event('change'));tt.dispatchEvent(new Event('change'))}}catch(_){}location.hash='#conv'}});
   addEventListener('keydown',e=>{if(e.key==='Escape'&&cur_)close()});
-  // нажатие в списке крипты и на карточке валюты (делегирование: списки перерисовываются, обработчики не теряются)
-  document.addEventListener('click',e=>{
-    if(Date.now()-openAt<40)return;
+  document.addEventListener('click',e=>{if(Date.now()-openAt<40)return;
     const row=e.target.closest('#clist [data-m]');if(row){e.stopImmediatePropagation();e.preventDefault();open('c',row.dataset.m);return}
-    const card=e.target.closest('#feed .card');if(card){const n=[...card.parentNode.children].indexOf(card);const k=(window.__feedKeys||[])[n];if(k)open('f',k)}
-  },true);
-  // живое обновление цифр внутри открытой шторки (цена крипты меняется каждые несколько секунд)
+    const card=e.target.closest('#feed .card');if(card){const n=[...card.parentNode.children].indexOf(card),k=(window.__feedKeys||[])[n];if(k)open('f',k)}},true);
+  // живая цена в открытой шторке (не перерисовываем график, меняем только цифру)
   setInterval(()=>{if(!cur_||cur_.k!=='c')return;const c=R.crypto.find(x=>x.sym===cur_.id),p=document.getElementById('dtPx');if(c&&p){const tx=usdFmt(c.usd);if(p.textContent!==tx)p.textContent=tx}},2000);
   window.__dtOpen=open;window.__dtClose=close;
 })();
