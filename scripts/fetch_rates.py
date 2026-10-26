@@ -74,6 +74,14 @@ def nbk():
     return {"cur":"KZT","src":"Нацбанк Казахстана","rates":d}
 for n, f in (("UZ",cbu),("RU",cbr),("UA",nbu),("BY",nbrb),("KZ",nbk)): safe(n, f)
 
+# 2b. Ещё 16 центробанков (Армения, Грузия, Кыргызстан, Таджикистан, Молдова, Польша, Чехия, Румыния, Болгария,
+#     Сербия, ЕЦБ, Англия, Швеция, Норвегия, Дания, Венгрия). Любой сбой = страна остаётся на рыночном курсе.
+try:
+    import cb_more
+    for _cc, _blk in cb_more.fetch_all(log=lambda m: print(m)).items():
+        if _cc not in out["official"]: out["official"][_cc] = _blk
+except Exception as e: print("cb_more:", type(e).__name__, str(e)[:80])
+
 # 3. Крипта: топ-20 по капитализации, USD + локальные цены считаются на сайте/в боте
 try:
     d = get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=30&page=1&sparkline=false&price_change_percentage=1h,24h,7d")
@@ -134,7 +142,7 @@ else: world_stale = False
 if crypto_stale and world_stale and prev.get("updated"):
     out["updated"] = prev["updated"]                                # все ключевые источники упали: показываем реальный возраст данных
     print("ВНИМАНИЕ: крипта и мировые курсы не получены, метка времени сохранена прежней")
-out["health"] = {"crypto_ok": not crypto_stale, "world_ok": not world_stale, "official_ok": sorted(k for k in COUNTRIES if k in ("UZ","RU","UA","BY","KZ") and k in out["official"])}
+out["health"] = {"crypto_ok": not crypto_stale, "world_ok": not world_stale, "official_ok": sorted(k for k in COUNTRIES if k in out["official"])}
 
 os.makedirs("data", exist_ok=True)
 json.dump(out, open("data/rates.json","w",encoding="utf-8"), ensure_ascii=False, separators=(",",":"))
