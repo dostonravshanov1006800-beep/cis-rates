@@ -5,6 +5,7 @@
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
+<meta name="app-version" content="7407c202c9">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -722,6 +723,21 @@ const NET=(()=>{
     secs.forEach(x=>x&&io.observe(x));
   }
   set(0,true);
+})();
+
+// ===== самообновление: если на сервере вышла новая версия страницы, перезагружаемся (обход кэша вебвью Telegram) =====
+(function(){
+  const mine=(document.querySelector('meta[name="app-version"]')||{}).content;if(!mine)return;
+  let busy=0;
+  async function check(){
+    if(busy||document.hidden)return;busy=1;
+    try{
+      const r=await fetch('data/version.json?_='+Date.now(),{cache:'no-store'});if(!r.ok)return;
+      const v=(await r.json()).v;
+      if(v&&v!==mine&&!sessionStorage['reloaded_'+v]){sessionStorage['reloaded_'+v]=1;location.replace(location.pathname+'?v='+v+location.hash)}
+    }catch(e){}finally{busy=0}
+  }
+  document.addEventListener('visibilitychange',check);setTimeout(check,4000);setInterval(check,120000);
 })();
 NET.start();
 // смена вкладки нижней навигации = мгновенное обновление

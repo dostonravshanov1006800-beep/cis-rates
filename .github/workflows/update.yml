@@ -43,6 +43,19 @@ jobs:
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         run: python scripts/post_card.py
       - run: mkdir -p docs/data && cp data/rates.json data/history.json data/series.json docs/data/
+      - name: Page version (cache busting for Telegram webview)
+        run: |
+          python3 - <<'PY'
+          import hashlib,re,json
+          s=open("docs/index.html",encoding="utf-8").read()
+          core=re.sub(r'<meta name="app-version" content="[^"]*">\n?',"",s)
+          v=hashlib.sha1(core.encode()).hexdigest()[:10]
+          if 'name="app-version"' in s:
+              s=re.sub(r'(<meta name="app-version" content=")[^"]*(">)',r'\g<1>'+v+r'\g<2>',s)
+              open("docs/index.html","w",encoding="utf-8").write(s)
+          json.dump({"v":v},open("docs/data/version.json","w"))
+          print("версия страницы:",v)
+          PY
       - name: Commit
         run: |
           git config user.name "rates-bot"
