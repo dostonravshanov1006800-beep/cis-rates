@@ -392,7 +392,7 @@ function tick(offline){
   const t=new Date(R.updated).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
   const ago=mins<1?'только что':mins<60?mins+' мин назад':Math.floor(mins/60)+' ч назад';
   $('upd').textContent=offline?`нет связи · данные от ${t}`:(mins>20?'данные устарели · '+ago:`обновлено ${t} · ${ago}`);
-  $('live').classList.toggle('stale',mins>20||offline);
+  $('live').classList.toggle('stale',offline===true||mins>20);   // строго булево: toggle(x, undefined) переключал класс через раз
 }
 
 // мини-график 7 дней (SVG). up=true: зелёный; invert для валют: рост курса USD = местная слабее = красный

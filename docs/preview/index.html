@@ -390,7 +390,7 @@ function tick(offline){
   const t=new Date(R.updated).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
   const ago=mins<1?'только что':mins<60?mins+' мин назад':Math.floor(mins/60)+' ч назад';
   $('upd').textContent=offline?`нет связи · данные от ${t}`:(mins>20?'данные устарели · '+ago:`обновлено ${t} · ${ago}`);
-  $('live').classList.toggle('stale',mins>20||offline);
+  $('live').classList.toggle('stale',offline===true||mins>20);   // строго булево: toggle(x, undefined) переключал класс через раз
 }
 
 // мини-график 7 дней (SVG). up=true: зелёный; invert для валют: рост курса USD = местная слабее = красный
@@ -566,10 +566,5 @@ setTimeout(()=>{if(!document.hidden)location.reload()},6*3600*1000);
 })();
 </script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-// ВРЕМЕННАЯ ДИАГНОСТИКА индикатора: пишет состояние в заголовок вкладки
-setInterval(()=>{const l=document.getElementById('live'),d=document.querySelector('.dot'),u=document.getElementById('upd');if(!l||!d||!u)return;
- const cs=getComputedStyle(d);document.title='DBG|cls='+l.className+'|dot='+cs.backgroundColor+'|txt='+getComputedStyle(u).color+'|R='+(window.R&&R.updated||typeof R)+'|now='+new Date().toISOString().slice(11,19)},1000);
-</script>
 </body>
 </html>
