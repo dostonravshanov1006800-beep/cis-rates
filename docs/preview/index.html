@@ -566,5 +566,10 @@ setTimeout(()=>{if(!document.hidden)location.reload()},6*3600*1000);
 })();
 </script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+// ВРЕМЕННАЯ ДИАГНОСТИКА индикатора: пишет состояние в заголовок вкладки
+setInterval(()=>{const l=document.getElementById('live'),d=document.querySelector('.dot'),u=document.getElementById('upd');if(!l||!d||!u)return;
+ const cs=getComputedStyle(d);document.title='DBG|cls='+l.className+'|dot='+cs.backgroundColor+'|txt='+getComputedStyle(u).color+'|R='+(window.R&&R.updated||typeof R)+'|now='+new Date().toISOString().slice(11,19)},1000);
+</script>
 </body>
 </html>
