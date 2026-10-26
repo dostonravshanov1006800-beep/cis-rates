@@ -16,7 +16,7 @@
 <style>
 :root{--bg:#000;--card:#121212;--line:#262626;--tx:#fafafa;--mut:#a8a8a8;--gold:#f5c04a;--up:#2ee08a;--dn:#ff5b6b;--r:16px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 section{scroll-margin-top:58px}
 body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;padding-bottom:84px}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
@@ -113,7 +113,7 @@ body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro
   -webkit-font-smoothing:antialiased;font-feature-settings:"tnum";padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 /* живой фон: цветные «капли» плывут медленно, стекло ловит их цвет */
 .bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#14182c 0%,#07080f 55%,#04050a 100%)}
-.bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform;mix-blend-mode:screen}
+.bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;mix-blend-mode:screen}
 .bg i:nth-child(1){width:60vmax;height:60vmax;left:-20vmax;top:-18vmax;background:radial-gradient(circle,#3a5bff 0%,transparent 65%);animation:fl1 26s ease-in-out infinite alternate}
 .bg i:nth-child(2){width:55vmax;height:55vmax;right:-22vmax;top:18vh;background:radial-gradient(circle,#ffb21e 0%,transparent 62%);opacity:.38;animation:fl2 32s ease-in-out infinite alternate}
 .bg i:nth-child(3){width:50vmax;height:50vmax;left:-10vmax;bottom:-24vmax;background:radial-gradient(circle,#b13cff 0%,transparent 64%);opacity:.34;animation:fl3 38s ease-in-out infinite alternate}
@@ -132,7 +132,8 @@ body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro
 }
 .card,.list,.box,.cta{border-radius:var(--gl-r)}
 .card:before,.card:after,.list:before,.list:after,.box:before,.box:after,.cta:before,.cta:after,.seg:before,.seg:after{content:none !important;display:none !important}
-.card,.list,.box,.cta,.seg{position:relative;overflow:hidden}
+.card,.list,.box,.cta,.seg{position:relative}
+.list{overflow:clip}
 
 /* ШАПКА: лёгкая, без логотипа и названия; только индикатор */
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
@@ -167,8 +168,8 @@ body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro
 .hero h1{font-weight:800;letter-spacing:-3px;color:var(--tx);background:none;-webkit-text-fill-color:currentColor;filter:none;text-shadow:none}
 .hero h1 em{color:var(--gold);background:none;-webkit-text-fill-color:currentColor;font-weight:700}
 .feed{gap:12px;padding:0 16px}
-.card{padding:18px 16px 16px;transition:transform .45s var(--spring)}
-.card:active{transform:scale(.97)}
+.card{padding:18px 16px 16px}
+.card:active{opacity:.82}
 .card .v{font-size:28px;font-weight:800;letter-spacing:-1.2px;margin:10px 0 6px}
 h2{font-size:26px;font-weight:800;letter-spacing:-1px;padding:34px 20px 14px}
 .list{margin:0 16px}
@@ -187,27 +188,40 @@ h2{font-size:26px;font-weight:800;letter-spacing:-1px;padding:34px 20px 14px}
 .cta h3{font-weight:800;letter-spacing:-1px}
 .btn{background:var(--gold);color:#1a1405;font-weight:800;border-radius:16px;padding:15px 28px;box-shadow:none;border:0}
 .btn.o{color:var(--tx)}
-.btn:active{transform:scale(.96)}
+.btn:active{opacity:.85}
 footer{color:rgba(235,235,245,.4)}
 
-/* НИЖНЯЯ НАВИГАЦИЯ — тот же материал */
-nav{left:50%;right:auto;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(92vw,420px);border:0;background:none;padding:0}
-nav div{position:relative;padding:6px;border-radius:30px}
-nav a{position:relative;z-index:1;padding:9px 0 8px;border-radius:24px;font-size:10.5px;font-weight:700;color:var(--mut);transition:color .3s}
-nav a svg{width:25px;height:25px;margin-bottom:3px;stroke-width:1.9}
-nav a.on{color:#fff}nav a.on svg{stroke:var(--gold);filter:none}
-nav .pillbg{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:24px;z-index:0;pointer-events:none;
-  background:rgba(255,255,255,.14);box-shadow:var(--gl-hi);transition:transform .55s var(--spring)}
+/* НИЖНЯЯ НАВИГАЦИЯ: капсула из «жидкого стекла» с подвижной линзой */
+nav{position:fixed;left:50%;right:auto;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(92vw,400px);z-index:40;border:0;background:none;padding:0;touch-action:manipulation}
+nav div{position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding:5px;border-radius:32px;isolation:isolate;
+  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));
+  -webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%);
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 10px 36px rgba(0,0,0,.4)}
+nav a{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 0 8px;border-radius:26px;
+  font-size:10.5px;font-weight:700;letter-spacing:.1px;color:rgba(235,235,245,.6);text-decoration:none;
+  transition:color .18s ease;-webkit-user-select:none;user-select:none}
+nav a svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin:0;transition:transform .28s cubic-bezier(.34,1.56,.64,1),stroke .18s}
+nav a .f{fill:transparent;transition:fill .18s}
+nav a.on{color:#fff}
+nav a.on svg{stroke:var(--gold);transform:translateY(-1px) scale(1.08)}
+nav a.on .f{fill:rgba(255,201,77,.28)}
+nav a:active svg{transform:scale(.86)}
+/* подвижная «линза»: едет мгновенно, с лёгкой пружиной */
+nav .pillbg{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/4);border-radius:27px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.1));
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 14px rgba(0,0,0,.28);
+  transform:translate3d(var(--i,0),0,0);transition:transform .32s cubic-bezier(.3,1.25,.5,1)}
 
 /* мигание цены: короткая подсветка роста/падения + плавная смена числа */
 .tu{animation:tu .9s ease-out}.td{animation:td .9s ease-out}.fu{animation:tu .9s ease-out}.fd{animation:td .9s ease-out}
 @keyframes tu{0%{color:var(--up)}100%{color:inherit}}
 @keyframes td{0%{color:var(--dn)}100%{color:inherit}}
-.rv{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .7s var(--ease)}.rv.in{opacity:1;transform:none}
+.rv{opacity:0;transition:opacity .4s ease}.rv.in{opacity:1}   /* только заголовки: не стекло */
 @media(prefers-reduced-motion:reduce){.bg i,.dot{animation:none}.rv{opacity:1;transform:none;transition:none}}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .card,.list,.box,.cta,.seg,.pill,.swap,.btn.o,.top .live,nav div,.hdr-btn{background:rgba(30,32,46,.92)}}
-nav a svg .f{fill:transparent;transition:fill .3s}nav a.on svg .f{fill:rgba(255,201,77,.25)}
 .mf{width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:-4px;margin-right:7px}.mf.big{width:22px;height:22px;vertical-align:-6px;margin-right:9px}
 .sheet{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}
 .sheet[hidden]{display:none}
@@ -222,6 +236,10 @@ nav a svg .f{fill:transparent;transition:fill .3s}nav a.on svg .f{fill:rgba(255,
 .sheet .wl button{border:0;border-radius:14px;background:var(--gold);color:#111;font-weight:800;padding:0 18px}
 .ring i{display:block;position:relative}
 .ring i .fl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.cta *,.card *,.box *,.list *{text-shadow:none !important}
+.cta h3,.cta p{background:none !important}
+.cta,.box,.list,.card,.seg{transform:none !important;animation:none !important;filter:none !important}
+.cta,.box,.card{contain:none}
 </style>
 </head>
 <body>
@@ -274,10 +292,10 @@ nav a svg .f{fill:transparent;transition:fill .3s}nav a.on svg .f{fill:rgba(255,
 
 <div class="sheet" id="sheet" hidden><div class="sheet-b"><div class="sheet-h"><b id="shT"></b><button class="hdr-btn" id="shX" aria-label="Закрыть" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="shC"></div></div></div>
 <nav aria-label="Разделы"><div><span class="pillbg" id="pillbg"></span>
-  <a href="#home" class="on" data-s="home"><svg viewBox="0 0 24 24"><path class="f" d="M4 11.2 12 4l8 7.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5.2H5.5A1.5 1.5 0 0 1 4 19z"/></svg>Курсы</a>
-  <a href="#crypto" data-s="crypto"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="8.5"/><path d="M10 7.8h3.2a1.9 1.9 0 0 1 0 3.8H10m0 0h3.6a2 2 0 0 1 0 4H10M10 6.5v11M12.4 6.5v1.3m0 7.8v1.3"/></svg>Крипта</a>
-  <a href="#chartS" data-s="chartS"><svg viewBox="0 0 24 24"><path d="M3.5 3.5v15a2 2 0 0 0 2 2h15"/><path class="f" d="m7.5 14.5 3.2-3.8 3 2.6 5-6.3"/><circle cx="18.7" cy="6.9" r="1.1"/></svg>График</a>
-  <a href="#conv" data-s="conv"><svg viewBox="0 0 24 24"><path d="M5 8h13l-3.2-3.2M19 16H6l3.2 3.2"/><circle class="f" cx="12" cy="12" r=".01"/></svg>Конвертер</a>
+  <a href="#home" class="on" data-s="home" role="tab"><svg viewBox="0 0 24 24"><path class="f" d="M3.6 10.6 11.1 3.9a1.4 1.4 0 0 1 1.8 0l7.5 6.7a1.4 1.4 0 0 1 .5 1.1V19a1.9 1.9 0 0 1-1.9 1.9h-3.6v-5.2a1.4 1.4 0 0 0-1.4-1.4h-2a1.4 1.4 0 0 0-1.4 1.4v5.2H5A1.9 1.9 0 0 1 3.1 19v-7.3a1.4 1.4 0 0 1 .5-1.1z"/></svg><span>Курсы</span></a>
+  <a href="#crypto" data-s="crypto" role="tab"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="9"/><path d="M9.6 7.6h3.4a2 2 0 0 1 0 4H9.6m0 0h3.9a2.2 2.2 0 0 1 0 4.4H9.6M9.6 7.6v8.4M11.4 6.2v1.4m2.2-1.4v1.4m-2.2 8.4v1.4m2.2-1.4v1.4"/></svg><span>Крипта</span></a>
+  <a href="#chartS" data-s="chartS" role="tab"><svg viewBox="0 0 24 24"><rect class="f" x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><path d="m7 14.6 3.1-3.5 2.6 2.2L17 8.4"/><path d="M14 8.4h3v3"/></svg><span>График</span></a>
+  <a href="#conv" data-s="conv" role="tab"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="9"/><path d="M7.6 9.6h8.2l-2.3-2.3M16.4 14.4H8.2l2.3 2.3"/></svg><span>Конвертер</span></a>
 </div></nav>
 
 <script>
@@ -435,8 +453,7 @@ function draw(){
 }
 // подсветка вкладки при прокрутке
 const secs=['home','crypto','chartS','conv'].map($);
-addEventListener('scroll',()=>{let cur='home';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
-  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.s===cur))},{passive:true});
+/* подсветка вкладки: см. NAVFX ниже */
 
 /* =====================================================================
    NET: единый менеджер данных
@@ -674,9 +691,41 @@ const NET=(()=>{
       w[k]=v;localStorage.wallet=JSON.stringify(w);$('btnWallet').click()};
   };
 })();
+
+// ===== NAVFX: нижний бар — мгновенный отклик =====
+(function(){
+  const nav=document.querySelector('nav div'),links=[...nav.querySelectorAll('a')],pill=document.getElementById('pillbg');
+  const ids=links.map(a=>a.dataset.s),secs=ids.map(i=>document.getElementById(i));
+  let lock=0,cur=0;
+  const hap=()=>{try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(e){}};
+  function set(i,fromTap){
+    if(i===cur&&!fromTap)return;cur=i;
+    links.forEach((a,k)=>{a.classList.toggle('on',k===i);a.setAttribute('aria-selected',k===i)});
+    pill.style.setProperty('--i',(i*100)+'%');
+  }
+  // тап: вкладка и «линза» меняются СРАЗУ, прокрутка идёт параллельно
+  nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;set(links.indexOf(a),true);hap()},{passive:true});
+  nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();
+    const i=links.indexOf(a);set(i,true);lock=Date.now()+700;                       // пока едет скролл, прокрутка не переключает вкладку
+    const y=secs[i].getBoundingClientRect().top+scrollY-(i===0?0:58);
+    scrollTo({top:Math.max(0,y),behavior:'auto'});                                  // без плавной анимации: переход мгновенный
+    history.replaceState(null,'','#'+ids[i]);
+  });
+  // подсветка при ручной прокрутке: наблюдатель, а не чтение геометрии на каждый кадр
+  if('IntersectionObserver' in window){
+    const vis=new Map();
+    // зона «в фокусе» — полоса экрана 20%..55% высоты; активна та секция, что в этой полосе. Если их несколько — нижняя (читатель уже её достиг)
+    const io=new IntersectionObserver(es=>{es.forEach(en=>vis.set(en.target.id,en.isIntersecting));
+      if(Date.now()<lock)return;
+      let bi=-1;ids.forEach((id,i)=>{if(vis.get(id))bi=i});
+      if(bi>=0)set(bi)},{threshold:[0,.01],rootMargin:'-20% 0px -45% 0px'});
+    secs.forEach(x=>x&&io.observe(x));
+  }
+  set(0,true);
+})();
 NET.start();
 // смена вкладки нижней навигации = мгновенное обновление
-document.addEventListener('click',e=>{if(e.target.closest('nav a, #stories .st, #seg button'))NET.wake()},{passive:true});
+document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg button'))NET.wake()},{passive:true});
 </script>
 
 <script>
@@ -688,20 +737,11 @@ document.addEventListener('click',e=>{if(e.target.closest('nav a, #stories .st, 
   // тактильный отклик на выбор страны, вкладки, строки
   document.addEventListener('click',e=>{if(e.target.closest('.st,.tab,.seg button,nav a,.row,.swap,.btn'))hap('light')},{passive:true});
 
-  // ползунок навигации едет за активной вкладкой
-  const nav=document.querySelector('nav div'),bg=document.getElementById('pillbg');
-  function place(){const links=[...nav.querySelectorAll('a')],i=Math.max(0,links.findIndex(a=>a.classList.contains('on')));
-    bg.style.transform='translateX('+(i*100)+'%)'}
-  new MutationObserver(place).observe(nav,{attributes:true,subtree:true,attributeFilter:['class']});place();
-
   // плавное появление блоков при прокрутке
   const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{threshold:.08}):null;
-  function arm(){document.querySelectorAll('.card,.list,.box,.cta,h2').forEach(el=>{if(el.dataset.rv)return;el.dataset.rv=1;el.classList.add('rv');io?io.observe(el):el.classList.add('in')})}
+  function arm(){document.querySelectorAll('h2').forEach(el=>{if(el.dataset.rv)return;el.dataset.rv=1;el.classList.add('rv');io?io.observe(el):el.classList.add('in')})}
   arm();new MutationObserver(arm).observe(document.body,{childList:true,subtree:true});
 
-  // «линза»: блик следует за пальцем/курсором по стеклянным плиткам
-  document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card,.box,.cta');if(!c)return;
-    const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')},{passive:true});
 })();
 </script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
