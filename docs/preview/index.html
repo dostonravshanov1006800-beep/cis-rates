@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0HpGhfQpF6I1m9sEaMTBtEDnSvgz7dz6Dvfn4VGFwHo=' 'sha256-4pyaH0V3JUJjewXVflRt6t9VPckLH4gZ/j+vDY7C1C0=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-rjCk/jmMlnXfyf3cFkGRTmgLAx5j6ZcVqI05W2Qcp3c=' 'sha256-4pyaH0V3JUJjewXVflRt6t9VPckLH4gZ/j+vDY7C1C0=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="310edbc06a">
+<meta name="app-version" content="8d2736d985">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -245,9 +245,9 @@ nav a span{line-height:1}
 .earth{width:40px;height:40px;border-radius:50%;object-fit:cover;display:block;flex:none;background:#05060b;border:1px solid rgba(255,255,255,.22);box-shadow:0 4px 14px rgba(0,0,0,.35)}
 .hdr-r{display:flex;align-items:center;gap:10px}
 nav a svg.gem{stroke:none;fill:none;margin:0}
-/* плитка страны: простой герб на ровном тёмном фоне */
+/* плитка страны: флаг на весь квадрат, спокойный стиль Liquid Glass */
 .ring i.fb{position:relative;display:grid;place-items:center;overflow:hidden;background:#12162b}
-.ring i.fb .crest{position:relative;z-index:1;display:block;width:78%;height:78%;object-fit:contain}
+.ring i.fb .flag{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover}
 .ring i.fb .cc{position:absolute;z-index:0;font-size:15px;font-weight:800;color:rgba(255,255,255,.55);letter-spacing:.5px}
 /* резерв высоты под данные: загрузка не двигает вёрстку */
 #feed{min-height:560px;contain:layout}
@@ -441,7 +441,7 @@ function render(){
   if(!R.countries[cc])cc='UZ';
   const c=R.countries[cc];
   // страны-«истории» выбранного региона
-  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${esc(k)}"><div class="ring"><i class="fb" role="img" aria-label="${esc(x.name)}"><img class="crest" src="../crests/${k.toLowerCase()}.png" width="52" height="52" alt="" decoding="async" data-rm="1"><b class="cc">${esc(k)}</b></i></div><span>${esc(x.name)}</span></button>`).join('');
+  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${esc(k)}"><div class="ring"><i class="fb" role="img" aria-label="${esc(x.name)}"><img class="flag" src="../flags/${k.toLowerCase()}.png" width="66" height="66" alt="" decoding="async" data-rm="1"><b class="cc">${esc(k)}</b></i></div><span>${esc(x.name)}</span></button>`).join('');
   $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
   $('seg').innerHTML=[['cis','СНГ'],['eu','Европа']].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
   $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
