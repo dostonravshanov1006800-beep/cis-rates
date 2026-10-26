@@ -5,7 +5,7 @@
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="7d29e291eb">
+<meta name="app-version" content="5e8c9dcf66">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -86,7 +86,6 @@ footer{padding:26px 16px;text-align:center;font-size:11px;color:#6a6a6a;line-hei
 nav{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(0,0,0,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
 nav div{max-width:640px;margin:0 auto;display:flex}
 nav a{flex:1;text-align:center;padding:10px 0 9px;color:var(--mut);text-decoration:none;font-size:11px;font-weight:800}
-nav a svg{display:block;margin:0 auto 3px;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 nav a.on{color:var(--tx)}
 @media(min-width:700px){body{padding-bottom:0}nav{display:none}.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 .hide{display:none}
@@ -191,28 +190,29 @@ h2{font-size:26px;font-weight:800;letter-spacing:-1px;padding:34px 20px 14px}
 .btn:active{opacity:.85}
 footer{color:rgba(235,235,245,.4)}
 
-/* НИЖНЯЯ НАВИГАЦИЯ: капсула из «жидкого стекла» с подвижной линзой */
-nav{position:fixed;left:50%;right:auto;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(92vw,400px);z-index:40;border:0;background:none;padding:0;touch-action:manipulation}
-nav div{position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding:5px;border-radius:32px;isolation:isolate;
-  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));
+/* НИЖНЯЯ НАВИГАЦИЯ: стеклянная капсула + объёмные цветные кабошоны */
+nav{position:fixed;left:50%;right:auto;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(94vw,420px);z-index:40;border:0;background:none;padding:0;touch-action:manipulation}
+nav div{position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 6px 6px;border-radius:34px;isolation:isolate;
+  background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.05));
   -webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%);
-  border:1px solid rgba(255,255,255,.2);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 10px 36px rgba(0,0,0,.4)}
-nav a{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 0 8px;border-radius:26px;
-  font-size:10.5px;font-weight:700;letter-spacing:.1px;color:rgba(235,235,245,.6);text-decoration:none;
-  transition:color .18s ease;-webkit-user-select:none;user-select:none}
-nav a svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin:0;transition:transform .28s cubic-bezier(.34,1.56,.64,1),stroke .18s}
-nav a .f{fill:transparent;transition:fill .18s}
+  border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.36),0 12px 38px rgba(0,0,0,.42)}
+nav a{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;padding:3px 0 4px;
+  font-size:10.5px;font-weight:700;letter-spacing:.1px;color:rgba(235,235,245,.62);text-decoration:none;-webkit-user-select:none;user-select:none;transition:color .18s}
+nav a span{line-height:1}
+/* кабошон: в покое чуть приглушён и меньше, активный выпуклый, цветной, с лёгким «дыханием» */
+nav a .gem{width:44px;height:44px;display:block;filter:saturate(.72) brightness(.82);transform:scale(.86) translateY(1px);
+  transition:transform .32s cubic-bezier(.3,1.5,.5,1),filter .22s;box-shadow:none}
+nav a .gem .glyph{transition:stroke-width .2s}
 nav a.on{color:#fff}
-nav a.on svg{stroke:var(--gold);transform:translateY(-1px) scale(1.08)}
-nav a.on .f{fill:rgba(255,201,77,.28)}
-nav a:active svg{transform:scale(.86)}
-/* подвижная «линза»: едет мгновенно, с лёгкой пружиной */
-nav .pillbg{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/4);border-radius:27px;pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.1));
-  border:1px solid rgba(255,255,255,.28);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 14px rgba(0,0,0,.28);
-  transform:translate3d(var(--i,0),0,0);transition:transform .32s cubic-bezier(.3,1.25,.5,1)}
+nav a.on .gem{filter:none;transform:scale(1.0) translateY(-5px);animation:gemfloat 3.2s ease-in-out .35s infinite}
+nav a:active .gem{transform:scale(.8) translateY(2px)}
+@keyframes gemfloat{0%,100%{transform:scale(1) translateY(-5px)}50%{transform:scale(1.03) translateY(-7px)}}
+/* цветная подсветка под активным кабошоном (мягкая, без прямоугольных краёв) */
+nav .pillbg{position:absolute;z-index:1;bottom:5px;left:6px;width:calc((100% - 12px)/4);height:16px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,var(--glow,rgba(255,201,77,.55)),transparent 70%);
+  transform:translate3d(var(--i,0),0,0);transition:transform .32s cubic-bezier(.3,1.25,.5,1),background .3s}
+nav a[data-s=home].on ~ .x{}
+@media (prefers-reduced-motion:reduce){nav a.on .gem{animation:none}}
 
 /* мигание цены: короткая подсветка роста/падения + плавная смена числа */
 .tu{animation:tu .9s ease-out}.td{animation:td .9s ease-out}.fu{animation:tu .9s ease-out}.fd{animation:td .9s ease-out}
@@ -245,13 +245,6 @@ nav .pillbg{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;width:calc((
 .top>*{pointer-events:auto}
 .top.hide{transform:translate3d(0,calc(-100% - 6px),0)}
 .top-gap{height:calc(58px + env(safe-area-inset-top))}
-/* иконки бара: контур + мягкая заливка + акцент золотом у активной */
-nav a svg{width:28px;height:28px;stroke-width:1.7}
-nav a svg .a{fill:none;stroke:currentColor;stroke-width:1.7;opacity:.85;transition:stroke .2s,fill .2s}
-nav a svg circle.a{fill:currentColor;stroke:none}
-nav a.on svg .a{stroke:#fff;opacity:1}nav a.on svg circle.a{fill:#fff}
-nav a.on svg .f{fill:rgba(255,201,77,.22)}
-nav a.on svg{stroke:var(--gold)}
 nav a span{line-height:1}
 /* флаг страны: фон плитки, всегда на всю плитку (без <img>, inset и absolute — совместимо со старыми Android WebView) */
 .ring i.fb{background-color:#1a1f38;background-repeat:no-repeat;background-position:center center;background-size:cover}
@@ -265,6 +258,17 @@ nav a span{line-height:1}
 .ring i.fb .crest{position:relative;z-index:1;display:block;width:46px;height:46px;margin:10px auto 0;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
 .ring i.fb.nocrest .fbg{opacity:1}
 .mf.crestmini{border-radius:0;object-fit:contain;box-shadow:none;background:none}
+nav a svg.gem{stroke:none;fill:none;margin:0}
+/* гербы: выбранная страна «дышит» и ловит бегущий блик; при касании наклон. Без filter/backdrop на самом гербе (Android WebView) */
+.ring i.fb .crest{transition:transform .35s cubic-bezier(.3,1.4,.5,1);will-change:auto}
+.st.on .ring i.fb .crest{animation:crestfloat 3.4s ease-in-out infinite}
+.st:active .ring i.fb .crest{transform:perspective(160px) rotateX(10deg) rotateY(-12deg) scale(.94)}
+@keyframes crestfloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.045)}}
+/* блик пробегает по плитке выбранной страны раз в несколько секунд */
+.st.on .ring i.fb:after{content:"";position:absolute;top:-20%;bottom:-20%;left:-60%;width:40%;z-index:2;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.34),transparent);transform:skewX(-18deg);animation:sheen 4.2s ease-in-out 1s infinite}
+@keyframes sheen{0%{left:-60%}38%,100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.st.on .ring i.fb .crest,.st.on .ring i.fb:after{animation:none}}
 </style>
 </head>
 <body>
@@ -312,27 +316,60 @@ nav a span{line-height:1}
 
   <div class="cta"><h3>Курсы в Telegram</h3><p>Бот посчитает любую сумму, пришлёт картинку курсов и сигнал при скачке.</p>
     <a class="btn" href="https://t.me/Well_Currency_bot" target="_blank" rel="noopener">Открыть бота</a><a class="btn o" href="https://t.me/gram_corporation" target="_blank" rel="noopener">Канал</a></div>
-  <footer>Данные: ЦБ Узбекистана, России, Казахстана, Украины, Беларуси, ExchangeRate-API, CoinGecko.<br>Для стран без открытого API курс рыночный. Не является финансовым советом.</footer>
+  <footer>Данные: ЦБ Узбекистана, России, Казахстана, Украины, Беларуси, ExchangeRate-API, CoinGecko.<br>Гербы: Wikimedia Commons (общественное достояние; Дания и Великобритания: CC BY-SA). Для стран без открытого API курс рыночный. Не является финансовым советом.</footer>
 </div>
 
 
 <div class="sheet" id="sheet" hidden><div class="sheet-b"><div class="sheet-h"><b id="shT"></b><button class="hdr-btn" id="shX" aria-label="Закрыть" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="shC"></div></div></div>
 <nav aria-label="Разделы"><div><span class="pillbg" id="pillbg"></span>
-  <a href="#home" class="on" data-s="home" role="tab"><svg viewBox="0 0 28 28" aria-hidden="true">
-    <path class="f" d="M4.5 13.2 13.1 5.6a1.3 1.3 0 0 1 1.8 0l8.6 7.6c.4.4.6.9.6 1.4V22a2 2 0 0 1-2 2h-4.2v-5.6a1.6 1.6 0 0 0-1.6-1.6h-3.6a1.6 1.6 0 0 0-1.6 1.6V24H5.9a2 2 0 0 1-2-2v-7.4c0-.5.2-1 .6-1.4z"/>
-    <path class="a" d="M10 12.6h8M10 15.4h8" opacity=".0"/><circle class="a" cx="14" cy="12.2" r="1.7"/></svg><span>Курсы</span></a>
-  <a href="#crypto" data-s="crypto" role="tab"><svg viewBox="0 0 28 28" aria-hidden="true">
-    <circle class="f" cx="14" cy="14" r="10.5"/>
-    <path d="M11.2 8.9h4.3a2.5 2.5 0 0 1 0 5H11.2m0 0h4.9a2.7 2.7 0 0 1 0 5.4h-4.9M11.2 8.9v10.4"/>
-    <path class="a" d="M13 7.2v1.7m3-1.7v1.7M13 19.3V21m3-1.7V21"/></svg><span>Крипта</span></a>
-  <a href="#chartS" data-s="chartS" role="tab"><svg viewBox="0 0 28 28" aria-hidden="true">
-    <rect class="f" x="3.8" y="3.8" width="20.4" height="20.4" rx="6"/>
-    <path class="a" d="M8 20v-3.4M12 20v-6M16 20v-4.2M20 20V11.4"/>
-    <path d="m8 12.4 3.6-3.2 3 2.2 4.6-4"/><circle class="a" cx="19.2" cy="7.4" r="1.2"/></svg><span>График</span></a>
-  <a href="#conv" data-s="conv" role="tab"><svg viewBox="0 0 28 28" aria-hidden="true">
-    <circle class="f" cx="14" cy="14" r="10.5"/>
-    <path d="M8.6 11.2h9.8l-2.7-2.7"/><path d="M19.4 16.8H9.6l2.7 2.7"/>
-    <circle class="a" cx="8.6" cy="11.2" r=".9"/><circle class="a" cx="19.4" cy="16.8" r=".9"/></svg><span>Конвертер</span></a>
+  <a href="#home" class="on" data-s="home" role="tab" aria-label="Курсы"><svg class="gem" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="g0b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd976"/><stop offset="1" stop-color="#f08a1a"/></linearGradient>
+        <linearGradient id="g0h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".78"/><stop offset=".55" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+        <radialGradient id="g0r" cx=".5" cy="1.05" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g0b)"/>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g0r)"/>
+      <rect x="3.2" y="3.2" width="41.6" height="41.6" rx="12.9" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1"/>
+      <path d="M5 17.5C5 9.5 10.5 5 18 5h12c7.5 0 13 4.5 13 12.5V19C35 22 13 22 5 19z" fill="url(#g0h)"/>
+      <g class="glyph" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 24.2 24 14.8l11 9.4"/><path d="M16 22.6V33a1.8 1.8 0 0 0 1.8 1.8h12.4A1.8 1.8 0 0 0 32 33V22.6"/><path d="M21.2 34.8v-6.4a1.2 1.2 0 0 1 1.2-1.2h3.2a1.2 1.2 0 0 1 1.2 1.2v6.4"/></g>
+    </svg><span>Курсы</span></a>
+  <a href="#crypto" data-s="crypto" role="tab" aria-label="Крипта"><svg class="gem" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="g1b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb86b"/><stop offset="1" stop-color="#ec5a1f"/></linearGradient>
+        <linearGradient id="g1h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".78"/><stop offset=".55" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+        <radialGradient id="g1r" cx=".5" cy="1.05" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g1b)"/>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g1r)"/>
+      <rect x="3.2" y="3.2" width="41.6" height="41.6" rx="12.9" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1"/>
+      <path d="M5 17.5C5 9.5 10.5 5 18 5h12c7.5 0 13 4.5 13 12.5V19C35 22 13 22 5 19z" fill="url(#g1h)"/>
+      <g class="glyph" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="11.2"/><path d="M21.2 18.6h4.4a2.6 2.6 0 0 1 0 5.2h-4.4m0 0h5a2.7 2.7 0 0 1 0 5.4h-5m0-10.6v10.6M23 16.8v1.8m3-1.8v1.8M23 29.2V31m3-1.8V31"/></g>
+    </svg><span>Крипта</span></a>
+  <a href="#chartS" data-s="chartS" role="tab" aria-label="График"><svg class="gem" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="g2b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ff0b4"/><stop offset="1" stop-color="#0f9d58"/></linearGradient>
+        <linearGradient id="g2h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".78"/><stop offset=".55" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+        <radialGradient id="g2r" cx=".5" cy="1.05" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g2b)"/>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g2r)"/>
+      <rect x="3.2" y="3.2" width="41.6" height="41.6" rx="12.9" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1"/>
+      <path d="M5 17.5C5 9.5 10.5 5 18 5h12c7.5 0 13 4.5 13 12.5V19C35 22 13 22 5 19z" fill="url(#g2h)"/>
+      <g class="glyph" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 33.5V15"/><path d="M14.5 33.5H34"/><path d="m18.6 28 5-6 4.2 3.6 6.2-8.4"/><path d="M29.6 17.2H34v4.4"/></g>
+    </svg><span>График</span></a>
+  <a href="#conv" data-s="conv" role="tab" aria-label="Конвертер"><svg class="gem" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="g3b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8cc2ff"/><stop offset="1" stop-color="#2b64e0"/></linearGradient>
+        <linearGradient id="g3h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".78"/><stop offset=".55" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+        <radialGradient id="g3r" cx=".5" cy="1.05" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g3b)"/>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="13.5" fill="url(#g3r)"/>
+      <rect x="3.2" y="3.2" width="41.6" height="41.6" rx="12.9" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1"/>
+      <path d="M5 17.5C5 9.5 10.5 5 18 5h12c7.5 0 13 4.5 13 12.5V19C35 22 13 22 5 19z" fill="url(#g3h)"/>
+      <g class="glyph" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 19.4h19l-4.6-4.6"/><path d="M33.5 28.6h-19l4.6 4.6"/></g>
+    </svg><span>Конвертер</span></a>
 </div></nav>
 
 <script>
@@ -742,7 +779,7 @@ const NET=(()=>{
   function set(i,fromTap){
     if(i===cur&&!fromTap)return;cur=i;
     links.forEach((a,k)=>{a.classList.toggle('on',k===i);a.setAttribute('aria-selected',k===i)});
-    pill.style.setProperty('--i',(i*100)+'%');
+    pill.style.setProperty('--i',(i*100)+'%');pill.style.setProperty('--glow',['rgba(255,190,70,.6)','rgba(255,120,50,.6)','rgba(60,220,140,.55)','rgba(80,150,255,.6)'][i]);
   }
   // тап: вкладка и «линза» меняются СРАЗУ, прокрутка идёт параллельно
   nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;set(links.indexOf(a),true);hap()},{passive:true});
