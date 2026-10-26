@@ -370,9 +370,12 @@ async function load(){
     SR=sr&&sr.crypto?sr:SR;
     const fresh=!R||r.updated!==R.updated||(SR.ts&&SR.ts!==window.__srts);window.__srts=SR.ts;
     R=r;H=h;lastOk=Date.now();R.crypto.forEach(c=>{if(LIVE.px[c.sym])c.usd=LIVE.px[c.sym]});
-    if(fresh||!window.__rendered){render();window.__rendered=1}else tick();
+    if(fresh||!window.__rendered){try{render()}catch(e){e.__render=1;throw e}window.__rendered=1}else tick();
     if(!window.__geo){window.__geo=1;autoGeo()}
-  }catch(e){ if(!R)$('upd').textContent='нет связи'; else tick(true) }   // старые данные не стираем
+  }catch(e){
+    if(e&&e.__render){console.error('render:',e)}          // ошибка отрисовки: связь есть, не показываем «нет связи»
+    else if(!R)$('upd').textContent='нет связи'; else tick(true)   // старые данные не стираем
+  }
   finally{clearTimeout(to);loading=false}
 }
 // живая подпись: «обновлено 20:34 · 3 мин назад»; каждые 15 с пересчитывается без запроса
@@ -431,9 +434,7 @@ function liveBadge(){const e=document.getElementById('liveTag');if(!e)return;
   e.className='lt '+(LIVE.on&&Date.now()-LIVE.t<20000?'on':'')}
 
 function render(){
-  const age=(Date.now()-new Date(R.updated))/60000;
-  $('live').classList.toggle('stale',age>20);
-  tick();
+  tick();                                   // единственное место, где решается «устарело/свежо»
   if(!R.countries[cc]||R.countries[cc].region!==reg)reg=R.countries[cc]?R.countries[cc].region:'cis';
   if(!R.countries[cc])cc='UZ';
   const c=R.countries[cc];
