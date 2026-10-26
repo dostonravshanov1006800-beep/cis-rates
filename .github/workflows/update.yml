@@ -73,7 +73,7 @@ jobs:
           echo "не удалось записать после 5 попыток"; exit 1
       - name: Chain next run (с проверкой и запасным токеном)
         # always(): цепочка продолжается даже если сбор курсов упал, иначе одна ошибка её оборвёт
-        if: always() && github.event_name != 'schedule'
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
           GH_TOKEN2: ${{ secrets.CISRATES_GH_TOKEN }}
