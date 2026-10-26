@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0HpGhfQpF6I1m9sEaMTBtEDnSvgz7dz6Dvfn4VGFwHo=' 'sha256-4pyaH0V3JUJjewXVflRt6t9VPckLH4gZ/j+vDY7C1C0=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="f05cae52ad">
+<meta name="app-version" content="310edbc06a">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -355,6 +355,8 @@ nav a svg.gem{stroke:none;fill:none;margin:0}
 </div></nav>
 
 <script>
+document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.getAttribute('data-rm'))t.remove()},true);
+
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https:\/\/[\w.\-/%?=&:+@~#,]+$/.test(String(u||''))?u:'';
@@ -363,7 +365,7 @@ const FL={PLN:'🇵🇱',CHF:'🇨🇭',USD:'🇺🇸',EUR:'🇪🇺',RUB:'🇷�
 
 // флаги: картинка вместо эмодзи (на части устройств эмодзи-флаги не отображаются)
 const CUR2CC={USD:'us',EUR:'eu',RUB:'ru',CNY:'cn',TRY:'tr',GBP:'gb',CHF:'ch',PLN:'pl',AED:'ae',KZT:'kz',UAH:'ua',BYN:'by',UZS:'uz',AMD:'am',AZN:'az',GEL:'ge',KGS:'kg',TJS:'tj',MDL:'md',TMT:'tm',CZK:'cz',HUF:'hu',RON:'ro',BGN:'bg',SEK:'se',NOK:'no',DKK:'dk',RSD:'rs',JPY:'jp',KRW:'kr'};
-const flagImg=(code,txt)=>CUR2CC[code]?`<img class="mf" src="https://flagcdn.com/w40/${CUR2CC[code]}.png" alt="" loading="lazy" onerror="this.remove()">`:'';
+const flagImg=(code,txt)=>CUR2CC[code]?`<img class="mf" src="https://flagcdn.com/w40/${CUR2CC[code]}.png" alt="" loading="lazy" data-rm="1">`:'';
 const ORDER=['EUR','RUB','CNY','TRY','GBP','CHF','PLN','AED','KZT','UAH'];
 let R,H=[],SR={crypto:{},fx:{}},cc=localStorage.cc||'UZ',reg=localStorage.reg||'cis',metric=null,chart;
 const cur=c=>R.countries[c].cur;
@@ -439,7 +441,7 @@ function render(){
   if(!R.countries[cc])cc='UZ';
   const c=R.countries[cc];
   // страны-«истории» выбранного региона
-  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${esc(k)}"><div class="ring"><i class="fb" role="img" aria-label="${esc(x.name)}"><img class="crest" src="crests/${k.toLowerCase()}.png" width="52" height="52" alt="" decoding="async" onerror="this.remove()"><b class="cc">${esc(k)}</b></i></div><span>${esc(x.name)}</span></button>`).join('');
+  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${esc(k)}"><div class="ring"><i class="fb" role="img" aria-label="${esc(x.name)}"><img class="crest" src="crests/${k.toLowerCase()}.png" width="52" height="52" alt="" decoding="async" data-rm="1"><b class="cc">${esc(k)}</b></i></div><span>${esc(x.name)}</span></button>`).join('');
   $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
   $('seg').innerHTML=[['cis','СНГ'],['eu','Европа']].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
   $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
@@ -448,7 +450,7 @@ function render(){
   // главный курс: 1 USD
   const usd=rateOf('USD');
   if(c.cur==='USD'){$('hl').textContent=c.name;$('hv').innerHTML='1 USD<em>= 1 USD</em>';$('hc').textContent=''}
-  else{$('hl').innerHTML=`<img class="mf big" src="https://flagcdn.com/w40/${cc.toLowerCase()}.png" alt="" onerror="this.remove()">${esc(c.name)} · 1 USD`;$('hv').innerHTML=`${fmt(usd.r)}<em>${esc(c.sym)}</em>`;$('hc').innerHTML=chgHTML(usd.d)+' '+(SR.fx[c.cur]?`<span class="hsp">${spark(SR.fx[c.cur].slice(0,-1).concat([usd.r]),SR.fx[c.cur][SR.fx[c.cur].length-1]>=SR.fx[c.cur][0]?RED:GRN,120,34)}<small>7 дней</small></span>`:'')}
+  else{$('hl').innerHTML=`<img class="mf big" src="https://flagcdn.com/w40/${cc.toLowerCase()}.png" alt="" data-rm="1">${esc(c.name)} · 1 USD`;$('hv').innerHTML=`${fmt(usd.r)}<em>${esc(c.sym)}</em>`;$('hc').innerHTML=chgHTML(usd.d)+' '+(SR.fx[c.cur]?`<span class="hsp">${spark(SR.fx[c.cur].slice(0,-1).concat([usd.r]),SR.fx[c.cur][SR.fx[c.cur].length-1]>=SR.fx[c.cur][0]?RED:GRN,120,34)}<small>7 дней</small></span>`:'')}
   $('feed').innerHTML=ORDER.map(k=>[k,rateOf(k)]).filter(([k,v])=>v&&k!==c.cur).map(([k,v])=>`<div class="card"><div class="l"><span>${flagImg(k)}${k}</span><span>${esc(c.cur)}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');
   $('src').textContent='Источник: '+(R.official[cc]?.src||'рыночный курс (ExchangeRate-API), официального API у ЦБ нет')+' · цены в '+c.sym;
   // крипта
