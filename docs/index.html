@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-V8p7dafIzpPO4Iff3pnywY/AosNrX1NZXUPq+JPK2Fc=' 'sha256-cn1VdFr5vhTDcuVeEFt2KoigZ6tfRgWPDdxqWBXHr2o=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-U0G2wCTSN0zn7370H68SXnm5SbYdnIZPZnms+Q8eauA=' 'sha256-OO4H0+YvhNJPwfRs1t9WOPQ42h+z+6fGV8hhavoq6tI=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="8e07d7c1d9">
+<meta name="app-version" content="949da14992">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -78,7 +78,7 @@ img{display:block}
 
 /* ---------- ШАПКА ---------- */
 .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
-  padding:calc(var(--s3) + env(safe-area-inset-top,0px)) var(--s4) var(--s3);
+  padding:calc(var(--s3) + max(env(safe-area-inset-top,0px),var(--tg-safe-area-inset-top,0px)) + var(--tg-content-safe-area-inset-top,0px)) var(--s4) var(--s3);
   transition:transform var(--d2) var(--ease),opacity var(--d2) var(--ease)}
 .top::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(7,11,26,.78),rgba(7,11,26,0));pointer-events:none}
 .top.hide{transform:translate3d(0,-110%,0);opacity:0;pointer-events:none}
@@ -324,6 +324,10 @@ html.lite .nv .drop{transition-duration:.25s}
 .mrk em.up,.mrk em.dn{text-shadow:none}
 .geo{display:flex;align-items:center;gap:var(--s2)}
 .geo .gp{width:14px;height:14px;flex:0 0 14px;stroke:var(--acc2);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.err{margin:var(--s4);padding:var(--s6) var(--s5);display:flex;flex-direction:column;align-items:center;gap:var(--s2);text-align:center;border-radius:var(--r-xl);background:var(--g-fill);box-shadow:var(--g-rim),var(--g-drop)}
+.err svg{width:34px;height:34px;stroke:var(--dn);stroke-width:1.8;fill:none;stroke-linecap:round}
+.err b{font-size:var(--t-l);font-weight:700}.err p{color:var(--tx2);font-size:var(--t-s);line-height:1.45;max-width:30ch}
+.err .btn{margin-top:var(--s3);min-width:160px}
 </style>
 </head>
 <body>
@@ -560,7 +564,9 @@ const NET=(()=>{
   function paint(){
     const l=$('live');if(!l)return;
     const now=Date.now(),wsLive=now-lastMsg<10000;
-    const anyOk=wsLive||last.srv===true||last.fx===true||last.rest===true;
+    const fresh=Math.max(st.srvOk,st.fxOk,st.cryptoOk,lastMsg);                    // когда в последний раз пришли данные хоть откуда-то
+    const stale=fresh>0&&now-fresh>90000;                                          // 90 с без данных: считаем связь потерянной
+    const anyOk=!stale&&(wsLive||last.srv===true||last.fx===true||last.rest===true);
     const known=wsLive||last.srv!==null||last.fx!==null||last.rest!==null;
     const s=navigator.onLine===false?'bad':(!known?'wait':(anyOk?'ok':'bad'));
     st.state=s;
@@ -707,7 +713,7 @@ const NET=(()=>{
     }
     try{localStorage.setItem('rcache',JSON.stringify({t:Date.now(),r}))}catch(e){}
     const fresh=!R||r.updated!==R.updated;
-    if(!R){R=r}else if(fresh){
+    if(!R){R=r;const eb=document.getElementById('errBox');if(eb){eb.remove();const f=document.getElementById('feed');if(f)f.hidden=false}}else if(fresh){
       // новые ЦБ-курсы и ряды берём с сервера; живые цены крипты и свежий фиат не затираем
       const px={},ch={};R.crypto.forEach(c=>{px[c.sym]=c.usd;ch[c.sym]=c.ch24h});
       const w=R.world;R=r;
@@ -734,6 +740,7 @@ const NET=(()=>{
     try{const c=JSON.parse(localStorage.rcache||'null');
       if(c&&c.r&&c.r.crypto&&c.r.countries&&Date.now()-c.t<864e5&&!R){R=c.r;try{render()}catch(e){console.error('render',e)}window.__rendered=1;if(!window.__geo){window.__geo=1;autoGeo()}startCrypto()}}catch(e){}
     pullServer(true).then(()=>{pullFx()});
+    setTimeout(function chk(){if(R){const e=document.getElementById('errBox');if(e)e.remove();return}showErr();setTimeout(chk,8000)},12000);
     setInterval(()=>pullServer(),30000);
     setInterval(pullFx,30000);
     setInterval(paint,2000);
@@ -807,6 +814,13 @@ const NET=(()=>{
   nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();show(links.indexOf(a))});
   const h=(location.hash||'').slice(1),start=ids.indexOf(h);
   show(start>=0?start:0);
+  // Браузер после загрузки прокручивает к элементу, id которого совпадает с #якорем в адресе (<section id="home"> лежит ниже историй и переключателя).
+  // Хеш нужен только чтобы помнить вкладку, поэтому гасим прыжок: пока пользователь сам ничего не листал, держим страницу вверху.
+  let touched=false;const mark=()=>{touched=true};
+  ['touchstart','wheel','keydown','pointerdown','mousedown'].forEach(n=>addEventListener(n,mark,{passive:true,once:true}));
+  const reset=()=>{if(!touched&&scrollY>0)scrollTo(0,0)};
+  addEventListener('load',()=>{reset();requestAnimationFrame(reset);setTimeout(reset,120);setTimeout(reset,600)});
+  addEventListener('pageshow',e=>{if(e.persisted)reset()});
 })();
 
 // ===== самообновление: если на сервере вышла новая версия страницы, перезагружаемся (обход кэша вебвью Telegram) =====
@@ -832,7 +846,13 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
 // ===== Оболочка Telegram + эффекты стекла (логика курсов не затронута) =====
 (function(){
   const tg=window.Telegram&&Telegram.WebApp;
-  if(tg){try{tg.ready();tg.expand();tg.setHeaderColor&&tg.setHeaderColor('#05060b');tg.setBackgroundColor&&tg.setBackgroundColor('#05060b');tg.disableVerticalSwipes&&tg.disableVerticalSwipes()}catch(e){}}
+  if(tg){try{tg.ready();tg.expand();tg.setHeaderColor&&tg.setHeaderColor('#05060b');tg.setBackgroundColor&&tg.setBackgroundColor('#05060b');tg.setBottomBarColor&&tg.setBottomBarColor('#05060b');tg.disableVerticalSwipes&&tg.disableVerticalSwipes()}catch(e){}
+    // безопасные зоны: Telegram сообщает отступы системных элементов (вырез, жестовая панель, шапка в полноэкранном режиме)
+    const root=document.documentElement,px=n=>(+n||0)+'px';
+    const safe=()=>{try{const a=tg.safeAreaInset||{},c=tg.contentSafeAreaInset||{};
+      root.style.setProperty('--tg-safe-area-inset-top',px(a.top));root.style.setProperty('--tg-safe-area-inset-bottom',px(a.bottom));
+      root.style.setProperty('--tg-content-safe-area-inset-top',px(c.top));root.style.setProperty('--tg-content-safe-area-inset-bottom',px(c.bottom))}catch(e){}};
+    safe();try{tg.onEvent&&tg.onEvent('safeAreaChanged',safe);tg.onEvent&&tg.onEvent('contentSafeAreaChanged',safe);tg.onEvent&&tg.onEvent('viewportChanged',safe)}catch(e){}}
   const hap=t=>{try{tg&&tg.HapticFeedback&&tg.HapticFeedback.impactOccurred(t||'light')}catch(e){}};
   // тактильный отклик на выбор страны, вкладки, строки
   document.addEventListener('click',e=>{if(e.target.closest('.st,.tab,.seg button,nav a,.row,.swap,.btn'))hap('light')},{passive:true});
@@ -877,6 +897,15 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
   new MutationObserver(place).observe(nv,{subtree:true,attributes:true,attributeFilter:['class']});
   place();
 })();
+
+
+// ===== состояние «нет данных и нет кэша»: понятное сообщение и кнопка «Повторить» =====
+const ERRT={ru:['Не удалось загрузить курсы','Проверьте интернет. Последних данных на устройстве нет.','Повторить'],uz:['Kurslarni yuklab bo\'lmadi','Internetni tekshiring. Qurilmada oxirgi ma\'lumotlar yo\'q.','Qayta urinish'],en:['Could not load rates','Check your connection. There is no saved data on this device.','Retry']};
+function showErr(){if(document.getElementById('errBox'))return;const feed=document.getElementById('feed');if(!feed)return;const t=ERRT[UL]||ERRT.ru;
+  const d=document.createElement('div');d.id='errBox';d.className='err';d.setAttribute('role','alert');
+  d.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><circle cx="12" cy="16.4" r=".7" fill="currentColor"/></svg><b>'+t[0]+'</b><p>'+t[1]+'</p><button type="button" class="btn" id="errRetry">'+t[2]+'</button>';
+  feed.parentNode.insertBefore(d,feed);feed.hidden=true;
+  d.querySelector('#errRetry').onclick=()=>{d.remove();feed.hidden=false;try{NET.wake()}catch(e){}try{NET.pullServer(true)}catch(e){}setTimeout(function c(){if(R)return;showErr()},9000)}}
 
 // ===== ЭКРАН ДЕТАЛЕЙ v2: периоды 1Д/1Н/1М/3М/1Г, интерактивный график =====
 (function(){
