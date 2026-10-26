@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws https://api.coinbase.com https://api.country.is https://get.geojs.io; frame-ancestors 'self' https://web.telegram.org https://*.telegram.org; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws https://api.coinbase.com https://api.country.is https://get.geojs.io; frame-ancestors 'self' https://web.telegram.org https://*.telegram.org; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
@@ -97,9 +97,161 @@ nav a.on{color:var(--tx)}
 .sp{flex:0 0 auto;margin:0 10px 0 auto;align-self:center}.row[data-m]{display:grid;grid-template-columns:36px minmax(0,1fr) 88px 92px;align-items:center;column-gap:12px}.row[data-m] .sp{margin:0;justify-self:center}.hsp{display:inline-flex;align-items:center;gap:8px;margin-left:10px;vertical-align:middle}.hsp small{color:var(--mut);font-weight:700;font-size:11px}
 .live.stale .dot{background:#ff5b6b}.live.stale #upd{color:#ff8a96}
 .geo{padding:10px 16px 0;font-size:12px;color:var(--mut);font-weight:700}.geo button{color:var(--gold);font-weight:800;text-decoration:underline}
+
+/* ===================== LIQUID GLASS (iOS-стиль) ===================== */
+:root{
+  --glass:rgba(255,255,255,.075);--glass2:rgba(255,255,255,.12);--glass-b:rgba(255,255,255,.16);
+  --glass-hi:rgba(255,255,255,.55);--glass-lo:rgba(255,255,255,.04);
+  --gold:#ffc94d;--gold2:#ffe3a1;--up:#34e89e;--dn:#ff6b7d;--tx:#f7f7fb;--mut:rgba(235,235,245,.62);--line:rgba(255,255,255,.1);
+  --blur:blur(26px) saturate(185%) brightness(1.06);
+  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.22,1,.36,1);
+}
+html{background:#05060b;color-scheme:dark}
+body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;font-feature-settings:"tnum","ss01";padding-bottom:calc(112px + env(safe-area-inset-bottom))}
+/* живой фон: цветные «капли» плывут медленно, стекло ловит их цвет */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#14182c 0%,#07080f 55%,#04050a 100%)}
+.bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform;mix-blend-mode:screen}
+.bg i:nth-child(1){width:60vmax;height:60vmax;left:-20vmax;top:-18vmax;background:radial-gradient(circle,#3a5bff 0%,transparent 65%);animation:fl1 26s ease-in-out infinite alternate}
+.bg i:nth-child(2){width:55vmax;height:55vmax;right:-22vmax;top:18vh;background:radial-gradient(circle,#ffb21e 0%,transparent 62%);opacity:.38;animation:fl2 32s ease-in-out infinite alternate}
+.bg i:nth-child(3){width:50vmax;height:50vmax;left:-10vmax;bottom:-24vmax;background:radial-gradient(circle,#b13cff 0%,transparent 64%);opacity:.34;animation:fl3 38s ease-in-out infinite alternate}
+@keyframes fl1{to{transform:translate(18vmax,12vmax) scale(1.15)}}
+@keyframes fl2{to{transform:translate(-14vmax,-10vmax) scale(.9)}}
+@keyframes fl3{to{transform:translate(16vmax,-14vmax) scale(1.2)}}
+.bg:after{content:"";position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* общий материал «жидкое стекло»: размытие + градиентная кромка + внутренний блик */
+.glass,.card,.list,.box,.cta,.seg,.top .live,.ring i,.pill,.tab,.swap,.btn.o{
+  background:linear-gradient(155deg,var(--glass2) 0%,var(--glass) 38%,var(--glass-lo) 100%);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border:1px solid transparent;
+  box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.05),inset 1px 0 0 rgba(255,255,255,.1),0 10px 34px -10px rgba(0,0,0,.65),0 2px 6px rgba(0,0,0,.25);
+  position:relative;
+}
+.card:before,.list:before,.box:before,.cta:before,.seg:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(145deg,rgba(255,255,255,.55),rgba(255,255,255,.06) 32%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.28));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.card:after,.box:after,.cta:after{content:"";position:absolute;left:8%;right:8%;top:0;height:42%;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),transparent);opacity:.7}
+:root{--r:24px}
+.card,.list,.box,.cta{border-radius:var(--r)}
+
+/* верхняя панель */
+.top{background:linear-gradient(180deg,rgba(5,6,11,.75),rgba(5,6,11,0));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:0;padding:calc(12px + env(safe-area-inset-top)) 16px 14px;
+  -webkit-mask:linear-gradient(#000 70%,transparent);mask:linear-gradient(#000 70%,transparent)}
+.logo{font-size:23px;letter-spacing:-.8px}
+.logo img{width:36px;height:36px;border-radius:11px;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 6px 18px rgba(255,190,50,.35)}
+.logo b{background:linear-gradient(135deg,#fff1c2,var(--gold) 45%,#ff9d2e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top .live{padding:7px 12px;border-radius:99px;font-size:12px;color:var(--tx)}
+.dot{background:var(--up);box-shadow:0 0 10px var(--up)}
+
+/* страны: стеклянные «пузыри», активная светится золотом */
+.stories{gap:12px;padding:6px 16px 14px}
+.st{width:72px;transition:transform .5s var(--spring)}
+.st:active{transform:scale(.9)}
+.ring{width:66px;height:66px;padding:0;background:none;margin:0 auto}
+.ring i{border:1px solid transparent;font-size:30px;width:100%;height:100%;border-radius:22px;transition:all .45s var(--spring)}
+.st.on .ring{background:none}
+.st.on .ring i{background:linear-gradient(155deg,rgba(255,215,120,.55),rgba(255,170,40,.18) 55%,rgba(255,255,255,.06));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 0 1.5px rgba(255,214,120,.75),0 10px 30px -4px rgba(255,180,50,.55);transform:translateY(-2px) scale(1.06)}
+.st span{font-size:11.5px;margin-top:8px;letter-spacing:.1px}
+
+/* сегмент как в iOS: «ползунок» из стекла */
+.seg{margin:0 16px;padding:4px;border-radius:16px}
+.seg button{border-radius:12px;padding:11px;font-weight:700;font-size:14px;color:var(--mut);transition:all .4s var(--ease)}
+.seg button.on{color:#14110a;background:linear-gradient(180deg,#fff,#e9e6dc);box-shadow:0 4px 14px rgba(0,0,0,.4),inset 0 1px 0 #fff}
+.geo{padding:12px 20px 0}
+
+/* главный курс: крупная «стеклянная» цифра */
+.hero{padding:30px 20px 10px}
+.hero small{font-size:12px;letter-spacing:1.4px;font-weight:700;color:var(--mut)}
+.hero h1{font-weight:800;letter-spacing:-3.5px;margin:8px 0 12px;
+  background:linear-gradient(180deg,#ffffff 12%,#cfd4ea 55%,#8f95b4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 24px rgba(120,140,255,.28))}
+.hero h1 em{background:linear-gradient(135deg,#fff0bd,var(--gold) 50%,#ff9d2e);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+.pill{padding:8px 14px;font-weight:700;border-radius:99px}
+.hsp svg{filter:drop-shadow(0 0 8px currentColor)}
+
+/* плитки валют */
+.feed{gap:12px;padding:0 16px}
+.card{padding:18px 16px 16px;transition:transform .5s var(--spring),box-shadow .3s;overflow:hidden}
+.card:active{transform:scale(.965)}
+.card .l{font-weight:700;font-size:12.5px;letter-spacing:.3px}
+.card .v{font-size:28px;font-weight:800;letter-spacing:-1.2px;margin:10px 0 6px}
+.src{padding:14px 20px 0;font-size:12px}
+
+h2{font-size:26px;font-weight:800;letter-spacing:-1px;padding:34px 20px 14px}
+.lt{margin:-4px 20px 12px}
+
+/* список крипты */
+.list{margin:0 16px;overflow:hidden}
+.row{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);transition:background .25s,transform .4s var(--spring)}
+.row:active{background:rgba(255,255,255,.08);transform:scale(.985)}
+.row.on{background:linear-gradient(90deg,rgba(255,201,77,.16),transparent)}
+.row img{width:40px;height:40px;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 6px 14px rgba(0,0,0,.4)}
+.row .n b{font-weight:700;font-size:16px}.row .p b{font-weight:700}
+.row[data-m]{grid-template-columns:40px minmax(0,1fr) 88px 92px}
+
+/* график и конвертер */
+.box{margin:0 16px;padding:18px}
+.tabs{gap:8px}
+.tab{padding:9px 16px;font-weight:700;border-radius:99px;transition:all .4s var(--ease)}
+.tab.on{color:#14110a;background:linear-gradient(180deg,#ffe29a,var(--gold));box-shadow:0 6px 18px -4px rgba(255,190,50,.6),inset 0 1px 0 rgba(255,255,255,.7)}
+.conv input,.conv select{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:15px 16px;font-weight:600;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.35);transition:border-color .3s,box-shadow .3s}
+.conv input:focus,.conv select:focus{border-color:rgba(255,201,77,.8);box-shadow:inset 0 2px 8px rgba(0,0,0,.35),0 0 0 4px rgba(255,201,77,.16)}
+.conv label{font-weight:700;letter-spacing:.4px}
+.swap{padding:10px 20px;font-weight:700;transition:transform .5s var(--spring)}.swap:active{transform:scale(.92) rotate(6deg)}
+.res{font-weight:800;letter-spacing:-1.5px;background:linear-gradient(135deg,#fff1c2,var(--gold) 55%,#ff9d2e);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* призыв */
+.cta{margin:34px 16px 0;padding:28px 22px}
+.cta h3{font-weight:800;letter-spacing:-1px}
+.btn{background:linear-gradient(180deg,#ffe29a,var(--gold) 60%,#ffab1f);color:#1a1405;font-weight:800;border-radius:16px;padding:15px 28px;
+  box-shadow:0 10px 28px -6px rgba(255,180,40,.65),inset 0 1px 0 rgba(255,255,255,.8);transition:transform .5s var(--spring)}
+.btn:active{transform:scale(.94)}
+.btn.o{color:var(--tx);box-shadow:inset 0 1px 0 var(--glass-hi);background:linear-gradient(155deg,var(--glass2),var(--glass-lo))}
+footer{color:rgba(235,235,245,.35)}
+
+/* ПЛАВАЮЩАЯ НАВИГАЦИЯ-КАПСУЛА (как таб-бар iOS 26+) */
+nav{left:50%;right:auto;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(92vw,420px);border:0;background:none;padding:0}
+nav div{position:relative;padding:6px;border-radius:30px;
+  background:linear-gradient(155deg,rgba(255,255,255,.16),rgba(255,255,255,.06) 40%,rgba(255,255,255,.03));
+  -webkit-backdrop-filter:blur(30px) saturate(200%) brightness(1.08);backdrop-filter:blur(30px) saturate(200%) brightness(1.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.06),0 18px 50px -8px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.1)}
+nav a{position:relative;z-index:1;padding:9px 0 8px;border-radius:24px;font-size:10.5px;font-weight:700;letter-spacing:.2px;color:var(--mut);transition:color .35s,transform .5s var(--spring)}
+nav a svg{width:25px;height:25px;margin-bottom:3px;stroke-width:1.9;transition:transform .55s var(--spring),filter .35s}
+nav a.on{color:#fff}
+nav a.on svg{transform:translateY(-1px) scale(1.12);stroke:var(--gold);filter:drop-shadow(0 0 8px rgba(255,201,77,.7))}
+nav a:active{transform:scale(.88)}
+nav .pillbg{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:24px;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.08));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 6px 18px rgba(0,0,0,.35);transition:transform .6s var(--spring)}
+@media(min-width:700px){nav{display:block}body{padding-bottom:120px}.wrap{border:0}}
+
+/* появление блоков при прокрутке */
+.rv{opacity:0;transform:translateY(18px) scale(.985);transition:opacity .7s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.bg i{animation:none}.rv{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important}}
+/* запасной вариант для устройств без backdrop-filter */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass,.card,.list,.box,.cta,.seg,.top .live,.ring i,.pill,.tab,.swap,nav div{background:rgba(28,30,44,.92)}}
+.card:hover:after,.box:hover:after{background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.16),transparent 70%)}
+.ring i{overflow:hidden;position:relative}
+.ring i .fl{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;filter:saturate(1.15) contrast(1.03)}
+.ring i:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 45%,rgba(0,0,0,.18));box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+nav a svg .f{fill:transparent;transition:fill .4s}
+nav a.on svg .f{fill:rgba(255,201,77,.28)}
+.mf{width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:-4px;margin-right:7px;box-shadow:0 0 0 1px rgba(255,255,255,.25),0 2px 6px rgba(0,0,0,.4)}
+.mf.big{width:22px;height:22px;vertical-align:-6px;margin-right:9px}
+nav div{background:linear-gradient(155deg,rgba(40,44,66,.72),rgba(14,16,28,.78)) !important;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%)}
+body{padding-bottom:calc(132px + env(safe-area-inset-bottom)) !important}
+.top{background:linear-gradient(180deg,rgba(6,7,14,.88) 0%,rgba(6,7,14,.62) 70%,rgba(6,7,14,0)) !important;-webkit-mask:none !important;mask:none !important;-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%)}
+canvas#chart{filter:none;touch-action:pan-y}
 </style>
 </head>
 <body>
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="wrap">
   <div class="top">
     <div class="logo"><img src="assets/avatar.png" alt=""><span>CIS <b>Rates</b></span></div>
@@ -142,17 +294,21 @@ nav a.on{color:var(--tx)}
   <footer>Данные: ЦБ Узбекистана, России, Казахстана, Украины, Беларуси, ExchangeRate-API, CoinGecko.<br>Для стран без открытого API курс рыночный. Не является финансовым советом.</footer>
 </div>
 
-<nav><div>
-  <a href="#home" class="on" data-s="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Курсы</a>
-  <a href="#crypto" data-s="crypto"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 8h4.5a2 2 0 0 1 0 4H9m0 0h5a2 2 0 0 1 0 4H9M9 6v12"/></svg>Крипта</a>
-  <a href="#chartS" data-s="chartS"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg>График</a>
-  <a href="#conv" data-s="conv"><svg viewBox="0 0 24 24"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4m4 4H7"/></svg>Конвертер</a>
+<nav aria-label="Разделы"><div><span class="pillbg" id="pillbg"></span>
+  <a href="#home" class="on" data-s="home"><svg viewBox="0 0 24 24"><path class="f" d="M4 11.2 12 4l8 7.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5.2H5.5A1.5 1.5 0 0 1 4 19z"/></svg>Курсы</a>
+  <a href="#crypto" data-s="crypto"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="8.5"/><path d="M10 7.8h3.2a1.9 1.9 0 0 1 0 3.8H10m0 0h3.6a2 2 0 0 1 0 4H10M10 6.5v11M12.4 6.5v1.3m0 7.8v1.3"/></svg>Крипта</a>
+  <a href="#chartS" data-s="chartS"><svg viewBox="0 0 24 24"><path d="M3.5 3.5v15a2 2 0 0 0 2 2h15"/><path class="f" d="m7.5 14.5 3.2-3.8 3 2.6 5-6.3"/><circle cx="18.7" cy="6.9" r="1.1"/></svg>График</a>
+  <a href="#conv" data-s="conv"><svg viewBox="0 0 24 24"><path d="M5 8h13l-3.2-3.2M19 16H6l3.2 3.2"/><circle class="f" cx="12" cy="12" r=".01"/></svg>Конвертер</a>
 </div></nav>
 
 <script>
 const $=id=>document.getElementById(id);
 const fmt=(n,d)=>{if(n==null||isNaN(n))return'—';d=d??(Math.abs(n)>=1000?0:Math.abs(n)>=1?2:4);return Number(n).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d})};
 const FL={PLN:'🇵🇱',CHF:'🇨🇭',USD:'🇺🇸',EUR:'🇪🇺',RUB:'🇷🇺',CNY:'🇨🇳',TRY:'🇹🇷',KZT:'🇰🇿',UAH:'🇺🇦',GBP:'🇬🇧',AED:'🇦🇪',BYN:'🇧🇾'};
+
+// флаги: картинка вместо эмодзи (на части устройств эмодзи-флаги не отображаются)
+const CUR2CC={USD:'us',EUR:'eu',RUB:'ru',CNY:'cn',TRY:'tr',GBP:'gb',CHF:'ch',PLN:'pl',AED:'ae',KZT:'kz',UAH:'ua',BYN:'by',UZS:'uz',AMD:'am',AZN:'az',GEL:'ge',KGS:'kg',TJS:'tj',MDL:'md',TMT:'tm',CZK:'cz',HUF:'hu',RON:'ro',BGN:'bg',SEK:'se',NOK:'no',DKK:'dk',RSD:'rs',JPY:'jp',KRW:'kr'};
+const flagImg=(code,txt)=>CUR2CC[code]?`<img class="mf" src="https://flagcdn.com/w40/${CUR2CC[code]}.png" alt="" loading="lazy" onerror="this.remove()">`:'';
 const ORDER=['EUR','RUB','CNY','TRY','GBP','CHF','PLN','AED','KZT','UAH'];
 let R,H=[],SR={crypto:{},fx:{}},cc=localStorage.cc||'UZ',reg=localStorage.reg||'cis',metric=null,chart;
 const cur=c=>R.countries[c].cur;
@@ -205,19 +361,26 @@ async function autoGeo(){
 let loading=false,lastOk=0;
 async function load(){
   if(loading)return;loading=true;
-  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),8000),q='?t='+Date.now();
+  const q='?t='+Date.now();
+  // отдельный таймаут и защита для каждого файла: сбой рядов/истории не должен выглядеть как «нет связи»
+  const get=async(url,ms,fallback)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);
+    try{const r=await fetch(url+q,{cache:'no-store',signal:c.signal});if(!r.ok)throw 0;return await r.json()}catch(e){return fallback}finally{clearTimeout(t)}};
+  let r=null;
   try{
-    const [r,h,sr]=await Promise.all([
-      fetch('data/rates.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>{if(!x.ok)throw 0;return x.json()}),
-      fetch('data/history.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>H||[]),
-      fetch('data/series.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>SR)]);   // ряды обязательно ДО первого рендера
+    // главный файл: курсы. Только его отказ считается обрывом связи.
+    [r]=await Promise.all([get('data/rates.json',8000,null)]);
+    if(!r||!r.crypto)throw new Error('rates');
+    const [h,sr]=await Promise.all([get('data/history.json',5000,H||[]),get('data/series.json',5000,SR)]);
     SR=sr&&sr.crypto?sr:SR;
     const fresh=!R||r.updated!==R.updated||(SR.ts&&SR.ts!==window.__srts);window.__srts=SR.ts;
     R=r;H=h;lastOk=Date.now();R.crypto.forEach(c=>{if(LIVE.px[c.sym])c.usd=LIVE.px[c.sym]});
-    if(fresh||!window.__rendered){render();window.__rendered=1}else tick();
+    if(fresh||!window.__rendered){try{render()}catch(e){e.__render=1;throw e}window.__rendered=1}else tick();
     if(!window.__geo){window.__geo=1;autoGeo()}
-  }catch(e){ if(!R)$('upd').textContent='нет связи'; else tick(true) }   // старые данные не стираем
-  finally{clearTimeout(to);loading=false}
+  }catch(e){
+    if(e&&e.__render){console.error('render:',e)}          // ошибка отрисовки: связь есть
+    else if(!R)$('upd').textContent='нет связи'; else tick(true)   // старые данные не стираем
+  }
+  finally{loading=false}
 }
 // живая подпись: «обновлено 20:34 · 3 мин назад»; каждые 15 с пересчитывается без запроса
 function tick(offline){
@@ -275,14 +438,12 @@ function liveBadge(){const e=document.getElementById('liveTag');if(!e)return;
   e.className='lt '+(LIVE.on&&Date.now()-LIVE.t<20000?'on':'')}
 
 function render(){
-  const age=(Date.now()-new Date(R.updated))/60000;
-  $('live').classList.toggle('stale',age>20);
-  tick();
+  tick();                                   // единственное место, где решается «устарело/свежо»
   if(!R.countries[cc]||R.countries[cc].region!==reg)reg=R.countries[cc]?R.countries[cc].region:'cis';
   if(!R.countries[cc])cc='UZ';
   const c=R.countries[cc];
   // страны-«истории» выбранного региона
-  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${k}"><div class="ring"><i>${x.flag}</i></div><span>${x.name}</span></button>`).join('');
+  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${k}"><div class="ring"><i><img class="fl" src="https://flagcdn.com/w80/${k.toLowerCase()}.png" srcset="https://flagcdn.com/w160/${k.toLowerCase()}.png 2x" alt="" loading="lazy" onerror="this.replaceWith(document.createTextNode('${x.flag}'))"></i></div><span>${x.name}</span></button>`).join('');
   $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
   $('seg').innerHTML=[['cis','СНГ'],['eu','Европа']].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
   $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
@@ -291,8 +452,8 @@ function render(){
   // главный курс: 1 USD
   const usd=rateOf('USD');
   if(c.cur==='USD'){$('hl').textContent=c.name;$('hv').innerHTML='1 USD<em>= 1 USD</em>';$('hc').textContent=''}
-  else{$('hl').textContent=`${c.flag} ${c.name} · 1 USD`;$('hv').innerHTML=`${fmt(usd.r)}<em>${c.sym}</em>`;$('hc').innerHTML=chgHTML(usd.d)+' '+(SR.fx[c.cur]?`<span class="hsp">${spark(SR.fx[c.cur].slice(0,-1).concat([usd.r]),SR.fx[c.cur][SR.fx[c.cur].length-1]>=SR.fx[c.cur][0]?RED:GRN,120,34)}<small>7 дней</small></span>`:'')}
-  $('feed').innerHTML=ORDER.map(k=>[k,rateOf(k)]).filter(([k,v])=>v&&k!==c.cur).map(([k,v])=>`<div class="card"><div class="l"><span>${FL[k]||''} ${k}</span><span>${c.cur}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');
+  else{$('hl').innerHTML=`<img class="mf big" src="https://flagcdn.com/w40/${cc.toLowerCase()}.png" alt="" onerror="this.remove()">${c.name} · 1 USD`;$('hv').innerHTML=`${fmt(usd.r)}<em>${c.sym}</em>`;$('hc').innerHTML=chgHTML(usd.d)+' '+(SR.fx[c.cur]?`<span class="hsp">${spark(SR.fx[c.cur].slice(0,-1).concat([usd.r]),SR.fx[c.cur][SR.fx[c.cur].length-1]>=SR.fx[c.cur][0]?RED:GRN,120,34)}<small>7 дней</small></span>`:'')}
+  $('feed').innerHTML=ORDER.map(k=>[k,rateOf(k)]).filter(([k,v])=>v&&k!==c.cur).map(([k,v])=>`<div class="card"><div class="l"><span>${flagImg(k)}${k}</span><span>${c.cur}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');
   $('src').textContent='Источник: '+(R.official[cc]?.src||'рыночный курс (ExchangeRate-API), официального API у ЦБ нет')+' · цены в '+c.sym;
   // крипта
   $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${x.sym}"><img src="${x.img}" loading="lazy" alt=""><div class="n"><b>${x.sym}</b><small>${x.name}</small></div>${spark(((SR.crypto[x.sym]||[]).slice(0,-1)).concat([x.usd]),trendColor(SR.crypto[x.sym]))||'<span></span>'}<div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
@@ -307,24 +468,50 @@ function render(){
   if(!$('to').dataset.set||$('to').dataset.set!==cc){$('to').value=c.cur;$('from').value=c.cur==='USD'?'EUR':'USD';$('to').dataset.set=cc}
   conv();
   // график
-  const keys=[c.cur,'BTC','TON','ETH','SOL'].filter((k,i,a)=>H.some(p=>p[k])&&a.indexOf(k)===i);
+  const has=k=>(SR.crypto&&SR.crypto[k]&&SR.crypto[k].length>=3)||(SR.fx&&SR.fx[k]&&SR.fx[k].length>=3)||H.some(p=>p[k]);
+  const keys=[c.cur,'BTC','ETH','TON','SOL','BNB','XRP'].filter((k,i,a)=>has(k)&&a.indexOf(k)===i);
   if(!metric||!keys.includes(metric)){const mv=k=>{const v=H.filter(p=>p[k]).map(p=>p[k]);return v.length>2&&Math.max(...v)!==Math.min(...v)};metric=keys.find(mv)||keys[0]}
   $('tabs').innerHTML=keys.map(k=>`<button class="tab ${k===metric?'on':''}" data-k="${k}">${k===c.cur?'USD → '+k:k+' $'}</button>`).join('');
   $('tabs').onclick=e=>{if(e.target.dataset.k){metric=e.target.dataset.k;render()}};
-  $('ct').textContent=metric===c.cur?'USD → '+c.cur:metric+' в долларах';
+  $('ct').textContent=(metric===c.cur?'USD → '+c.cur:metric+' в долларах')+' · 7 дней';
   draw();
 }
 function conv(){const a=parseFloat($('amt').value)||0,f=$('from').value,t=$('to').value,r=convert(a,f,t);$('res').textContent=r==null?'—':fmt(r)+' '+t}
 function draw(){
   if(!window.Chart)return;
-  const pts=H.filter(p=>p[metric]).slice(-150);if(!pts.length)return;
-  const up=pts[pts.length-1][metric]>=pts[0][metric],col=up?'#2ee08a':'#ff5b6b',ctx=$('chart').getContext('2d');
-  const g=ctx.createLinearGradient(0,0,0,240);g.addColorStop(0,up?'rgba(46,224,138,.28)':'rgba(255,91,107,.28)');g.addColorStop(1,'rgba(0,0,0,0)');
-  const vals=pts.map(p=>p[metric]),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||hi*.002;
+  // 7 дней: крипта (CoinGecko, 48 точек), валюты (дневные курсы), запасной вариант: накопленная история
+  let vals=(SR.crypto&&SR.crypto[metric])||(SR.fx&&SR.fx[metric])||[];
+  let labels;
+  if(vals.length>=3){
+    const n=vals.length,end=Date.now(),step=7*864e5/(n-1);
+    vals=vals.slice();                                   // последняя точка = текущая цена, как на карточке
+    const cr=R.crypto.find(x=>x.sym===metric);if(cr)vals[n-1]=LIVE&&LIVE.px[metric]||cr.usd;
+    labels=vals.map((_,i)=>new Date(end-(n-1-i)*step).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}));
+  }else{
+    const pts=H.filter(p=>p[metric]).slice(-150);if(!pts.length)return;
+    vals=pts.map(p=>p[metric]);labels=pts.map(p=>new Date(p.t*1000).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}));
+  }
+  const isFx=metric===cur(cc)||(SR.fx&&SR.fx[metric]&&!(SR.crypto&&SR.crypto[metric]));
+  // для валют рост курса доллара = местная валюта слабеет: красный; для крипты рост = зелёный
+  const rising=vals[vals.length-1]>=vals[0],good=isFx?!rising:rising;
+  const col=good?'#34e89e':'#ff6b7d',rgb=good?'52,232,158':'255,107,125',ctx=$('chart').getContext('2d');
+  const g=ctx.createLinearGradient(0,0,0,260);g.addColorStop(0,`rgba(${rgb},.38)`);g.addColorStop(.6,`rgba(${rgb},.08)`);g.addColorStop(1,`rgba(${rgb},0)`);
+  const lo=Math.min(...vals),hi=Math.max(...vals),mid=(lo+hi)/2,span=Math.max(hi-lo,mid*.012),pad=span*.18;
   if(chart)chart.destroy();
-  chart=new Chart(ctx,{type:'line',data:{labels:pts.map(p=>new Date(p.t*1000).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})),
-    datasets:[{data:pts.map(p=>p[metric]),borderColor:col,backgroundColor:g,fill:true,tension:.3,pointRadius:0,borderWidth:2.5}]},
-    options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{position:'right',min:lo-pad,max:hi+pad,ticks:{color:'#a8a8a8',maxTicksLimit:5,callback:v=>fmt(v,Math.abs(v)>=1000?0:Math.abs(v)>=1?2:4)},grid:{color:'#1c1c1c'},border:{display:false}}},interaction:{intersect:false,mode:'index'}}});
+  // свечение линии (рисуется под самой линией)
+  const glow={id:'glow',beforeDatasetsDraw(c){const x=c.ctx;x.save();x.shadowColor=col;x.shadowBlur=18;x.shadowOffsetY=4},afterDatasetsDraw(c){c.ctx.restore()}};
+  // вертикальная «нить» и точка под пальцем
+  const cross={id:'cross',afterDatasetsDraw(c){const t=c.tooltip;if(!t||!t.getActiveElements().length)return;const e=t.getActiveElements()[0].element,x=c.ctx;
+    x.save();x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=1;x.setLineDash([3,4]);x.beginPath();x.moveTo(e.x,c.chartArea.top);x.lineTo(e.x,c.chartArea.bottom);x.stroke();
+    x.setLineDash([]);x.fillStyle='#fff';x.shadowColor=col;x.shadowBlur=14;x.beginPath();x.arc(e.x,e.y,5.5,0,7);x.fill();x.restore()}};
+  chart=new Chart(ctx,{type:'line',plugins:[glow,cross],
+    data:{labels,datasets:[{data:vals,borderColor:col,backgroundColor:g,fill:true,tension:.38,pointRadius:0,pointHoverRadius:0,borderWidth:3,borderCapStyle:'round',borderJoinStyle:'round'}]},
+    options:{responsive:true,animation:{duration:900,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},layout:{padding:{top:8,right:2}},
+      plugins:{legend:{display:false},tooltip:{enabled:true,displayColors:false,backgroundColor:'rgba(18,20,34,.82)',borderColor:'rgba(255,255,255,.22)',borderWidth:1,cornerRadius:14,padding:{x:14,y:10},
+        titleColor:'rgba(235,235,245,.65)',titleFont:{size:11,weight:'600'},bodyColor:'#fff',bodyFont:{size:16,weight:'800'},caretSize:0,
+        callbacks:{label:i=>fmt(i.parsed.y,Math.abs(i.parsed.y)>=1000?0:Math.abs(i.parsed.y)>=1?2:4)+(isFx?' '+metric:' $')}}},
+      scales:{x:{display:false},y:{position:'right',min:mid-span/2-pad,max:mid+span/2+pad,ticks:{color:'rgba(235,235,245,.5)',font:{size:11,weight:'600'},maxTicksLimit:5,padding:6,
+        callback:v=>fmt(v,Math.abs(v)>=1000?0:Math.abs(v)>=1?2:4)},grid:{color:'rgba(255,255,255,.06)',drawTicks:false},border:{display:false}}}}});
 }
 // подсветка вкладки при прокрутке
 const secs=['home','crypto','chartS','conv'].map($);
@@ -351,5 +538,32 @@ let _raf=0;(function frame(t){
 // страница висит открытой сутки и дольше: берём свежую версию сайта
 setTimeout(()=>{if(!document.hidden)location.reload()},6*3600*1000);
 </script>
+
+<script>
+// ===== Оболочка Telegram + эффекты стекла (логика курсов не затронута) =====
+(function(){
+  const tg=window.Telegram&&Telegram.WebApp;
+  if(tg){try{tg.ready();tg.expand();tg.setHeaderColor&&tg.setHeaderColor('#05060b');tg.setBackgroundColor&&tg.setBackgroundColor('#05060b');tg.disableVerticalSwipes&&tg.disableVerticalSwipes()}catch(e){}}
+  const hap=t=>{try{tg&&tg.HapticFeedback&&tg.HapticFeedback.impactOccurred(t||'light')}catch(e){}};
+  // тактильный отклик на выбор страны, вкладки, строки
+  document.addEventListener('click',e=>{if(e.target.closest('.st,.tab,.seg button,nav a,.row,.swap,.btn'))hap('light')},{passive:true});
+
+  // ползунок навигации едет за активной вкладкой
+  const nav=document.querySelector('nav div'),bg=document.getElementById('pillbg');
+  function place(){const links=[...nav.querySelectorAll('a')],i=Math.max(0,links.findIndex(a=>a.classList.contains('on')));
+    bg.style.transform='translateX('+(i*100)+'%)'}
+  new MutationObserver(place).observe(nav,{attributes:true,subtree:true,attributeFilter:['class']});place();
+
+  // плавное появление блоков при прокрутке
+  const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{threshold:.08}):null;
+  function arm(){document.querySelectorAll('.card,.list,.box,.cta,h2').forEach(el=>{if(el.dataset.rv)return;el.dataset.rv=1;el.classList.add('rv');io?io.observe(el):el.classList.add('in')})}
+  arm();new MutationObserver(arm).observe(document.body,{childList:true,subtree:true});
+
+  // «линза»: блик следует за пальцем/курсором по стеклянным плиткам
+  document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card,.box,.cta');if(!c)return;
+    const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')},{passive:true});
+})();
+</script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
