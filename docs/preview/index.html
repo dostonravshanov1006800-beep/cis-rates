@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws https://api.coinbase.com https://api.country.is https://get.geojs.io; frame-ancestors 'self' https://web.telegram.org https://*.telegram.org; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; frame-ancestors 'self' https://web.telegram.org https://*.telegram.org; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
@@ -9,8 +9,9 @@
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
 <meta name="description" content="Курсы валют СНГ и Европы, топ-20 криптовалют, конвертер. Официальные курсы ЦБ. Обновление каждые 5 минут.">
-<meta property="og:title" content="CIS Rates: курсы валют и крипто СНГ"><meta property="og:image" content="assets/banner.png">
+<meta property="og:title" content="CIS Rates: курсы валют и крипто СНГ"><meta property="og:image" content="../assets/banner.png">
 <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/avatar-192.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{--bg:#000;--card:#121212;--line:#262626;--tx:#fafafa;--mut:#a8a8a8;--gold:#f5c04a;--up:#2ee08a;--dn:#ff5b6b;--r:16px}
@@ -89,8 +90,6 @@ nav a.on{color:var(--tx)}
 @media(min-width:700px){body{padding-bottom:0}nav{display:none}.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 .hide{display:none}
 .lt{margin:2px 16px 8px;font-size:12px;font-weight:800;color:var(--mut)}.lt.on{color:#2ee08a}
-@keyframes fu{0%{color:#2ee08a;text-shadow:0 0 12px #2ee08a88}100%{color:inherit;text-shadow:none}}
-@keyframes fd{0%{color:#ff5b6b;text-shadow:0 0 12px #ff5b6b88}100%{color:inherit;text-shadow:none}}
 .tu{animation:fu 1.1s ease-out}.td{animation:fd 1.1s ease-out}
 @media (prefers-reduced-motion:reduce){.tu,.td{animation:none}}
 
@@ -98,17 +97,20 @@ nav a.on{color:var(--tx)}
 .live.stale .dot{background:#ff5b6b}.live.stale #upd{color:#ff8a96}
 .geo{padding:10px 16px 0;font-size:12px;color:var(--mut);font-weight:700}.geo button{color:var(--gold);font-weight:800;text-decoration:underline}
 
-/* ===================== LIQUID GLASS (iOS-стиль) ===================== */
+/* ===================== CLEAN LIQUID GLASS ===================== */
 :root{
-  --glass:rgba(255,255,255,.075);--glass2:rgba(255,255,255,.12);--glass-b:rgba(255,255,255,.16);
-  --glass-hi:rgba(255,255,255,.55);--glass-lo:rgba(255,255,255,.04);
-  --gold:#ffc94d;--gold2:#ffe3a1;--up:#34e89e;--dn:#ff6b7d;--tx:#f7f7fb;--mut:rgba(235,235,245,.62);--line:rgba(255,255,255,.1);
-  --blur:blur(26px) saturate(185%) brightness(1.06);
-  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.22,1,.36,1);
+  --gl-bg:rgba(255,255,255,.08);            /* единый материал стекла */
+  --gl-bd:1px solid rgba(255,255,255,.18);
+  --gl-hi:inset 0 1px 0 rgba(255,255,255,.3); /* блик ТОЛЬКО по верхнему краю */
+  --gl-sh:0 8px 32px rgba(0,0,0,.25);        /* только мягкая внешняя тень */
+  --gl-bl:blur(24px) saturate(180%);
+  --gl-r:22px;                                /* одинаковое скругление у всех карточек */
+  --gold:#ffc94d;--up:#22c55e;--dn:#ef4444;--tx:#f7f7fb;--mut:rgba(235,235,245,.62);--line:rgba(255,255,255,.1);
+  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.22,1,.36,1)
 }
 html{background:#05060b;color-scheme:dark}
 body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Segoe UI",Roboto,sans-serif;
-  -webkit-font-smoothing:antialiased;font-feature-settings:"tnum","ss01";padding-bottom:calc(112px + env(safe-area-inset-bottom))}
+  -webkit-font-smoothing:antialiased;font-feature-settings:"tnum";padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 /* живой фон: цветные «капли» плывут медленно, стекло ловит их цвет */
 .bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#14182c 0%,#07080f 55%,#04050a 100%)}
 .bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform;mix-blend-mode:screen}
@@ -118,145 +120,117 @@ body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro
 @keyframes fl1{to{transform:translate(18vmax,12vmax) scale(1.15)}}
 @keyframes fl2{to{transform:translate(-14vmax,-10vmax) scale(.9)}}
 @keyframes fl3{to{transform:translate(16vmax,-14vmax) scale(1.2)}}
-.bg:after{content:"";position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 
-/* общий материал «жидкое стекло»: размытие + градиентная кромка + внутренний блик */
-.glass,.card,.list,.box,.cta,.seg,.top .live,.ring i,.pill,.tab,.swap,.btn.o{
-  background:linear-gradient(155deg,var(--glass2) 0%,var(--glass) 38%,var(--glass-lo) 100%);
-  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-  border:1px solid transparent;
-  box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.05),inset 1px 0 0 rgba(255,255,255,.1),0 10px 34px -10px rgba(0,0,0,.65),0 2px 6px rgba(0,0,0,.25);
-  position:relative;
+
+/* ЕДИНЫЙ СТЕКЛЯННЫЙ МАТЕРИАЛ: карточки, списки, блоки, шапка, сегмент, навигация */
+.card,.list,.box,.cta,.seg,.pill,.swap,.btn.o,.top .live,nav div{
+  background:var(--gl-bg);
+  -webkit-backdrop-filter:var(--gl-bl);backdrop-filter:var(--gl-bl);
+  border:var(--gl-bd);
+  box-shadow:var(--gl-hi),var(--gl-sh);
+  text-shadow:none;
 }
-.card:before,.list:before,.box:before,.cta:before,.seg:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
-  background:linear-gradient(145deg,rgba(255,255,255,.55),rgba(255,255,255,.06) 32%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.28));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.card:after,.box:after,.cta:after{content:"";position:absolute;left:8%;right:8%;top:0;height:42%;border-radius:inherit;pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.10),transparent);opacity:.7}
-:root{--r:24px}
-.card,.list,.box,.cta{border-radius:var(--r)}
+.card,.list,.box,.cta{border-radius:var(--gl-r)}
+.card:before,.card:after,.list:before,.list:after,.box:before,.box:after,.cta:before,.cta:after,.seg:before,.seg:after{content:none !important;display:none !important}
+.card,.list,.box,.cta,.seg{position:relative;overflow:hidden}
 
-/* верхняя панель */
-.top{background:linear-gradient(180deg,rgba(5,6,11,.75),rgba(5,6,11,0));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:0;padding:calc(12px + env(safe-area-inset-top)) 16px 14px;
-  -webkit-mask:linear-gradient(#000 70%,transparent);mask:linear-gradient(#000 70%,transparent)}
-.logo{font-size:23px;letter-spacing:-.8px}
-.logo img{width:36px;height:36px;border-radius:11px;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 6px 18px rgba(255,190,50,.35)}
-.logo b{background:linear-gradient(135deg,#fff1c2,var(--gold) 45%,#ff9d2e);-webkit-background-clip:text;background-clip:text;color:transparent}
-.top .live{padding:7px 12px;border-radius:99px;font-size:12px;color:var(--tx)}
-.dot{background:var(--up);box-shadow:0 0 10px var(--up)}
+/* ШАПКА: лёгкая, без логотипа и названия; только индикатор */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  padding:calc(10px + env(safe-area-inset-top)) 16px 10px;background:transparent;border:0;
+  -webkit-backdrop-filter:none;backdrop-filter:none;-webkit-mask:none;mask:none}
+.hdr-l{display:flex;align-items:center;gap:10px;min-width:0}
+.hdr-btn{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--tx);padding:0;
+  background:var(--gl-bg);-webkit-backdrop-filter:var(--gl-bl);backdrop-filter:var(--gl-bl);border:var(--gl-bd);box-shadow:var(--gl-hi),var(--gl-sh);
+  transition:transform .4s var(--spring)}
+.hdr-btn:active{transform:scale(.9)}
+.hdr-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.top .live{width:38px;height:38px;padding:0;border-radius:50%;display:grid;place-items:center}
+.top .live #upd{display:none}
 
-/* страны: стеклянные «пузыри», активная светится золотом */
+/* ИНДИКАТОР: кружок без текста. Зелёный = свежо и есть связь, красный = нет связи / запрос не удался */
+.dot{width:12px;height:12px;border-radius:50%;background:var(--up);box-shadow:none;animation:pulse 2s ease-out infinite}
+.live.bad .dot{background:var(--dn);animation:none}
+.live.wait .dot{background:#f59e0b;animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%,100%{box-shadow:0 0 0 10px rgba(34,197,94,0)}}
+
+/* страны, сегмент, главная цифра: чистый текст без свечения */
 .stories{gap:12px;padding:6px 16px 14px}
-.st{width:72px;transition:transform .5s var(--spring)}
-.st:active{transform:scale(.9)}
+.st{width:72px;transition:transform .5s var(--spring)}.st:active{transform:scale(.92)}
 .ring{width:66px;height:66px;padding:0;background:none;margin:0 auto}
-.ring i{border:1px solid transparent;font-size:30px;width:100%;height:100%;border-radius:22px;transition:all .45s var(--spring)}
-.st.on .ring{background:none}
-.st.on .ring i{background:linear-gradient(155deg,rgba(255,215,120,.55),rgba(255,170,40,.18) 55%,rgba(255,255,255,.06));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 0 1.5px rgba(255,214,120,.75),0 10px 30px -4px rgba(255,180,50,.55);transform:translateY(-2px) scale(1.06)}
-.st span{font-size:11.5px;margin-top:8px;letter-spacing:.1px}
-
-/* сегмент как в iOS: «ползунок» из стекла */
+.ring i{display:block;width:100%;height:100%;border-radius:20px;overflow:hidden;border:var(--gl-bd);background:var(--gl-bg);box-shadow:var(--gl-hi),var(--gl-sh);
+  transition:transform .45s var(--spring),border-color .3s}
+.st.on .ring i{border-color:var(--gold);transform:translateY(-2px) scale(1.05)}
+.st span{font-size:11.5px;margin-top:8px}
 .seg{margin:0 16px;padding:4px;border-radius:16px}
-.seg button{border-radius:12px;padding:11px;font-weight:700;font-size:14px;color:var(--mut);transition:all .4s var(--ease)}
-.seg button.on{color:#14110a;background:linear-gradient(180deg,#fff,#e9e6dc);box-shadow:0 4px 14px rgba(0,0,0,.4),inset 0 1px 0 #fff}
-.geo{padding:12px 20px 0}
-
-/* главный курс: крупная «стеклянная» цифра */
-.hero{padding:30px 20px 10px}
-.hero small{font-size:12px;letter-spacing:1.4px;font-weight:700;color:var(--mut)}
-.hero h1{font-weight:800;letter-spacing:-3.5px;margin:8px 0 12px;
-  background:linear-gradient(180deg,#ffffff 12%,#cfd4ea 55%,#8f95b4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 6px 24px rgba(120,140,255,.28))}
-.hero h1 em{background:linear-gradient(135deg,#fff0bd,var(--gold) 50%,#ff9d2e);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
-.pill{padding:8px 14px;font-weight:700;border-radius:99px}
-.hsp svg{filter:drop-shadow(0 0 8px currentColor)}
-
-/* плитки валют */
+.seg button{border-radius:12px;padding:11px;font-weight:700;font-size:14px;color:var(--mut);transition:background .3s,color .3s}
+.seg button.on{color:#111;background:rgba(255,255,255,.92);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.hero h1{font-weight:800;letter-spacing:-3px;color:var(--tx);background:none;-webkit-text-fill-color:currentColor;filter:none;text-shadow:none}
+.hero h1 em{color:var(--gold);background:none;-webkit-text-fill-color:currentColor;font-weight:700}
 .feed{gap:12px;padding:0 16px}
-.card{padding:18px 16px 16px;transition:transform .5s var(--spring),box-shadow .3s;overflow:hidden}
-.card:active{transform:scale(.965)}
-.card .l{font-weight:700;font-size:12.5px;letter-spacing:.3px}
+.card{padding:18px 16px 16px;transition:transform .45s var(--spring)}
+.card:active{transform:scale(.97)}
 .card .v{font-size:28px;font-weight:800;letter-spacing:-1.2px;margin:10px 0 6px}
-.src{padding:14px 20px 0;font-size:12px}
-
 h2{font-size:26px;font-weight:800;letter-spacing:-1px;padding:34px 20px 14px}
-.lt{margin:-4px 20px 12px}
-
-/* список крипты */
-.list{margin:0 16px;overflow:hidden}
-.row{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);transition:background .25s,transform .4s var(--spring)}
-.row:active{background:rgba(255,255,255,.08);transform:scale(.985)}
-.row.on{background:linear-gradient(90deg,rgba(255,201,77,.16),transparent)}
-.row img{width:40px;height:40px;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 6px 14px rgba(0,0,0,.4)}
-.row .n b{font-weight:700;font-size:16px}.row .p b{font-weight:700}
-.row[data-m]{grid-template-columns:40px minmax(0,1fr) 88px 92px}
-
-/* график и конвертер */
+.list{margin:0 16px}
+.row{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);transition:background .2s}
+.row:last-child{border-bottom:0}
+.row:active{background:rgba(255,255,255,.07)}
+.row.on{background:rgba(255,201,77,.12)}
+.row img{width:40px;height:40px;box-shadow:none}
 .box{margin:0 16px;padding:18px}
-.tabs{gap:8px}
-.tab{padding:9px 16px;font-weight:700;border-radius:99px;transition:all .4s var(--ease)}
-.tab.on{color:#14110a;background:linear-gradient(180deg,#ffe29a,var(--gold));box-shadow:0 6px 18px -4px rgba(255,190,50,.6),inset 0 1px 0 rgba(255,255,255,.7)}
-.conv input,.conv select{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:15px 16px;font-weight:600;
-  box-shadow:inset 0 2px 8px rgba(0,0,0,.35);transition:border-color .3s,box-shadow .3s}
-.conv input:focus,.conv select:focus{border-color:rgba(255,201,77,.8);box-shadow:inset 0 2px 8px rgba(0,0,0,.35),0 0 0 4px rgba(255,201,77,.16)}
-.conv label{font-weight:700;letter-spacing:.4px}
-.swap{padding:10px 20px;font-weight:700;transition:transform .5s var(--spring)}.swap:active{transform:scale(.92) rotate(6deg)}
-.res{font-weight:800;letter-spacing:-1.5px;background:linear-gradient(135deg,#fff1c2,var(--gold) 55%,#ff9d2e);-webkit-background-clip:text;background-clip:text;color:transparent}
-
-/* призыв */
-.cta{margin:34px 16px 0;padding:28px 22px}
+.tab{padding:9px 16px;font-weight:700;border-radius:99px;background:var(--gl-bg);border:var(--gl-bd);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.tab.on{color:#111;background:var(--gold);border-color:var(--gold)}
+.conv input,.conv select{background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:15px 16px;font-weight:600;box-shadow:none}
+.conv input:focus,.conv select:focus{border-color:var(--gold);outline:0}
+.res{font-weight:800;letter-spacing:-1.5px;color:var(--gold);background:none;-webkit-text-fill-color:currentColor}
+.cta{margin:34px 16px 0;padding:26px 22px}
 .cta h3{font-weight:800;letter-spacing:-1px}
-.btn{background:linear-gradient(180deg,#ffe29a,var(--gold) 60%,#ffab1f);color:#1a1405;font-weight:800;border-radius:16px;padding:15px 28px;
-  box-shadow:0 10px 28px -6px rgba(255,180,40,.65),inset 0 1px 0 rgba(255,255,255,.8);transition:transform .5s var(--spring)}
-.btn:active{transform:scale(.94)}
-.btn.o{color:var(--tx);box-shadow:inset 0 1px 0 var(--glass-hi);background:linear-gradient(155deg,var(--glass2),var(--glass-lo))}
-footer{color:rgba(235,235,245,.35)}
+.btn{background:var(--gold);color:#1a1405;font-weight:800;border-radius:16px;padding:15px 28px;box-shadow:none;border:0}
+.btn.o{color:var(--tx)}
+.btn:active{transform:scale(.96)}
+footer{color:rgba(235,235,245,.4)}
 
-/* ПЛАВАЮЩАЯ НАВИГАЦИЯ-КАПСУЛА (как таб-бар iOS 26+) */
+/* НИЖНЯЯ НАВИГАЦИЯ — тот же материал */
 nav{left:50%;right:auto;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(92vw,420px);border:0;background:none;padding:0}
-nav div{position:relative;padding:6px;border-radius:30px;
-  background:linear-gradient(155deg,rgba(255,255,255,.16),rgba(255,255,255,.06) 40%,rgba(255,255,255,.03));
-  -webkit-backdrop-filter:blur(30px) saturate(200%) brightness(1.08);backdrop-filter:blur(30px) saturate(200%) brightness(1.08);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.06),0 18px 50px -8px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.1)}
-nav a{position:relative;z-index:1;padding:9px 0 8px;border-radius:24px;font-size:10.5px;font-weight:700;letter-spacing:.2px;color:var(--mut);transition:color .35s,transform .5s var(--spring)}
-nav a svg{width:25px;height:25px;margin-bottom:3px;stroke-width:1.9;transition:transform .55s var(--spring),filter .35s}
-nav a.on{color:#fff}
-nav a.on svg{transform:translateY(-1px) scale(1.12);stroke:var(--gold);filter:drop-shadow(0 0 8px rgba(255,201,77,.7))}
-nav a:active{transform:scale(.88)}
+nav div{position:relative;padding:6px;border-radius:30px}
+nav a{position:relative;z-index:1;padding:9px 0 8px;border-radius:24px;font-size:10.5px;font-weight:700;color:var(--mut);transition:color .3s}
+nav a svg{width:25px;height:25px;margin-bottom:3px;stroke-width:1.9}
+nav a.on{color:#fff}nav a.on svg{stroke:var(--gold);filter:none}
 nav .pillbg{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:24px;z-index:0;pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.08));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 6px 18px rgba(0,0,0,.35);transition:transform .6s var(--spring)}
-@media(min-width:700px){nav{display:block}body{padding-bottom:120px}.wrap{border:0}}
+  background:rgba(255,255,255,.14);box-shadow:var(--gl-hi);transition:transform .55s var(--spring)}
 
-/* появление блоков при прокрутке */
-.rv{opacity:0;transform:translateY(18px) scale(.985);transition:opacity .7s var(--ease),transform .8s var(--ease)}
-.rv.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.bg i{animation:none}.rv{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important}}
-/* запасной вариант для устройств без backdrop-filter */
+/* мигание цены: короткая подсветка роста/падения + плавная смена числа */
+.tu{animation:tu .9s ease-out}.td{animation:td .9s ease-out}.fu{animation:tu .9s ease-out}.fd{animation:td .9s ease-out}
+@keyframes tu{0%{color:var(--up)}100%{color:inherit}}
+@keyframes td{0%{color:var(--dn)}100%{color:inherit}}
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .7s var(--ease)}.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.bg i,.dot{animation:none}.rv{opacity:1;transform:none;transition:none}}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .glass,.card,.list,.box,.cta,.seg,.top .live,.ring i,.pill,.tab,.swap,nav div{background:rgba(28,30,44,.92)}}
-.card:hover:after,.box:hover:after{background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.16),transparent 70%)}
-.ring i{overflow:hidden;position:relative}
-.ring i .fl{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;filter:saturate(1.15) contrast(1.03)}
-.ring i:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 45%,rgba(0,0,0,.18));box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
-nav a svg .f{fill:transparent;transition:fill .4s}
-nav a.on svg .f{fill:rgba(255,201,77,.28)}
-.mf{width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:-4px;margin-right:7px;box-shadow:0 0 0 1px rgba(255,255,255,.25),0 2px 6px rgba(0,0,0,.4)}
-.mf.big{width:22px;height:22px;vertical-align:-6px;margin-right:9px}
-nav div{background:linear-gradient(155deg,rgba(40,44,66,.72),rgba(14,16,28,.78)) !important;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%)}
-body{padding-bottom:calc(132px + env(safe-area-inset-bottom)) !important}
-.top{background:linear-gradient(180deg,rgba(6,7,14,.88) 0%,rgba(6,7,14,.62) 70%,rgba(6,7,14,0)) !important;-webkit-mask:none !important;mask:none !important;-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%)}
-canvas#chart{filter:none;touch-action:pan-y}
-.logo img{width:38px;height:38px;border-radius:50%;object-fit:cover;aspect-ratio:1/1;flex:none;background:#05060b;box-shadow:0 0 0 1.5px rgba(255,255,255,.35),0 0 0 3px rgba(255,201,77,.28),0 6px 20px rgba(60,140,255,.45)}
+  .card,.list,.box,.cta,.seg,.pill,.swap,.btn.o,.top .live,nav div,.hdr-btn{background:rgba(30,32,46,.92)}}
+nav a svg .f{fill:transparent;transition:fill .3s}nav a.on svg .f{fill:rgba(255,201,77,.25)}
+.mf{width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:-4px;margin-right:7px}.mf.big{width:22px;height:22px;vertical-align:-6px;margin-right:9px}
+.sheet{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}
+.sheet[hidden]{display:none}
+.sheet-b{width:min(100%,520px);max-height:78vh;overflow:auto;padding:18px 18px calc(24px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0;
+  background:rgba(24,26,40,.82);-webkit-backdrop-filter:var(--gl-bl);backdrop-filter:var(--gl-bl);border:var(--gl-bd);border-bottom:0;box-shadow:var(--gl-hi),var(--gl-sh);animation:up .4s var(--spring)}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:20px}
+.sheet p{color:var(--mut);font-size:14px;line-height:1.5;margin:0 0 10px}
+.sheet .kv{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px}
+.sheet .kv:last-child{border:0}.sheet .kv span{color:var(--mut)}
+.sheet .wl{display:flex;gap:10px;margin-top:6px}.sheet .wl input{flex:1;min-width:0}
+.sheet .wl button{border:0;border-radius:14px;background:var(--gold);color:#111;font-weight:800;padding:0 18px}
 </style>
 </head>
 <body>
 <div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="wrap">
   <div class="top">
-    <div class="logo"><img src="../assets/avatar-256.webp" width="38" height="38" alt="CIS Rates" decoding="async"><span>CIS <b>Rates</b></span></div>
-    <div class="live" id="live"><div class="dot"></div><span id="upd">загрузка</span></div>
+    <div class="hdr-l">
+      <button class="hdr-btn" id="btnInfo" aria-label="Информация" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.9" r=".6" fill="currentColor"/></svg></button>
+      <button class="hdr-btn" id="btnWallet" aria-label="Кошелёк" type="button"><svg viewBox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18a1 1 0 0 1 1 1v2"/><path d="M4 7.5V17a2 2 0 0 0 2 2h12.5a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18.5 8H6.5A2.5 2.5 0 0 1 4 7.5z"/><circle cx="16.2" cy="13.2" r="1.1" fill="currentColor"/></svg></button>
+    </div>
+    <div class="live" id="live" role="status" aria-label="Состояние соединения"><div class="dot"></div><span id="upd" hidden></span></div>
   </div>
 
   <div class="stories" id="stories"></div>
@@ -295,6 +269,8 @@ canvas#chart{filter:none;touch-action:pan-y}
   <footer>Данные: ЦБ Узбекистана, России, Казахстана, Украины, Беларуси, ExchangeRate-API, CoinGecko.<br>Для стран без открытого API курс рыночный. Не является финансовым советом.</footer>
 </div>
 
+
+<div class="sheet" id="sheet" hidden><div class="sheet-b"><div class="sheet-h"><b id="shT"></b><button class="hdr-btn" id="shX" aria-label="Закрыть" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="shC"></div></div></div>
 <nav aria-label="Разделы"><div><span class="pillbg" id="pillbg"></span>
   <a href="#home" class="on" data-s="home"><svg viewBox="0 0 24 24"><path class="f" d="M4 11.2 12 4l8 7.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5.2H5.5A1.5 1.5 0 0 1 4 19z"/></svg>Курсы</a>
   <a href="#crypto" data-s="crypto"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="8.5"/><path d="M10 7.8h3.2a1.9 1.9 0 0 1 0 3.8H10m0 0h3.6a2 2 0 0 1 0 4H10M10 6.5v11M12.4 6.5v1.3m0 7.8v1.3"/></svg>Крипта</a>
@@ -360,38 +336,8 @@ async function autoGeo(){
 }
 
 let loading=false,lastOk=0;
-async function load(){
-  if(loading)return;loading=true;
-  const q='?t='+Date.now();
-  // отдельный таймаут и защита для каждого файла: сбой рядов/истории не должен выглядеть как «нет связи»
-  const get=async(url,ms,fallback)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);
-    try{const r=await fetch(url+q,{cache:'no-store',signal:c.signal});if(!r.ok)throw 0;return await r.json()}catch(e){return fallback}finally{clearTimeout(t)}};
-  let r=null;
-  try{
-    // главный файл: курсы. Только его отказ считается обрывом связи.
-    [r]=await Promise.all([get('../data/rates.json',8000,null)]);
-    if(!r||!r.crypto)throw new Error('rates');
-    const [h,sr]=await Promise.all([get('../data/history.json',5000,H||[]),get('../data/series.json',5000,SR)]);
-    SR=sr&&sr.crypto?sr:SR;
-    const fresh=!R||r.updated!==R.updated||(SR.ts&&SR.ts!==window.__srts);window.__srts=SR.ts;
-    R=r;H=h;lastOk=Date.now();R.crypto.forEach(c=>{if(LIVE.px[c.sym])c.usd=LIVE.px[c.sym]});
-    if(fresh||!window.__rendered){try{render()}catch(e){e.__render=1;throw e}window.__rendered=1}else tick();
-    if(!window.__geo){window.__geo=1;autoGeo()}
-  }catch(e){
-    if(e&&e.__render){console.error('render:',e)}          // ошибка отрисовки: связь есть
-    else if(!R)$('upd').textContent='нет связи'; else tick(true)   // старые данные не стираем
-  }
-  finally{loading=false}
-}
-// живая подпись: «обновлено 20:34 · 3 мин назад»; каждые 15 с пересчитывается без запроса
-function tick(offline){
-  if(!R)return;
-  const mins=Math.max(0,Math.round((Date.now()-new Date(R.updated))/60000));
-  const t=new Date(R.updated).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
-  const ago=mins<1?'только что':mins<60?mins+' мин назад':Math.floor(mins/60)+' ч назад';
-  $('upd').textContent=offline?`нет связи · данные от ${t}`:(mins>20?'данные устарели · '+ago:`обновлено ${t} · ${ago}`);
-  $('live').classList.toggle('stale',offline===true||mins>20);   // строго булево: toggle(x, undefined) переключал класс через раз
-}
+/* load() заменена на NET.pullServer() ниже */
+function tick(){NET.paint()}
 
 // мини-график 7 дней (SVG). up=true: зелёный; invert для валют: рост курса USD = местная слабее = красный
 function spark(vals,color,w=88,h=30){
@@ -405,38 +351,9 @@ function spark(vals,color,w=88,h=30){
 const GRN='#2ee08a',RED='#ff5b6b';
 const trendColor=v=>v&&v.length>1&&v[v.length-1]>=v[0]?GRN:RED;
 
-// ── ЖИВЫЕ ЦЕНЫ КРИПТЫ (в браузере, без сервера, бесплатно) ─────────────────────────────
-// Gate.io: одна пара = 274 байта. Запасной источник Coinbase. Если оба недоступны, остаются данные сервера.
-// Лимиты: опрашиваем только видимые строки, по кругу, ~3 с на монету; вкладка скрыта = пауза.
-const LIVE={px:{},ok:0,fail:0,src:'',t:0,i:0,on:true};
-const GATE_SKIP=new Set(['USDT','TON','XMR']);          // этих пар нет на Gate.io
-async function livePrice(sym){
-  // каждый источник в своём try: сбой Gate.io не должен блокировать запасной Coinbase
-  const get=async(url)=>{const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),3500);
-    try{const r=await fetch(url,{signal:ctl.signal,cache:'no-store'});return r.ok?await r.json():null}catch(e){return null}finally{clearTimeout(to)}};
-  if(!GATE_SKIP.has(sym)){
-    const j=await get('https://api.gateio.ws/api/v4/spot/tickers?currency_pair='+sym+'_USDT');
-    if(j&&j[0]&&+j[0].last>0)return{p:+j[0].last,c:+j[0].change_percentage,s:'Gate.io'}}
-  const j2=await get('https://api.coinbase.com/v2/prices/'+sym+'-USD/spot');
-  if(j2&&j2.data&&+j2.data.amount>0)return{p:+j2.data.amount,c:null,s:'Coinbase'};
-  return null}
-function paintLive(sym,v){
-  const row=document.querySelector(`#clist [data-m="${sym}"]`);if(!row)return;
-  const b=row.querySelector('.p b'),old=LIVE.px[sym];
-  if(old!==undefined&&v.p!==old){                                   // короткая подсветка роста/падения
-    b.classList.remove('tu','td');void b.offsetWidth;b.classList.add(v.p>old?'tu':'td')}
-  b.textContent='$'+fmt(v.p);LIVE.px[sym]=v.p;
-  const c=R.crypto.find(x=>x.sym===sym);if(c){c.usd=v.p;if(v.c!==null&&!isNaN(v.c)){c.ch24h=v.c;const sm=row.querySelector('.p small');sm.textContent=(v.c>=0?'+':'')+v.c+'%';sm.className=v.c>=0?'up':'dn'}}}
-async function liveLoop(){
-  if(!LIVE.on||document.hidden||!R){setTimeout(liveLoop,1500);return}
-  const list=R.crypto.map(x=>x.sym);const sym=list[LIVE.i++%list.length];
-  const v=await livePrice(sym);
-  if(v){LIVE.ok++;LIVE.fail=0;LIVE.t=Date.now();LIVE.src=v.s;paintLive(sym,v);liveBadge()}
-  else{LIVE.fail++;if(LIVE.fail>8){LIVE.on=false;liveBadge();setTimeout(()=>{LIVE.on=true;LIVE.fail=0},60000)}}   // 8 отказов подряд: пауза минута
-  setTimeout(liveLoop,LIVE.fail>3?4000:700)}                         // ~17 монет за ~12 с, каждая обновляется раз в ~12 с
-function liveBadge(){const e=document.getElementById('liveTag');if(!e)return;
-  e.textContent=LIVE.on&&Date.now()-LIVE.t<20000?`⚡ цены крипты живые · ${LIVE.src}`:'цены крипты с сервера (раз в 4 мин)';
-  e.className='lt '+(LIVE.on&&Date.now()-LIVE.t<20000?'on':'')}
+/* живые цены теперь в NET.crypto (WebSocket) */
+const LIVE={px:{},t:0,src:''};
+function liveBadge(){const e=document.getElementById('liveTag');if(!e)return;const on=NET.cryptoLive();e.textContent=on?'⚡ цены крипты в реальном времени · '+NET.cryptoSrc:'цены крипты: обновление каждые 4 секунды';e.className='lt '+(on?'on':'')}
 
 function render(){
   tick();                                   // единственное место, где решается «устарело/свежо»
@@ -518,26 +435,245 @@ function draw(){
 const secs=['home','crypto','chartS','conv'].map($);
 addEventListener('scroll',()=>{let cur='home';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
   document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.s===cur))},{passive:true});
-load();
-if(!window.__liveStarted){window.__liveStarted=1;setTimeout(liveLoop,2500);setInterval(liveBadge,3000)}
-setInterval(load,30000);                 // опрос каждые 30 с (данные на сервере меняются раз в ~4 мин)
-setInterval(()=>tick(),15000);           // подпись «N мин назад» живёт сама
-const wake=()=>{if(!document.hidden&&Date.now()-lastOk>10000)load()};
-document.addEventListener('visibilitychange',wake);   // вернулись в окно Telegram
-window.addEventListener('focus',wake);
-window.addEventListener('pageshow',e=>{if(e.persisted)load()});
-window.addEventListener('online',load);               // появилась сеть
-document.addEventListener('touchstart',wake,{passive:true});  // любое касание после «сна» вебвью
-document.addEventListener('scroll',wake,{passive:true});     // прокрутка тоже «будит»
-document.addEventListener('click',wake,{passive:true});
-// запасной механизм: таймеры вебвью могут замирать, а кадры отрисовки идут, когда экран виден.
-// на каждом кадре (не чаще раза в 5 с) проверяем, не пора ли обновить данные и подпись.
-let _raf=0;(function frame(t){
-  if(t-_raf>5000){_raf=t;
-    if(!document.hidden){ if(Date.now()-lastOk>30000)load(); else tick() } }
-  requestAnimationFrame(frame)})(0);
-// страница висит открытой сутки и дольше: берём свежую версию сайта
-setTimeout(()=>{if(!document.hidden)location.reload()},6*3600*1000);
+
+/* =====================================================================
+   NET: единый менеджер данных
+   - крипта: WebSocket (Binance Vision -> Gate.io), запасной опрос REST каждые 4 с
+   - фиат: опрос рыночного источника каждые 30 с + файл сервера; ЦБ только справочно
+   - все запросы: cache no-store, таймаут 5 с, AbortController, один быстрый повтор
+   - индикатор: ok (зелёный) / wait (жёлтый, первый запуск) / bad (красный: нет связи)
+   ===================================================================== */
+const NET=(()=>{
+  const T=5000, st={state:'wait',srvOk:0,fxOk:0,cryptoOk:0,fail:0};
+  let ws=null,wsKind='',wsTimer=0,restTimer=0,backoff=1000,lastMsg=0,dirty=new Set(),raf=0,lastRender=0;
+  const out={cryptoSrc:'',lastGood:0};
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+  // ---- запрос: no-store, таймаут 5 с, AbortController, 1 быстрый повтор ----
+  async function req(url,opt){
+    for(let k=0;k<2;k++){
+      const c=new AbortController(),t=setTimeout(()=>c.abort(),T);
+      try{
+        const r=await fetch(url+(url.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store',signal:c.signal,...opt});
+        if(!r.ok)throw new Error(r.status);
+        return await r.json();
+      }catch(e){ if(k===0)await sleep(350) }   // быстрый повтор
+      finally{clearTimeout(t)}
+    }
+    return null;
+  }
+
+  // ---- индикатор ----
+  // зелёный: последний запрос удался (или идут живые цены); красный: запрос не удался даже после быстрого повтора / нет сети
+  const last={srv:null,fx:null,rest:null};          // true/false — исход последней попытки
+  function mark(k,ok){last[k]=ok;paint()}
+  function paint(){
+    const l=$('live');if(!l)return;
+    const now=Date.now(),wsLive=now-lastMsg<10000;
+    const anyOk=wsLive||last.srv===true||last.fx===true||last.rest===true;
+    const known=wsLive||last.srv!==null||last.fx!==null||last.rest!==null;
+    const s=navigator.onLine===false?'bad':(!known?'wait':(anyOk?'ok':'bad'));
+    st.state=s;
+    l.classList.toggle('bad',s==='bad');l.classList.toggle('wait',s==='wait');
+    l.setAttribute('aria-label',s==='ok'?'Данные свежие':s==='bad'?'Нет соединения':'Загрузка');
+    liveBadge();
+  }
+
+  // ---- плавная смена числа + подсветка ----
+  const shown=new Map();   // sym -> {v, el, raf}
+  function animateNum(el,from,to,fmtFn,ms=450){
+    const t0=performance.now();cancelAnimationFrame(el._a);
+    const step=t=>{const k=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-k,3);el.textContent=fmtFn(from+(to-from)*e);if(k<1)el._a=requestAnimationFrame(step)};
+    el._a=requestAnimationFrame(step);
+  }
+  function flash(el,up){el.classList.remove('tu','td');void el.offsetWidth;el.classList.add(up?'tu':'td')}
+
+  // ---- применение цены крипты: данные + строка списка ----
+  function applyCrypto(sym,price,change){
+    if(!(price>0))return;
+    const c=R&&R.crypto.find(x=>x.sym===sym);if(!c)return;
+    const old=c.usd;
+    if(change!==null&&change!==undefined&&!isNaN(change))c.ch24h=Math.round(change*100)/100;
+    c.usd=price;LIVE.px[sym]=price;LIVE.t=Date.now();st.cryptoOk=Date.now();dirty.add(sym);
+    if(old!==price){
+      const row=document.querySelector(`#clist [data-m="${sym}"]`);
+      if(row){const b=row.querySelector('.p b');
+        animateNum(b,old,price,v=>'$'+fmt(v));flash(b,price>old);
+        const v=c.ch24h;if(v!==undefined&&v!==null){const sm=row.querySelector('.p small');sm.textContent=(v>=0?'+':'')+v+'%';sm.className=v>=0?'up':'dn'}}
+    }
+    if(!raf)raf=setTimeout(()=>{raf=0;afterPrices()},700);   // конвертер и график — те же свежие данные, не чаще раза в 0,7 с
+  }
+  function afterPrices(){
+    if(!R)return;
+    try{conv()}catch(e){}
+    // график: подтягиваем последнюю точку к живой цене
+    if(chart&&metric&&LIVE.px[metric]){const ds=chart.data.datasets[0].data;if(ds.length){ds[ds.length-1]=LIVE.px[metric];chart.update('none')}}
+    paint();
+  }
+
+  // ---- WebSocket ----
+  const SYMS=()=>R?R.crypto.map(c=>c.sym).filter(s=>s!=='USDT'&&s!=='DAI'||true):[];
+  const BIN_SKIP=new Set(['USDT','TON','XMR','LEO','RAIN','DAI','CC','USD1']);   // пар к USDT на Binance нет (проверено по exchangeInfo); их цены даёт Gate.io / сервер
+  function closeWs(){try{ws&&ws.close()}catch(e){}try{ws2&&ws2.close()}catch(e){}ws=null;ws2=null;clearTimeout(wsTimer)}
+  function openBinance(){
+    closeWs();wsKind='binance';
+    const list=SYMS().filter(s=>!BIN_SKIP.has(s)).map(s=>s.toLowerCase()+'usdt@miniTicker');
+    if(!list.length)return openGate();
+    let got=0,opened=false;
+    try{ws=new WebSocket('wss://data-stream.binance.vision/stream?streams='+list.join('/'))}catch(e){return openGate()}
+    const guard=setTimeout(()=>{if(!got){closeWs();openGate()}},6000);   // нет данных за 6 с -> запасной источник
+    ws.onopen=()=>{opened=true;openGateExtra()};
+    ws.onmessage=ev=>{try{const d=JSON.parse(ev.data).data;if(!d||!d.s)return;got++;lastMsg=Date.now();out.cryptoSrc='Binance';backoff=1000;
+      let sym=d.s.replace(/USDT$/,'');const p=+d.c,o=+d.o;
+      applyCrypto(sym,p,o>0?(p/o-1)*100:null)}catch(e){}};
+    ws.onclose=()=>{clearTimeout(guard);if(wsKind==='binance')reconnect()};
+    ws.onerror=()=>{try{ws.close()}catch(e){}};
+  }
+  // монеты, которых нет на Binance (TON, LEO, RAIN, DAI...), идут отдельным сокетом Gate.io
+  let ws2=null;
+  const GATE_OK=new Set(['LEO','RAIN','BTC','ETH','SOL','BNB','XRP','DOGE','ADA','TRX','LINK','BCH','XLM','NEAR','ZEC','HYPE']);   // пары, реально торгуемые на Gate (TON, XMR, DAI там сняты)
+  function openGateExtra(){
+    try{ws2&&ws2.close()}catch(e){}
+    const pairs=SYMS().filter(x=>BIN_SKIP.has(x)&&GATE_OK.has(x)).map(x=>x+'_USDT');
+    if(!pairs.length)return;
+    try{ws2=new WebSocket('wss://api.gateio.ws/ws/v4/')}catch(e){return}
+    ws2.onopen=()=>ws2.send(JSON.stringify({time:Math.floor(Date.now()/1000),channel:'spot.tickers',event:'subscribe',payload:pairs}));
+    ws2.onmessage=ev=>{try{const m=JSON.parse(ev.data);if(m.channel!=='spot.tickers'||m.event!=='update'||!m.result)return;const r=m.result;
+      applyCrypto(r.currency_pair.replace('_USDT',''),+r.last,+r.change_percentage)}catch(e){}};
+    ws2.onerror=()=>{try{ws2.close()}catch(e){}};
+  }
+  function openGate(){
+    closeWs();wsKind='gate';
+    const pairs=SYMS().filter(x=>GATE_OK.has(x)).map(x=>x+'_USDT');
+    let got=0;
+    try{ws=new WebSocket('wss://api.gateio.ws/ws/v4/')}catch(e){return startRest()}
+    const guard=setTimeout(()=>{if(!got){closeWs();startRest()}},6000);
+    ws.onopen=()=>ws.send(JSON.stringify({time:Math.floor(Date.now()/1000),channel:'spot.tickers',event:'subscribe',payload:pairs}));
+    ws.onmessage=ev=>{try{const m=JSON.parse(ev.data);if(m.channel!=='spot.tickers'||m.event!=='update'||!m.result)return;const r=m.result;
+      got++;lastMsg=Date.now();out.cryptoSrc='Gate.io';backoff=1000;
+      applyCrypto(r.currency_pair.replace('_USDT',''),+r.last,+r.change_percentage)}catch(e){}};
+    ws.onclose=()=>{clearTimeout(guard);if(wsKind==='gate')reconnect()};
+    ws.onerror=()=>{try{ws.close()}catch(e){}};
+  }
+  function reconnect(){
+    // обрыв: пока переподключаемся, работает опрос REST каждые 4 с
+    startRest();
+    clearTimeout(wsTimer);wsTimer=setTimeout(()=>{if(!document.hidden)openBinance()},Math.min(backoff,30000));backoff*=2;
+  }
+
+  // ---- запасной опрос крипты: пакетом, каждые 4 с (если WebSocket молчит) ----
+  async function restOnce(){
+    if(!R||document.hidden)return;
+    if(Date.now()-lastMsg<8000)return;                       // WebSocket жив — опрос не нужен
+    // 1) Binance: только нужные монеты, ~4 КБ вместо 112 КБ у «всех пар»
+    const bs=R.crypto.map(c=>c.sym).filter(x=>!BIN_SKIP.has(x)&&x!=='USDT');
+    if(bs.length){
+      const q=encodeURIComponent(JSON.stringify(bs.map(x=>x+'USDT')));
+      const b=await req('https://data-api.binance.vision/api/v3/ticker/24hr?type=MINI&symbols='+q);
+      if(Array.isArray(b)&&b.length){
+        b.forEach(x=>{const p=+x.lastPrice,o=+x.openPrice;applyCrypto(x.symbol.replace(/USDT$/,''),p,o>0?(p/o-1)*100:null)});
+        out.cryptoSrc='Binance';mark('rest',true);return}
+    }
+    // 2) резерв: Gate.io, по одной паре самой важной монеты не годится — берём пакет, но только если Binance недоступен
+    const j=await req('https://api.gateio.ws/api/v4/spot/tickers');
+    if(Array.isArray(j)){
+      const by=new Map(j.map(x=>[x.currency_pair,x]));
+      R.crypto.forEach(c=>{const x=by.get(c.sym+'_USDT');if(x)applyCrypto(c.sym,+x.last,+x.change_percentage)});
+      out.cryptoSrc='Gate.io';mark('rest',true);return;
+    }
+    st.fail++;mark('rest',false);
+  }
+  function startRest(){clearInterval(restTimer);restTimer=setInterval(restOnce,4000)}
+
+  // ---- фиат: рыночный источник каждые 30 с ----
+  async function pullFx(){
+    if(!R||document.hidden)return;
+    const j=await req('https://open.er-api.com/v6/latest/USD');
+    if(j&&j.rates){
+      st.fxOk=Date.now();mark('fx',true);
+      const keep=new Set(Object.keys(R.world));let changed=false;
+      for(const k of keep){const v=j.rates[k];if(v>0&&Math.abs(v/R.world[k]-1)<0.4&&v!==R.world[k]){R.world[k]=v;changed=true}}
+      if(changed)softRender();
+    }else{st.fail++;mark('fx',false)}
+  }
+
+  // ---- файл сервера (ЦБ, ряды, история): каждые 30 с ----
+  async function pullServer(first){
+    const r=await req('../data/rates.json');
+    if(!r||!r.crypto){mark('srv',false);return false }
+    st.srvOk=Date.now();mark('srv',true);
+    const [h,sr]=await Promise.all([req('../data/history.json'),req('../data/series.json')]);
+    if(Array.isArray(h))H=h;if(sr&&sr.crypto)SR=sr;
+    const fresh=!R||r.updated!==R.updated;
+    if(!R){R=r}else if(fresh){
+      // новые ЦБ-курсы и ряды берём с сервера; живые цены крипты и свежий фиат не затираем
+      const px={},ch={};R.crypto.forEach(c=>{px[c.sym]=c.usd;ch[c.sym]=c.ch24h});
+      const w=R.world;R=r;
+      R.crypto.forEach(c=>{if(LIVE.px[c.sym]){c.usd=LIVE.px[c.sym];if(ch[c.sym]!=null)c.ch24h=ch[c.sym]}});
+      if(st.fxOk&&Date.now()-st.fxOk<120000)Object.keys(w).forEach(k=>{if(R.world[k]!=null&&Math.abs(w[k]/R.world[k]-1)<0.4)R.world[k]=w[k]});
+    }
+    if(!window.__rendered){try{render()}catch(e){console.error('render',e)}window.__rendered=1;if(!window.__geo){window.__geo=1;autoGeo()}startCrypto()}
+    else if(fresh)softRender();
+    paint();return true;
+  }
+  function softRender(){ if(R&&window.__rendered){try{render()}catch(e){console.error('render',e)}} }
+
+  function startCrypto(){ if(!ws)openBinance(); startRest() }
+
+  // ---- обновление сразу при возврате в приложение и смене вкладки ----
+  function wake(){
+    if(document.hidden)return;
+    pullServer();pullFx();
+    if(!ws||ws.readyState>1){backoff=1000;openBinance()}
+    restOnce();
+  }
+  function start(){
+    pullServer(true).then(()=>{pullFx()});
+    setInterval(()=>pullServer(),30000);
+    setInterval(pullFx,30000);
+    setInterval(paint,2000);
+    document.addEventListener('visibilitychange',wake);
+    window.addEventListener('focus',wake);
+    window.addEventListener('pageshow',wake);
+    window.addEventListener('online',()=>{backoff=1000;wake()});
+    window.addEventListener('offline',paint);
+    document.addEventListener('visibilitychange',()=>{ if(document.hidden){closeWs();clearInterval(restTimer)} });   // в фоне соединения не держим
+    window.addEventListener('hashchange',wake);
+  }
+  return{start,paint,wake,pullServer,cryptoLive:()=>Date.now()-lastMsg<10000,get cryptoSrc(){return out.cryptoSrc||'—'},state:()=>st.state};
+})();
+
+// ---- шапка: Информация и Кошелёк ----
+(function(){
+  const sh=$('sheet'),T=$('shT'),C=$('shC');
+  const open=(t,h)=>{T.textContent=t;C.innerHTML=h;sh.hidden=false;document.body.style.overflow='hidden'};
+  const close=()=>{sh.hidden=true;document.body.style.overflow=''};
+  $('shX').onclick=close;sh.onclick=e=>{if(e.target===sh)close()};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+  const ago=()=>{if(!R)return '—';const m=Math.max(0,Math.round((Date.now()-new Date(R.updated))/60000));return m<1?'только что':m+' мин назад'};
+  $('btnInfo').onclick=()=>open('Информация',`
+    <p>Курсы валют СНГ и Европы и топ-20 криптовалют. Курсы центральных банков публикуются раз в сутки, поэтому они справочные. Рыночные курсы и крипта обновляются чаще.</p>
+    <div class="kv"><span>Состояние</span><b>${NET.state()==='ok'?'Данные свежие':NET.state()==='bad'?'Нет соединения':'Загрузка'}</b></div>
+    <div class="kv"><span>Крипта</span><b>${NET.cryptoLive()?'в реальном времени · '+NET.cryptoSrc:'опрос каждые 4 с'}</b></div>
+    <div class="kv"><span>Фиат</span><b>рыночный курс, каждые 30 с</b></div>
+    <div class="kv"><span>Файл сервера</span><b>${ago()}</b></div>
+    <p style="margin-top:12px">Не является финансовым советом.</p>`);
+  $('btnWallet').onclick=()=>{
+    const saved=JSON.parse(localStorage.wallet||'{}');
+    const rows=Object.entries(saved).filter(([,v])=>v>0).map(([k,v])=>{const c=R&&R.crypto.find(x=>x.sym===k);return `<div class="kv"><span>${k}</span><b>${fmt(v)}${c?' · $'+fmt(v*c.usd):''}</b></div>`}).join('');
+    const total=Object.entries(saved).reduce((a,[k,v])=>{const c=R&&R.crypto.find(x=>x.sym===k);return a+(c?v*c.usd:0)},0);
+    open('Кошелёк',`<p>Введите, сколько у вас монет. Хранится только на этом устройстве, никуда не отправляется.</p>
+      <div class="wl conv"><input id="wSym" placeholder="BTC" maxlength="6" style="max-width:96px;text-transform:uppercase"><input id="wAmt" type="number" inputmode="decimal" placeholder="Количество"><button id="wAdd" type="button">Добавить</button></div>
+      <div style="margin-top:14px">${rows||'<p>Пока пусто.</p>'}</div>
+      ${total?`<div class="kv"><span>Итого</span><b>$${fmt(total)}</b></div>`:''}`);
+    $('wAdd').onclick=()=>{const k=$('wSym').value.trim().toUpperCase(),v=parseFloat($('wAmt').value);
+      if(!k||!(v>=0))return;const w=JSON.parse(localStorage.wallet||'{}');if(R&&!R.crypto.some(x=>x.sym===k))return alert('Такой монеты нет в списке');
+      w[k]=v;localStorage.wallet=JSON.stringify(w);$('btnWallet').click()};
+  };
+})();
+NET.start();
+// смена вкладки нижней навигации = мгновенное обновление
+document.addEventListener('click',e=>{if(e.target.closest('nav a, #stories .st, #seg button'))NET.wake()},{passive:true});
 </script>
 
 <script>
