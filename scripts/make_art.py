@@ -74,5 +74,5 @@ S=640; a=background(S,S); a=chart(a,60,300,S-60,560,24)
 a=coin(a,S//2,250,150,"$",T); a=coin(a,150,150,58,"₽",V); a=coin(a,500,140,58,"₿",(255,170,60))
 a=text_glow(a,(S//2,560),"CIS Rates",72,"mm")
 # круглая маска не нужна — Telegram обрежет сам
-a.save("docs/assets/avatar.png")
+a.save("docs/assets/avatar_old_generated.png")  # логотип проекта: круглая планета (avatar.png), этот файл его не трогает
 print("done")
