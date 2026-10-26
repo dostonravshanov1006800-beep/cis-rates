@@ -5,7 +5,7 @@
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="07ce670ed6">
+<meta name="app-version" content="7b962d839f">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -113,7 +113,7 @@ html{background:#05060b;color-scheme:dark}
 body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Segoe UI",Roboto,sans-serif;
   -webkit-font-smoothing:antialiased;font-feature-settings:"tnum";padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 /* живой фон: цветные «капли» плывут медленно, стекло ловит их цвет */
-.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#14182c 0%,#07080f 55%,#04050a 100%)}
+.bg{position:fixed;top:0;right:0;bottom:0;left:0;z-index:-1;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#14182c 0%,#07080f 55%,#04050a 100%)}
 .bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;mix-blend-mode:screen}
 .bg i:nth-child(1){width:60vmax;height:60vmax;left:-20vmax;top:-18vmax;background:radial-gradient(circle,#3a5bff 0%,transparent 65%);animation:fl1 26s ease-in-out infinite alternate}
 .bg i:nth-child(2){width:55vmax;height:55vmax;right:-22vmax;top:18vh;background:radial-gradient(circle,#ffb21e 0%,transparent 62%);opacity:.38;animation:fl2 32s ease-in-out infinite alternate}
@@ -134,7 +134,7 @@ body{background:transparent;font-family:-apple-system,BlinkMacSystemFont,"SF Pro
 .card,.list,.box,.cta{border-radius:var(--gl-r)}
 .card:before,.card:after,.list:before,.list:after,.box:before,.box:after,.cta:before,.cta:after,.seg:before,.seg:after{content:none !important;display:none !important}
 .card,.list,.box,.cta,.seg{position:relative}
-.list{overflow:clip}
+.list{overflow:hidden}
 
 /* ШАПКА: лёгкая, без логотипа и названия; только индикатор */
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
@@ -223,7 +223,7 @@ nav .pillbg{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;width:calc((
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .card,.list,.box,.cta,.seg,.pill,.swap,.btn.o,.top .live,nav div,.hdr-btn{background:rgba(30,32,46,.92)}}
 .mf{width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:-4px;margin-right:7px}.mf.big{width:22px;height:22px;vertical-align:-6px;margin-right:9px}
-.sheet{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}
+.sheet{position:fixed;top:0;right:0;bottom:0;left:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}
 .sheet[hidden]{display:none}
 .sheet-b{width:min(100%,520px);max-height:78vh;overflow:auto;padding:18px 18px calc(24px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0;
   background:rgba(24,26,40,.82);-webkit-backdrop-filter:var(--gl-bl);backdrop-filter:var(--gl-bl);border:var(--gl-bd);border-bottom:0;box-shadow:var(--gl-hi),var(--gl-sh);animation:up .4s var(--spring)}
@@ -233,7 +233,6 @@ nav .pillbg{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;width:calc((
 .sheet .kv{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px}
 .sheet .kv:last-child{border:0}.sheet .kv span{color:var(--mut)}
 .ring i{display:block;position:relative}
-.ring i .fl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .cta *,.card *,.box *,.list *{text-shadow:none !important}
 .cta h3,.cta p{background:none !important}
 .cta,.box,.list,.card,.seg{transform:none !important;animation:none !important;filter:none !important}
@@ -254,6 +253,8 @@ nav a.on svg .a{stroke:#fff;opacity:1}nav a.on svg circle.a{fill:#fff}
 nav a.on svg .f{fill:rgba(255,201,77,.22)}
 nav a.on svg{stroke:var(--gold)}
 nav a span{line-height:1}
+/* флаг страны: фон плитки, всегда на всю плитку (без <img>, inset и absolute — совместимо со старыми Android WebView) */
+.ring i.fb{background-color:#1a1f38;background-repeat:no-repeat;background-position:center center;background-size:cover}
 </style>
 </head>
 <body>
@@ -404,7 +405,7 @@ function render(){
   if(!R.countries[cc])cc='UZ';
   const c=R.countries[cc];
   // страны-«истории» выбранного региона
-  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${k}"><div class="ring"><i><img class="fl" src="https://flagcdn.com/w80/${k.toLowerCase()}.png" srcset="https://flagcdn.com/w160/${k.toLowerCase()}.png 2x" alt="" loading="lazy" onerror="this.replaceWith(document.createTextNode('${x.flag}'))"></i></div><span>${x.name}</span></button>`).join('');
+  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${k}"><div class="ring"><i class="fb" style="background-image:url(https://flagcdn.com/w160/${k.toLowerCase()}.png)" role="img" aria-label="${x.name}"></i></div><span>${x.name}</span></button>`).join('');
   $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
   $('seg').innerHTML=[['cis','СНГ'],['eu','Европа']].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
   $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
