@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-+wPM5HAR/Nvg6Zggn6C/0XPLmKUfsD7WexdBbB/8S6o=' 'sha256-KE9HlssohVrE7FRbRO5Qh76QgrMcG0Gbdh+7zkS9VhE=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-V8p7dafIzpPO4Iff3pnywY/AosNrX1NZXUPq+JPK2Fc=' 'sha256-cn1VdFr5vhTDcuVeEFt2KoigZ6tfRgWPDdxqWBXHr2o=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="1246b73530">
+<meta name="app-version" content="919576e0c8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -13,7 +13,6 @@
 <meta property="og:title" content="CIS Rates: курсы валют и крипто СНГ"><meta property="og:image" content="assets/banner.png">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/avatar-192.png">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
 <style>
 /* =====================================================================
    CIS RATES · DESIGN SYSTEM v4 · Liquid Glass (iOS 26)
@@ -299,6 +298,32 @@ html.lite .nv .drop{transition-duration:.25s}
 .dt-pc .up,.dt-pc .dn{text-shadow:none;font-weight:700;font-variant-numeric:tabular-nums}
 .dt-empty{display:grid;place-items:center;height:170px;color:var(--tx3);font-size:var(--t-s);text-align:center;padding:0 var(--s5)}
 .dt-rng button{min-width:0;padding:0 2px}
+
+/* ---------- ВКЛАДКА «РЫНОК» ---------- */
+#chartS .mk-bar{padding:0 var(--s4) var(--s3)}
+.seg2{display:flex;padding:4px;border-radius:var(--r-full);background:var(--g-fill);box-shadow:var(--g-rim)}
+.seg2 button{flex:1;min-height:44px;border-radius:var(--r-full);font-size:var(--t-m);font-weight:600;color:var(--tx2);transition:color var(--d2),background var(--d2)}
+.seg2 button.on{color:var(--tx);background:var(--g-fill-hi);box-shadow:var(--g-rim),0 3px 10px rgba(0,0,0,.25)}
+.mk-per{padding:0 var(--s4)}
+.mk-map{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:48px;gap:var(--s2);padding:0 var(--s4);min-height:300px}
+.mk-map.fx{grid-auto-rows:64px}
+.mt{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:2px;padding:var(--s3);min-width:0;overflow:hidden;border-radius:var(--r-m);box-shadow:var(--g-rim);transition:transform var(--d2) var(--spring);contain:layout paint}
+.mt:active{transform:scale(.96)}
+.mt b{display:flex;align-items:center;gap:var(--s1);font-size:var(--t-m);font-weight:700;letter-spacing:-.01em;max-width:100%;white-space:nowrap}
+.mt b .mf{width:18px;height:18px}
+.mt span{font-size:var(--t-s);font-weight:700;font-variant-numeric:tabular-nums;opacity:.92}
+.mk-note{padding:0 var(--s5);margin-top:var(--s3)}
+.mk-h{padding:var(--s5) var(--s5) var(--s2);font-size:var(--t-l);font-weight:700;letter-spacing:-.01em}
+.mk-list{margin:0 var(--s4);border-radius:var(--r-xl);overflow:hidden;background:var(--g-fill);box-shadow:var(--g-rim),var(--g-drop)}
+.mrk{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;column-gap:var(--s3);width:100%;min-height:60px;padding:var(--s2) var(--s4);text-align:left;position:relative}
+.mrk+.mrk::before{content:"";position:absolute;left:var(--s4);right:var(--s4);top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)}
+.mrk:active{background:rgba(255,255,255,.07)}
+.mrk img,.mrk .mf{width:36px;height:36px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+.mrk span b{display:block;font-size:var(--t-m);font-weight:700}.mrk span small{display:block;font-size:var(--t-xs);color:var(--tx3)}
+.mrk em{font-style:normal;font-size:var(--t-m);font-weight:700;font-variant-numeric:tabular-nums}
+.mrk em.up,.mrk em.dn{text-shadow:none}
+.geo{display:flex;align-items:center;gap:var(--s2)}
+.geo .gp{width:14px;height:14px;flex:0 0 14px;stroke:var(--acc2);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
 </style>
 </head>
 <body>
@@ -333,7 +358,7 @@ html.lite .nv .drop{transition-duration:.25s}
 
   <section id="chartS">
     <h2 id="ct">График</h2>
-    <div class="box"><div class="tabs" id="tabs"></div><canvas id="chart" height="190"></canvas></div>
+    <div class="box"><div class="tabs" id="tabs"></div></div>
   </section>
 
   <section id="conv">
@@ -351,7 +376,7 @@ html.lite .nv .drop{transition-duration:.25s}
 
 
 <div class="sheet" id="sheet" hidden><div class="sheet-b"><div class="sheet-h"><b id="shT"></b><button class="hdr-btn" id="shX" aria-label="Закрыть" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="shC"></div></div></div>
-<nav aria-label="Разделы"><div class="nv"><i class="drop" aria-hidden="true"></i><a href="#home" data-s="home" role="tab" aria-label="Курсы" class="on"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M5.6 9.8V19a1.2 1.2 0 0 0 1.2 1.2h10.4a1.2 1.2 0 0 0 1.2-1.2V9.8"/><path d="M10 20.2v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/></svg><span data-i="nav.rates">Курсы</span></a><a href="#crypto" data-s="crypto" role="tab" aria-label="Крипта"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M10 7.8h3.2a2 2 0 0 1 0 4H10m0 0h3.6a2.1 2.1 0 0 1 0 4.2H10m0-8.2v8.2M11.2 6.4v1.4m2.2-1.4v1.4m-2.2 8.2v1.4m2.2-1.4v1.4"/></svg><span data-i="nav.crypto">Крипта</span></a><a href="#chartS" data-s="chartS" role="tab" aria-label="График"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5h16"/><path d="M5.5 15.2 10 10.6l3.4 3.2 5-6"/><path d="M14.6 7.8h3.8v3.8"/></svg><span data-i="nav.chart">График</span></a><a href="#conv" data-s="conv" role="tab" aria-label="Конвертер"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8.5h13.2"/><path d="m15 5 3.2 3.5L15 12"/><path d="M19 15.5H5.8"/><path d="m9 12-3.2 3.5L9 19"/></svg><span data-i="nav.conv">Конвертер</span></a></div></nav>
+<nav aria-label="Разделы"><div class="nv"><i class="drop" aria-hidden="true"></i><a href="#home" data-s="home" role="tab" aria-label="Курсы" class="on"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M5.6 9.8V19a1.2 1.2 0 0 0 1.2 1.2h10.4a1.2 1.2 0 0 0 1.2-1.2V9.8"/><path d="M10 20.2v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/></svg><span data-i="nav.rates">Курсы</span></a><a href="#crypto" data-s="crypto" role="tab" aria-label="Крипта"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M10 7.8h3.2a2 2 0 0 1 0 4H10m0 0h3.6a2.1 2.1 0 0 1 0 4.2H10m0-8.2v8.2M11.2 6.4v1.4m2.2-1.4v1.4m-2.2 8.2v1.4m2.2-1.4v1.4"/></svg><span data-i="nav.crypto">Крипта</span></a><a href="#chartS" data-s="chartS" role="tab" aria-label="Рынок"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5h16"/><path d="M5.5 15.2 10 10.6l3.4 3.2 5-6"/><path d="M14.6 7.8h3.8v3.8"/></svg><span data-i="nav.chart">Рынок</span></a><a href="#conv" data-s="conv" role="tab" aria-label="Конвертер"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8.5h13.2"/><path d="m15 5 3.2 3.5L15 12"/><path d="M19 15.5H5.8"/><path d="m9 12-3.2 3.5L9 19"/></svg><span data-i="nav.conv">Конвертер</span></a></div></nav>
 
 <script>
 document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.getAttribute('data-rm'))t.remove()},true);
@@ -368,7 +393,7 @@ const flagImg=(code,txt)=>CUR2CC[code]?`<img class="mf" src="https://flagcdn.com
 const ORDER=['EUR','RUB','CNY','TRY','GBP','CHF','PLN','AED','KZT','UAH'];
 let R,H=[],SR={crypto:{},fx:{}},cc=localStorage.cc||'UZ',reg=localStorage.reg||'cis',metric=null,chart;
 // ===== I18N: ru (исходный и запасной), uz, en. Язык: сохранённый -> язык Telegram/браузера -> ru =====
-const I18N={"ui":{"ru":{"nav.rates":"Курсы","nav.crypto":"Крипта","nav.chart":"График","nav.conv":"Конвертер","h.crypto":"Криптовалюты","h.conv":"Конвертер","h.chart":"График","reg.cis":"СНГ","reg.eu":"Европа","c.amount":"Сумма","c.from":"Из","c.to":"В","c.swap":"⇅ Поменять","c.multi":"Та же сумма в других валютах","t.now":"только что","t.ago":"{n} мин назад","s.fresh":"Данные свежие","s.offline":"Нет соединения","s.loading":"Загрузка","i.title":"Информация","i.about":"Курсы валют СНГ и Европы и топ-20 криптовалют. Курсы центральных банков публикуются раз в сутки, поэтому они справочные. Рыночные курсы и крипта обновляются чаще.","i.state":"Состояние","i.crypto":"Крипта","i.fiat":"Фиат","i.file":"Файл сервера","i.live":"в реальном времени","i.poll":"опрос каждые 4 с","i.fiatval":"рыночный курс, каждые 30 с","i.nofin":"Не является финансовым советом.","i.lang":"Язык","m.cb":"ЦБ","m.market":"рыночный","m.src":"Источник:","m.d7":"7 дней","m.inusd":"в долларах","m.auto":"определить автоматически","m.manual":"Страна выбрана вручную","m.detected":"Определили автоматически:","f.tg":"Курсы в Telegram","f.bot":"Бот посчитает любую сумму, пришлёт картинку курсов и сигнал при скачке","f.open":"Открыть бота","f.channel":"Канал","f.share":"Поделиться","f.sources":"Данные: центральные банки (21 страна), ExchangeRate-API, CoinGecko. Для стран без открытого API курс рыночный.","f.nofin":"Не является финансовым советом.","s.copied":"Ссылка скопирована","s.txt":"Курсы валют СНГ и Европы и топ-20 крипты"},"uz":{"nav.rates":"Kurslar","nav.crypto":"Kripto","nav.chart":"Grafik","nav.conv":"Konverter","h.crypto":"Kriptovalyutalar","h.conv":"Konverter","h.chart":"Grafik","reg.cis":"MDH","reg.eu":"Yevropa","c.amount":"Summa","c.from":"Qaysi","c.to":"Qaysi","c.swap":"⇅ Almashtirish","c.multi":"Xuddi shu summa boshqa valyutalarda","t.now":"hozirgina","t.ago":"{n} daq. oldin","s.fresh":"Ma'lumotlar yangi","s.offline":"Aloqa yo'q","s.loading":"Yuklanmoqda","i.title":"Ma'lumot","i.about":"MDH va Yevropa valyuta kurslari hamda top-20 kriptovalyuta. Markaziy banklar kurslari kuniga bir marta e'lon qilinadi, shuning uchun ular ma'lumot uchun. Bozor kurslari va kripto tez-tez yangilanadi.","i.state":"Holat","i.crypto":"Kripto","i.fiat":"Fiat","i.file":"Server fayli","i.live":"real vaqtda","i.poll":"har 4 soniyada so'rov","i.fiatval":"bozor kursi, har 30 soniyada","i.nofin":"Moliyaviy maslahat emas.","i.lang":"Til","m.cb":"MB","m.market":"bozor","m.src":"Manba:","m.d7":"7 kun","m.inusd":"dollarda","m.auto":"avtomatik aniqlash","m.manual":"Mamlakat qo'lda tanlangan","m.detected":"Avtomatik aniqlandi:","f.tg":"Telegramdagi kurslar","f.bot":"Bot istalgan summani hisoblaydi, kurslar rasmini va keskin o'zgarishda signal yuboradi","f.open":"Botni ochish","f.channel":"Kanal","f.share":"Ulashish","f.sources":"Ma'lumotlar: markaziy banklar (21 mamlakat), ExchangeRate-API, CoinGecko. Ochiq API bo'lmagan mamlakatlar uchun kurs bozor kursi.","f.nofin":"Moliyaviy maslahat emas.","s.copied":"Havola nusxalandi","s.txt":"MDH va Yevropa valyuta kurslari va top-20 kripto"},"en":{"nav.rates":"Rates","nav.crypto":"Crypto","nav.chart":"Chart","nav.conv":"Converter","h.crypto":"Cryptocurrencies","h.conv":"Converter","h.chart":"Chart","reg.cis":"CIS","reg.eu":"Europe","c.amount":"Amount","c.from":"From","c.to":"To","c.swap":"⇅ Swap","c.multi":"Same amount in other currencies","t.now":"just now","t.ago":"{n} min ago","s.fresh":"Data is fresh","s.offline":"No connection","s.loading":"Loading","i.title":"Information","i.about":"CIS and European currency rates and the top 20 cryptocurrencies. Central bank rates are published once a day, so they are for reference. Market rates and crypto update more often.","i.state":"Status","i.crypto":"Crypto","i.fiat":"Fiat","i.file":"Server file","i.live":"real time","i.poll":"polled every 4 s","i.fiatval":"market rate, every 30 s","i.nofin":"Not financial advice.","i.lang":"Language","m.cb":"CB","m.market":"market","m.src":"Source:","m.d7":"7 days","m.inusd":"in dollars","m.auto":"detect automatically","m.manual":"Country chosen manually","m.detected":"Detected automatically:","f.tg":"Rates in Telegram","f.bot":"The bot converts any amount, sends a rates picture and a signal on sharp moves","f.open":"Open the bot","f.channel":"Channel","f.share":"Share","f.sources":"Data: central banks (21 countries), ExchangeRate-API, CoinGecko. Countries without an open API use the market rate.","f.nofin":"Not financial advice.","s.copied":"Link copied","s.txt":"CIS and Europe currency rates and top-20 crypto"}},"co":{"ru":{"UZ":"Узбекистан","RU":"Россия","KZ":"Казахстан","UA":"Украина","BY":"Беларусь","AM":"Армения","AZ":"Азербайджан","GE":"Грузия","KG":"Кыргызстан","TJ":"Таджикистан","MD":"Молдова","TM":"Туркменистан","EU":"Еврозона","PL":"Польша","CZ":"Чехия","HU":"Венгрия","RO":"Румыния","BG":"Болгария","CH":"Швейцария","GB":"Британия","SE":"Швеция","NO":"Норвегия","DK":"Дания","RS":"Сербия"},"uz":{"UZ":"O'zbekiston","RU":"Rossiya","KZ":"Qozog'iston","UA":"Ukraina","BY":"Belarus","AM":"Armaniston","AZ":"Ozarbayjon","GE":"Gruziya","KG":"Qirg'iziston","TJ":"Tojikiston","MD":"Moldova","TM":"Turkmaniston","EU":"Yevrozona","PL":"Polsha","CZ":"Chexiya","HU":"Vengriya","RO":"Ruminiya","BG":"Bolgariya","CH":"Shveytsariya","GB":"Britaniya","SE":"Shvetsiya","NO":"Norvegiya","DK":"Daniya","RS":"Serbiya"},"en":{"UZ":"Uzbekistan","RU":"Russia","KZ":"Kazakhstan","UA":"Ukraine","BY":"Belarus","AM":"Armenia","AZ":"Azerbaijan","GE":"Georgia","KG":"Kyrgyzstan","TJ":"Tajikistan","MD":"Moldova","TM":"Turkmenistan","EU":"Eurozone","PL":"Poland","CZ":"Czechia","HU":"Hungary","RO":"Romania","BG":"Bulgaria","CH":"Switzerland","GB":"United Kingdom","SE":"Sweden","NO":"Norway","DK":"Denmark","RS":"Serbia"}}};
+const I18N={"ui":{"ru":{"nav.rates":"Курсы","nav.crypto":"Крипта","nav.chart":"Рынок","nav.conv":"Конвертер","h.crypto":"Криптовалюты","h.conv":"Конвертер","h.chart":"График","reg.cis":"СНГ","reg.eu":"Европа","c.amount":"Сумма","c.from":"Из","c.to":"В","c.swap":"⇅ Поменять","c.multi":"Та же сумма в других валютах","t.now":"только что","t.ago":"{n} мин назад","s.fresh":"Данные свежие","s.offline":"Нет соединения","s.loading":"Загрузка","i.title":"Информация","i.about":"Курсы валют СНГ и Европы и топ-20 криптовалют. Курсы центральных банков публикуются раз в сутки, поэтому они справочные. Рыночные курсы и крипта обновляются чаще.","i.state":"Состояние","i.crypto":"Крипта","i.fiat":"Фиат","i.file":"Файл сервера","i.live":"в реальном времени","i.poll":"опрос каждые 4 с","i.fiatval":"рыночный курс, каждые 30 с","i.nofin":"Не является финансовым советом.","i.lang":"Язык","m.cb":"ЦБ","m.market":"рыночный","m.src":"Источник:","m.d7":"7 дней","m.inusd":"в долларах","m.auto":"определить автоматически","m.manual":"Страна выбрана вручную","m.detected":"Определили автоматически:","f.tg":"Курсы в Telegram","f.bot":"Бот посчитает любую сумму, пришлёт картинку курсов и сигнал при скачке","f.open":"Открыть бота","f.channel":"Канал","f.share":"Поделиться","f.sources":"Данные: центральные банки (21 страна), ExchangeRate-API, CoinGecko. Для стран без открытого API курс рыночный.","f.nofin":"Не является финансовым советом.","s.copied":"Ссылка скопирована","s.txt":"Курсы валют СНГ и Европы и топ-20 крипты"},"uz":{"nav.rates":"Kurslar","nav.crypto":"Kripto","nav.chart":"Bozor","nav.conv":"Konverter","h.crypto":"Kriptovalyutalar","h.conv":"Konverter","h.chart":"Grafik","reg.cis":"MDH","reg.eu":"Yevropa","c.amount":"Summa","c.from":"Qaysi","c.to":"Qaysi","c.swap":"⇅ Almashtirish","c.multi":"Xuddi shu summa boshqa valyutalarda","t.now":"hozirgina","t.ago":"{n} daq. oldin","s.fresh":"Ma'lumotlar yangi","s.offline":"Aloqa yo'q","s.loading":"Yuklanmoqda","i.title":"Ma'lumot","i.about":"MDH va Yevropa valyuta kurslari hamda top-20 kriptovalyuta. Markaziy banklar kurslari kuniga bir marta e'lon qilinadi, shuning uchun ular ma'lumot uchun. Bozor kurslari va kripto tez-tez yangilanadi.","i.state":"Holat","i.crypto":"Kripto","i.fiat":"Fiat","i.file":"Server fayli","i.live":"real vaqtda","i.poll":"har 4 soniyada so'rov","i.fiatval":"bozor kursi, har 30 soniyada","i.nofin":"Moliyaviy maslahat emas.","i.lang":"Til","m.cb":"MB","m.market":"bozor","m.src":"Manba:","m.d7":"7 kun","m.inusd":"dollarda","m.auto":"avtomatik aniqlash","m.manual":"Mamlakat qo'lda tanlangan","m.detected":"Avtomatik aniqlandi:","f.tg":"Telegramdagi kurslar","f.bot":"Bot istalgan summani hisoblaydi, kurslar rasmini va keskin o'zgarishda signal yuboradi","f.open":"Botni ochish","f.channel":"Kanal","f.share":"Ulashish","f.sources":"Ma'lumotlar: markaziy banklar (21 mamlakat), ExchangeRate-API, CoinGecko. Ochiq API bo'lmagan mamlakatlar uchun kurs bozor kursi.","f.nofin":"Moliyaviy maslahat emas.","s.copied":"Havola nusxalandi","s.txt":"MDH va Yevropa valyuta kurslari va top-20 kripto"},"en":{"nav.rates":"Rates","nav.crypto":"Crypto","nav.chart":"Market","nav.conv":"Converter","h.crypto":"Cryptocurrencies","h.conv":"Converter","h.chart":"Chart","reg.cis":"CIS","reg.eu":"Europe","c.amount":"Amount","c.from":"From","c.to":"To","c.swap":"⇅ Swap","c.multi":"Same amount in other currencies","t.now":"just now","t.ago":"{n} min ago","s.fresh":"Data is fresh","s.offline":"No connection","s.loading":"Loading","i.title":"Information","i.about":"CIS and European currency rates and the top 20 cryptocurrencies. Central bank rates are published once a day, so they are for reference. Market rates and crypto update more often.","i.state":"Status","i.crypto":"Crypto","i.fiat":"Fiat","i.file":"Server file","i.live":"real time","i.poll":"polled every 4 s","i.fiatval":"market rate, every 30 s","i.nofin":"Not financial advice.","i.lang":"Language","m.cb":"CB","m.market":"market","m.src":"Source:","m.d7":"7 days","m.inusd":"in dollars","m.auto":"detect automatically","m.manual":"Country chosen manually","m.detected":"Detected automatically:","f.tg":"Rates in Telegram","f.bot":"The bot converts any amount, sends a rates picture and a signal on sharp moves","f.open":"Open the bot","f.channel":"Channel","f.share":"Share","f.sources":"Data: central banks (21 countries), ExchangeRate-API, CoinGecko. Countries without an open API use the market rate.","f.nofin":"Not financial advice.","s.copied":"Link copied","s.txt":"CIS and Europe currency rates and top-20 crypto"}},"co":{"ru":{"UZ":"Узбекистан","RU":"Россия","KZ":"Казахстан","UA":"Украина","BY":"Беларусь","AM":"Армения","AZ":"Азербайджан","GE":"Грузия","KG":"Кыргызстан","TJ":"Таджикистан","MD":"Молдова","TM":"Туркменистан","EU":"Еврозона","PL":"Польша","CZ":"Чехия","HU":"Венгрия","RO":"Румыния","BG":"Болгария","CH":"Швейцария","GB":"Британия","SE":"Швеция","NO":"Норвегия","DK":"Дания","RS":"Сербия"},"uz":{"UZ":"O'zbekiston","RU":"Rossiya","KZ":"Qozog'iston","UA":"Ukraina","BY":"Belarus","AM":"Armaniston","AZ":"Ozarbayjon","GE":"Gruziya","KG":"Qirg'iziston","TJ":"Tojikiston","MD":"Moldova","TM":"Turkmaniston","EU":"Yevrozona","PL":"Polsha","CZ":"Chexiya","HU":"Vengriya","RO":"Ruminiya","BG":"Bolgariya","CH":"Shveytsariya","GB":"Britaniya","SE":"Shvetsiya","NO":"Norvegiya","DK":"Daniya","RS":"Serbiya"},"en":{"UZ":"Uzbekistan","RU":"Russia","KZ":"Kazakhstan","UA":"Ukraine","BY":"Belarus","AM":"Armenia","AZ":"Azerbaijan","GE":"Georgia","KG":"Kyrgyzstan","TJ":"Tajikistan","MD":"Moldova","TM":"Turkmenistan","EU":"Eurozone","PL":"Poland","CZ":"Czechia","HU":"Hungary","RO":"Romania","BG":"Bulgaria","CH":"Switzerland","GB":"United Kingdom","SE":"Sweden","NO":"Norway","DK":"Denmark","RS":"Serbia"}}};
 let UL=(()=>{try{const s=localStorage.lang;if(s&&I18N.ui[s])return s;const l=((window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user&&Telegram.WebApp.initDataUnsafe.user.language_code)||navigator.language||'ru').slice(0,2).toLowerCase();return I18N.ui[l]?l:'ru'}catch(e){return 'ru'}})();
 const t=(k,v)=>{let x=(I18N.ui[UL]&&I18N.ui[UL][k])||I18N.ui.ru[k]||k;if(v)for(const n in v)x=x.replace('{'+n+'}',v[n]);return x};
 const cn=(code,ru)=>(I18N.co[UL]&&I18N.co[UL][code])||ru;
@@ -449,7 +474,7 @@ const trendColor=v=>v&&v.length>1&&v[v.length-1]>=v[0]?GRN:RED;
 
 /* живые цены теперь в NET.crypto (WebSocket) */
 const LIVE={px:{},t:0,src:''};
-function liveBadge(){const e=document.getElementById('liveTag');if(!e)return;const on=NET.cryptoLive();e.textContent=on?'⚡ цены крипты в реальном времени · '+NET.cryptoSrc:'цены крипты: обновление каждые 4 секунды';e.className='lt '+(on?'on':'')}
+function liveBadge(){const e=document.getElementById('liveTag');if(!e)return;const on=NET.cryptoLive();e.textContent=on?'цены крипты в реальном времени · '+NET.cryptoSrc:'цены крипты: обновление каждые 4 секунды';e.className='lt '+(on?'on':'')}
 
 function render(){
   tick();                                   // единственное место, где решается «устарело/свежо»
@@ -461,7 +486,7 @@ function render(){
   $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
   $('seg').innerHTML=[['cis',t('reg.cis')],['eu',t('reg.eu')]].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
   $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
-  $('geo').innerHTML=localStorage.manual?`Страна выбрана вручную · <button id="autoBtn">определить автоматически</button>`:(localStorage.geo?`📍 Определили автоматически: ${esc(c.flag)} ${esc(c.name)}`:'');
+  const GT={"ru": ["Страна выбрана вручную", "определить автоматически", "Определили автоматически"], "uz": ["Mamlakat qo'lda tanlangan", "avtomatik aniqlash", "Avtomatik aniqlandi"], "en": ["Country chosen manually", "detect automatically", "Detected automatically"]}[UL]||[];$('geo').innerHTML=localStorage.manual?`${GT[0]} · <button id="autoBtn">${GT[1]}</button>`:(localStorage.geo?`<svg class="gp" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>${GT[2]}: ${esc(c.flag)} ${esc(c.name)}`:'');
   const ab=$('autoBtn');if(ab)ab.onclick=()=>{delete localStorage.manual;delete localStorage.geo;window.__geo=0;location.reload()};
   // главный курс: 1 USD
   const usd=rateOf('USD');
@@ -486,16 +511,8 @@ function render(){
   }
   if(!$('to').dataset.set||$('to').dataset.set!==cc){$('to').value=c.cur;$('from').value=c.cur==='USD'?'EUR':'USD';$('to').dataset.set=cc}
   conv();
-  // график
-  const has=k=>(SR.crypto&&SR.crypto[k]&&SR.crypto[k].length>=3)||(SR.fx&&SR.fx[k]&&SR.fx[k].length>=3)||H.some(p=>p[k]);
-  const keys=[c.cur,'BTC','ETH','TON','SOL','BNB','XRP'].filter((k,i,a)=>has(k)&&a.indexOf(k)===i);
-  if(!metric||!keys.includes(metric)){const mv=k=>{const v=H.filter(p=>p[k]).map(p=>p[k]);return v.length>2&&Math.max(...v)!==Math.min(...v)};metric=keys.find(mv)||keys[0]}
-  $('tabs').innerHTML=keys.map(k=>`<button class="tab ${k===metric?'on':''}" data-k="${esc(k)}">${k===c.cur?'USD → '+k:k+' $'}</button>`).join('');
-  $('tabs').onclick=e=>{if(e.target.dataset.k){metric=e.target.dataset.k;render()}};
-  $('ct').textContent=(metric===c.cur?'USD → '+c.cur:metric+' в долларах')+' · 7 дней';
-  draw();
-}
-function conv(){const a=parseFloat($('amt').value)||0,f=$('from').value,t=$('to').value,r=convert(a,f,t);$('res').textContent=r==null?'—':fmt(r)+' '+t;multi(a,f)}
+  // график вкладки «Рынок» рисуется отдельным модулем (MARKET ниже)
+  function conv(){const a=parseFloat($('amt').value)||0,f=$('from').value,t=$('to').value,r=convert(a,f,t);$('res').textContent=r==null?'—':fmt(r)+' '+t;multi(a,f)}
 // та же сумма сразу в основных валютах (считается той же convert(), поэтому цифры совпадают с основным результатом)
 function multi(a,f){
   const el=$('multi');if(!el||!R)return;
@@ -503,41 +520,7 @@ function multi(a,f){
   const rows=want.map(k=>{const v=convert(a,f,k);return v==null?'':`<div class="mrow"><span>${esc(k)}</span><b>${fmt(v)}</b></div>`}).join('');
   el.innerHTML=a>0&&rows?`<div class="mh">${esc(t('c.multi'))}</div>${rows}`:''
 }
-function draw(){
-  if(!window.Chart)return;
-  // 7 дней: крипта (CoinGecko, 48 точек), валюты (дневные курсы), запасной вариант: накопленная история
-  let vals=(SR.crypto&&SR.crypto[metric])||(SR.fx&&SR.fx[metric])||[];
-  let labels;
-  if(vals.length>=3){
-    const n=vals.length,end=Date.now(),step=7*864e5/(n-1);
-    vals=vals.slice();                                   // последняя точка = текущая цена, как на карточке
-    const cr=R.crypto.find(x=>x.sym===metric);if(cr)vals[n-1]=LIVE&&LIVE.px[metric]||cr.usd;
-    labels=vals.map((_,i)=>new Date(end-(n-1-i)*step).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}));
-  }else{
-    const pts=H.filter(p=>p[metric]).slice(-150);if(!pts.length)return;
-    vals=pts.map(p=>p[metric]);labels=pts.map(p=>new Date(p.t*1000).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}));
-  }
-  const isFx=metric===cur(cc)||(SR.fx&&SR.fx[metric]&&!(SR.crypto&&SR.crypto[metric]));
-  // для валют рост курса доллара = местная валюта слабеет: красный; для крипты рост = зелёный
-  const rising=vals[vals.length-1]>=vals[0],good=isFx?!rising:rising;
-  const col=good?'#34e89e':'#ff6b7d',rgb=good?'52,232,158':'255,107,125',ctx=$('chart').getContext('2d');
-  const g=ctx.createLinearGradient(0,0,0,260);g.addColorStop(0,`rgba(${rgb},.38)`);g.addColorStop(.6,`rgba(${rgb},.08)`);g.addColorStop(1,`rgba(${rgb},0)`);
-  const lo=Math.min(...vals),hi=Math.max(...vals),mid=(lo+hi)/2,span=Math.max(hi-lo,mid*.012),pad=span*.18;
-  if(chart)chart.destroy();
-  // свечение линии (рисуется под самой линией)
-  const glow={id:'glow',beforeDatasetsDraw(c){const x=c.ctx;x.save();x.shadowColor=col;x.shadowBlur=18;x.shadowOffsetY=4},afterDatasetsDraw(c){c.ctx.restore()}};
-  // вертикальная «нить» и точка под пальцем
-  const cross={id:'cross',afterDatasetsDraw(c){const t=c.tooltip;if(!t||!t.getActiveElements().length)return;const e=t.getActiveElements()[0].element,x=c.ctx;
-    x.save();x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=1;x.setLineDash([3,4]);x.beginPath();x.moveTo(e.x,c.chartArea.top);x.lineTo(e.x,c.chartArea.bottom);x.stroke();
-    x.setLineDash([]);x.fillStyle='#fff';x.shadowColor=col;x.shadowBlur=14;x.beginPath();x.arc(e.x,e.y,5.5,0,7);x.fill();x.restore()}};
-  chart=new Chart(ctx,{type:'line',plugins:[glow,cross],
-    data:{labels,datasets:[{data:vals,borderColor:col,backgroundColor:g,fill:true,tension:.38,pointRadius:0,pointHoverRadius:0,borderWidth:3,borderCapStyle:'round',borderJoinStyle:'round'}]},
-    options:{responsive:true,animation:{duration:900,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},layout:{padding:{top:8,right:2}},
-      plugins:{legend:{display:false},tooltip:{enabled:true,displayColors:false,backgroundColor:'rgba(18,20,34,.82)',borderColor:'rgba(255,255,255,.22)',borderWidth:1,cornerRadius:14,padding:{x:14,y:10},
-        titleColor:'rgba(235,235,245,.65)',titleFont:{size:11,weight:'600'},bodyColor:'#fff',bodyFont:{size:16,weight:'800'},caretSize:0,
-        callbacks:{label:i=>fmt(i.parsed.y,Math.abs(i.parsed.y)>=1000?0:Math.abs(i.parsed.y)>=1?2:4)+(isFx?' '+metric:' $')}}},
-      scales:{x:{display:false},y:{position:'right',min:mid-span/2-pad,max:mid+span/2+pad,ticks:{color:'rgba(235,235,245,.5)',font:{size:11,weight:'600'},maxTicksLimit:5,padding:6,
-        callback:v=>fmt(v,Math.abs(v)>=1000?0:Math.abs(v)>=1?2:4)},grid:{color:'rgba(255,255,255,.06)',drawTicks:false},border:{display:false}}}}});
+
 }
 // подсветка вкладки при прокрутке
 const secs=['home','crypto','chartS','conv'].map($);
@@ -1025,6 +1008,55 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
   // живая цена в открытой шторке (не перерисовываем график, меняем только цифру)
   setInterval(()=>{if(!cur_||cur_.k!=='c')return;const c=R.crypto.find(x=>x.sym===cur_.id),p=document.getElementById('dtPx');if(c&&p){const tx=usdFmt(c.usd);if(p.textContent!==tx)p.textContent=tx}},2000);
   window.__dtOpen=open;window.__dtClose=close;
+})();
+
+// ===== ВКЛАДКА «РЫНОК»: тепловая карта, лидеры и аутсайдеры по периодам =====
+(function(){
+  const T={ru:{h:'Рынок',crypto:'Крипта',fx:'Валюты',p1:'24Ч',p7:'1Н',p30:'1М',p90:'3М',p365:'1Г',top:'Лидеры роста',low:'Лидеры падения',hint:'Размер плитки: капитализация. Цвет: изменение за период.',fxHint:'Изменение курса к вашей валюте за период.',wait:'Загружаем историю…',nav:'Рынок'},
+           uz:{h:'Bozor',crypto:'Kripto',fx:'Valyutalar',p1:'24S',p7:'1H',p30:'1O',p90:'3O',p365:'1Y',top:'O\'sish yetakchilari',low:'Pasayish yetakchilari',hint:'Katak o\'lchami: kapitalizatsiya. Rang: davr o\'zgarishi.',fxHint:'Davr uchun sizning valyutangizga nisbatan kurs o\'zgarishi.',wait:'Tarix yuklanmoqda…',nav:'Bozor'},
+           en:{h:'Market',crypto:'Crypto',fx:'Currencies',p1:'24H',p7:'1W',p30:'1M',p90:'3M',p365:'1Y',top:'Top gainers',low:'Top losers',hint:'Tile size: market cap. Colour: change over the period.',fxHint:'Change of the rate against your currency over the period.',wait:'Loading history…',nav:'Market'}};
+  const tr=()=>T[UL]||T.ru,PER=[1,7,30,90,365];let mode='c',per=1,LH=null,busy=false;
+  const root=document.getElementById('chartS');if(!root)return;
+  try{const c=JSON.parse(localStorage.lhcache||'null');if(c&&c.d)LH=c.d}catch(e){}
+  function getLH(){if(LH||busy)return Promise.resolve(LH);busy=true;return fetch('data/longhist.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{LH=j&&j.days?j:LH;try{if(LH)localStorage.lhcache=JSON.stringify({t:Date.now(),d:LH})}catch(e){}busy=false;return LH}).catch(()=>{busy=false;return LH})}
+  const chgOf=(a,n)=>{if(!a||a.length<2)return null;n=Math.min(n,a.length-1);if(n<Math.min(5,a.length-1))return null;const p=a[a.length-1-n],l=a[a.length-1];return p>0&&l>0?(l/p-1)*100:null};
+  // тепловой цвет: нейтральный у нуля, насыщенный к ±10 процентам
+  function tint(v){if(v==null)return'background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.03))';const k=Math.min(1,Math.abs(v)/(per===1?6:per===7?12:per===30?25:40)),c=v>=0?'52,227,154':'255,93,115';
+    return `background:linear-gradient(145deg,rgba(${c},${(.16+.5*k).toFixed(2)}),rgba(${c},${(.06+.24*k).toFixed(2)}))`}
+  function cryptoItems(){return R.crypto.map(c=>{let v=null;if(per===1)v=c.ch24h;else if(per===7)v=c.ch7d!=null?c.ch7d:null;else if(LH&&LH.crypto&&LH.crypto[c.sym])v=chgOf(LH.crypto[c.sym],per);
+    return {id:c.sym,name:c.name,w:Math.max(c.cap||0,1),v,img:c.img,usd:c.usd}}).filter(x=>x.id!=='USDT'&&x.id!=='DAI')}
+  function fxItems(){const base=cur(cc);const keys=['USD',...ORDER].filter((k,i,a)=>k!==base&&a.indexOf(k)===i);   // тот же список, что и на главной
+    return keys.map(k=>{let v=null;if(LH&&LH.fx&&(k==='USD'||LH.fx[k])&&(base==='USD'||LH.fx[base])){const A=k==='USD'?null:LH.fx[k],Bs=base==='USD'?null:LH.fx[base],n=Math.min(A?A.length:1e9,Bs?Bs.length:1e9,LH.days.length),s=[];for(let i=0;i<n;i++){const a=A?A[A.length-n+i]:1,b=Bs?Bs[Bs.length-n+i]:1;s.push(a&&b?b/a:null)}const ok=s.filter(x=>x);v=chgOf(ok,per===1?1:per)}
+      return {id:k,name:k,w:1,v,fl:flagImg(k)}}).filter(x=>x.v!=null||!LH)}
+  const fp=v=>v==null?'—':(v>=0?'+':'')+fmt(v,Math.abs(v)<10?2:1)+'%';
+  function render(){const t=tr(),items=(mode==='c'?cryptoItems():fxItems());
+    const withV=items.filter(x=>x.v!=null).sort((a,b)=>b.v-a.v);
+    // тепловая карта: сетка 6 колонок, размер плитки зависит от веса (капитализации)
+    let tiles='';
+    if(mode==='c'){const sorted=[...items].sort((a,b)=>b.w-a.w),tot=sorted.reduce((s,x)=>s+x.w,0);
+      tiles=sorted.map((x,i)=>{const sh=x.w/tot,span=sh>.45?6:sh>.12?4:sh>.04?3:2,rows=sh>.45?3:sh>.12?2:sh>.04?2:1;
+        return `<button class="mt" type="button" data-id="${esc(x.id)}" style="grid-column:span ${span};grid-row:span ${rows};${tint(x.v)}"><b>${esc(x.id)}</b><span>${fp(x.v)}</span></button>`}).join('')}
+    else tiles=items.map(x=>`<button class="mt" type="button" data-id="${esc(x.id)}" style="grid-column:span 3;grid-row:span 1;${tint(x.v)}"><b>${x.fl||''}${esc(x.id)}</b><span>${fp(x.v)}</span></button>`).join('');
+    const lead=withV.slice(0,3),lag=withV.slice(-3).reverse();
+    const row=x=>`<button class="mrk" type="button" data-id="${esc(x.id)}">${x.img?`<img src="${safeUrl(x.img)}" alt="">`:(x.fl||'')}<span><b>${esc(x.id)}</b><small>${esc(x.name)}</small></span><em class="${x.v>=0?'up':'dn'}">${fp(x.v)}</em></button>`;
+    const need=per>7&&!LH;
+    root.innerHTML=`<h2>${t.h}</h2>
+      <div class="mk-bar"><div class="seg2" id="mkMode"><button type="button" data-m="c" class="${mode==='c'?'on':''}">${t.crypto}</button><button type="button" data-m="f" class="${mode==='f'?'on':''}">${t.fx}</button></div></div>
+      <div class="dt-rng mk-per" id="mkPer">${PER.filter(d=>mode==='c'||d>1).map(d=>`<button type="button" data-p="${d}" class="${per===d?'on':''}">${t['p'+d]}</button>`).join('')}</div>
+      <div class="mk-map ${mode==='c'?'':'fx'}" id="mkMap">${need?`<div class="dt-empty" style="grid-column:1/-1">${t.wait}</div>`:tiles}</div>
+      <p class="dt-note mk-note">${mode==='c'?t.hint:t.fxHint}</p>
+      ${withV.length>=4&&!need?`<h3 class="mk-h">${t.top}</h3><div class="mk-list">${lead.map(row).join('')}</div><h3 class="mk-h">${t.low}</h3><div class="mk-list">${lag.map(row).join('')}</div>`:''}`}
+  function show(){if(!R)return;if(mode==='f'&&per===1)per=7;render();if(per>7&&!LH)getLH().then(()=>{render()})}
+  root.addEventListener('click',e=>{
+    const m=e.target.closest('[data-m]');if(m){mode=m.dataset.m;show();try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}return}
+    const p=e.target.closest('[data-p]');if(p){per=+p.dataset.p;show();try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}return}
+    const id=e.target.closest('[data-id]');if(id&&window.__dtOpen){window.__dtOpen(mode==='c'?'c':'f',id.dataset.id)}});
+  // перерисовка: при открытии вкладки, смене языка и при обновлении курсов (раз в 30 с, только когда вкладка видна)
+  let last=0;function maybe(force){if(!R||root.classList.contains('off'))return;const now=Date.now();if(!force&&now-last<30000)return;last=now;show()}
+  new MutationObserver(()=>{if(!root.classList.contains('off'))maybe(true)}).observe(root,{attributes:true,attributeFilter:['class']});
+  setInterval(()=>maybe(false),5000);
+  const ob=document.getElementById('top');addEventListener('hashchange',()=>setTimeout(()=>maybe(true),50));
+  window.__mkRender=()=>maybe(true);
 })();
 </script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
