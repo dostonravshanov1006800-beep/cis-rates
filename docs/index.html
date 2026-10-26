@@ -220,6 +220,8 @@ nav a svg .f{fill:transparent;transition:fill .3s}nav a.on svg .f{fill:rgba(255,
 .sheet .kv:last-child{border:0}.sheet .kv span{color:var(--mut)}
 .sheet .wl{display:flex;gap:10px;margin-top:6px}.sheet .wl input{flex:1;min-width:0}
 .sheet .wl button{border:0;border-radius:14px;background:var(--gold);color:#111;font-weight:800;padding:0 18px}
+.ring i{display:block;position:relative}
+.ring i .fl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 </style>
 </head>
 <body>
@@ -445,7 +447,7 @@ addEventListener('scroll',()=>{let cur='home';secs.forEach(s=>{if(s.getBoundingC
    ===================================================================== */
 const NET=(()=>{
   const T=5000, st={state:'wait',srvOk:0,fxOk:0,cryptoOk:0,fail:0};
-  let ws=null,wsKind='',wsTimer=0,restTimer=0,backoff=1000,lastMsg=0,dirty=new Set(),raf=0,lastRender=0;
+  let ws=null,wsKind='',wsTimer=0,restTimer=0,backoff=1000,lastMsg=0,dirty=new Set(),raf=0,lastRender=0,gen=0;
   const out={cryptoSrc:'',lastGood:0};
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -514,46 +516,47 @@ const NET=(()=>{
   // ---- WebSocket ----
   const SYMS=()=>R?R.crypto.map(c=>c.sym).filter(s=>s!=='USDT'&&s!=='DAI'||true):[];
   const BIN_SKIP=new Set(['USDT','TON','XMR','LEO','RAIN','DAI','CC','USD1']);   // пар к USDT на Binance нет (проверено по exchangeInfo); их цены даёт Gate.io / сервер
-  function closeWs(){try{ws&&ws.close()}catch(e){}try{ws2&&ws2.close()}catch(e){}ws=null;ws2=null;clearTimeout(wsTimer)}
+  function closeWs(){gen++;const a=ws,b=ws2;ws=null;ws2=null;clearTimeout(wsTimer);[a,b].forEach(x=>{if(x){x.onclose=x.onerror=x.onmessage=x.onopen=null;try{x.close()}catch(e){}}})}
   function openBinance(){
-    closeWs();wsKind='binance';
+    closeWs();wsKind='binance';const my=gen;
     const list=SYMS().filter(s=>!BIN_SKIP.has(s)).map(s=>s.toLowerCase()+'usdt@miniTicker');
     if(!list.length)return openGate();
-    let got=0,opened=false;
-    try{ws=new WebSocket('wss://data-stream.binance.vision/stream?streams='+list.join('/'))}catch(e){return openGate()}
-    const guard=setTimeout(()=>{if(!got){closeWs();openGate()}},6000);   // нет данных за 6 с -> запасной источник
-    ws.onopen=()=>{opened=true;openGateExtra()};
-    ws.onmessage=ev=>{try{const d=JSON.parse(ev.data).data;if(!d||!d.s)return;got++;lastMsg=Date.now();out.cryptoSrc='Binance';backoff=1000;
-      let sym=d.s.replace(/USDT$/,'');const p=+d.c,o=+d.o;
-      applyCrypto(sym,p,o>0?(p/o-1)*100:null)}catch(e){}};
-    ws.onclose=()=>{clearTimeout(guard);if(wsKind==='binance')reconnect()};
-    ws.onerror=()=>{try{ws.close()}catch(e){}};
+    let got=0,sock;
+    try{sock=new WebSocket('wss://data-stream.binance.vision/stream?streams='+list.join('/'))}catch(e){return openGate()}
+    ws=sock;
+    const guard=setTimeout(()=>{if(my===gen&&!got){closeWs();openGate()}},6000);   // нет данных за 6 с -> запасной источник
+    sock.onopen=()=>{if(my===gen)openGateExtra(my)};
+    sock.onmessage=ev=>{if(my!==gen)return;try{const d=JSON.parse(ev.data).data;if(!d||!d.s)return;got++;lastMsg=Date.now();out.cryptoSrc='Binance';backoff=1000;
+      const p=+d.c,o=+d.o;applyCrypto(d.s.replace(/USDT$/,''),p,o>0?(p/o-1)*100:null)}catch(e){}};
+    sock.onclose=()=>{clearTimeout(guard);if(my===gen)reconnect()};
+    sock.onerror=()=>{try{sock.close()}catch(e){}};
   }
   // монеты, которых нет на Binance (TON, LEO, RAIN, DAI...), идут отдельным сокетом Gate.io
   let ws2=null;
   const GATE_OK=new Set(['LEO','RAIN','BTC','ETH','SOL','BNB','XRP','DOGE','ADA','TRX','LINK','BCH','XLM','NEAR','ZEC','HYPE']);   // пары, реально торгуемые на Gate (TON, XMR, DAI там сняты)
-  function openGateExtra(){
-    try{ws2&&ws2.close()}catch(e){}
+  function openGateExtra(my){
     const pairs=SYMS().filter(x=>BIN_SKIP.has(x)&&GATE_OK.has(x)).map(x=>x+'_USDT');
     if(!pairs.length)return;
-    try{ws2=new WebSocket('wss://api.gateio.ws/ws/v4/')}catch(e){return}
-    ws2.onopen=()=>ws2.send(JSON.stringify({time:Math.floor(Date.now()/1000),channel:'spot.tickers',event:'subscribe',payload:pairs}));
-    ws2.onmessage=ev=>{try{const m=JSON.parse(ev.data);if(m.channel!=='spot.tickers'||m.event!=='update'||!m.result)return;const r=m.result;
+    let sock;try{sock=new WebSocket('wss://api.gateio.ws/ws/v4/')}catch(e){return}
+    ws2=sock;
+    sock.onopen=()=>{if(my===gen)sock.send(JSON.stringify({time:Math.floor(Date.now()/1000),channel:'spot.tickers',event:'subscribe',payload:pairs}))};
+    sock.onmessage=ev=>{if(my!==gen)return;try{const m=JSON.parse(ev.data);if(m.channel!=='spot.tickers'||m.event!=='update'||!m.result)return;const r=m.result;
       applyCrypto(r.currency_pair.replace('_USDT',''),+r.last,+r.change_percentage)}catch(e){}};
-    ws2.onerror=()=>{try{ws2.close()}catch(e){}};
+    sock.onerror=()=>{try{sock.close()}catch(e){}};
   }
   function openGate(){
-    closeWs();wsKind='gate';
+    closeWs();wsKind='gate';const my=gen;
     const pairs=SYMS().filter(x=>GATE_OK.has(x)).map(x=>x+'_USDT');
-    let got=0;
-    try{ws=new WebSocket('wss://api.gateio.ws/ws/v4/')}catch(e){return startRest()}
-    const guard=setTimeout(()=>{if(!got){closeWs();startRest()}},6000);
-    ws.onopen=()=>ws.send(JSON.stringify({time:Math.floor(Date.now()/1000),channel:'spot.tickers',event:'subscribe',payload:pairs}));
-    ws.onmessage=ev=>{try{const m=JSON.parse(ev.data);if(m.channel!=='spot.tickers'||m.event!=='update'||!m.result)return;const r=m.result;
+    let got=0,sock;
+    try{sock=new WebSocket('wss://api.gateio.ws/ws/v4/')}catch(e){return startRest()}
+    ws=sock;
+    const guard=setTimeout(()=>{if(my===gen&&!got){closeWs();startRest()}},6000);
+    sock.onopen=()=>{if(my===gen)sock.send(JSON.stringify({time:Math.floor(Date.now()/1000),channel:'spot.tickers',event:'subscribe',payload:pairs}))};
+    sock.onmessage=ev=>{if(my!==gen)return;try{const m=JSON.parse(ev.data);if(m.channel!=='spot.tickers'||m.event!=='update'||!m.result)return;const r=m.result;
       got++;lastMsg=Date.now();out.cryptoSrc='Gate.io';backoff=1000;
       applyCrypto(r.currency_pair.replace('_USDT',''),+r.last,+r.change_percentage)}catch(e){}};
-    ws.onclose=()=>{clearTimeout(guard);if(wsKind==='gate')reconnect()};
-    ws.onerror=()=>{try{ws.close()}catch(e){}};
+    sock.onclose=()=>{clearTimeout(guard);if(my===gen)reconnect()};
+    sock.onerror=()=>{try{sock.close()}catch(e){}};
   }
   function reconnect(){
     // обрыв: пока переподключаемся, работает опрос REST каждые 4 с
@@ -618,13 +621,13 @@ const NET=(()=>{
   }
   function softRender(){ if(R&&window.__rendered){try{render()}catch(e){console.error('render',e)}} }
 
-  function startCrypto(){ if(!ws)openBinance(); startRest() }
+  function startCrypto(){ if(!ws||ws.readyState>1)openBinance(); startRest() }
 
   // ---- обновление сразу при возврате в приложение и смене вкладки ----
   function wake(){
     if(document.hidden)return;
     pullServer();pullFx();
-    if(!ws||ws.readyState>1){backoff=1000;openBinance()}
+    if(!ws||ws.readyState>1){backoff=1000;openBinance()}   // живой сокет не трогаем
     restOnce();
   }
   function start(){
