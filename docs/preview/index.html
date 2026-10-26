@@ -246,6 +246,8 @@ nav a.on svg .f{fill:rgba(255,201,77,.28)}
 .mf.big{width:22px;height:22px;vertical-align:-6px;margin-right:9px}
 nav div{background:linear-gradient(155deg,rgba(40,44,66,.72),rgba(14,16,28,.78)) !important;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%)}
 body{padding-bottom:calc(132px + env(safe-area-inset-bottom)) !important}
+.top{background:linear-gradient(180deg,rgba(6,7,14,.88) 0%,rgba(6,7,14,.62) 70%,rgba(6,7,14,0)) !important;-webkit-mask:none !important;mask:none !important;-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%)}
+canvas#chart{filter:none;touch-action:pan-y}
 </style>
 </head>
 <body>
@@ -461,24 +463,50 @@ function render(){
   if(!$('to').dataset.set||$('to').dataset.set!==cc){$('to').value=c.cur;$('from').value=c.cur==='USD'?'EUR':'USD';$('to').dataset.set=cc}
   conv();
   // график
-  const keys=[c.cur,'BTC','TON','ETH','SOL'].filter((k,i,a)=>H.some(p=>p[k])&&a.indexOf(k)===i);
+  const has=k=>(SR.crypto&&SR.crypto[k]&&SR.crypto[k].length>=3)||(SR.fx&&SR.fx[k]&&SR.fx[k].length>=3)||H.some(p=>p[k]);
+  const keys=[c.cur,'BTC','ETH','TON','SOL','BNB','XRP'].filter((k,i,a)=>has(k)&&a.indexOf(k)===i);
   if(!metric||!keys.includes(metric)){const mv=k=>{const v=H.filter(p=>p[k]).map(p=>p[k]);return v.length>2&&Math.max(...v)!==Math.min(...v)};metric=keys.find(mv)||keys[0]}
   $('tabs').innerHTML=keys.map(k=>`<button class="tab ${k===metric?'on':''}" data-k="${k}">${k===c.cur?'USD → '+k:k+' $'}</button>`).join('');
   $('tabs').onclick=e=>{if(e.target.dataset.k){metric=e.target.dataset.k;render()}};
-  $('ct').textContent=metric===c.cur?'USD → '+c.cur:metric+' в долларах';
+  $('ct').textContent=(metric===c.cur?'USD → '+c.cur:metric+' в долларах')+' · 7 дней';
   draw();
 }
 function conv(){const a=parseFloat($('amt').value)||0,f=$('from').value,t=$('to').value,r=convert(a,f,t);$('res').textContent=r==null?'—':fmt(r)+' '+t}
 function draw(){
   if(!window.Chart)return;
-  const pts=H.filter(p=>p[metric]).slice(-150);if(!pts.length)return;
-  const up=pts[pts.length-1][metric]>=pts[0][metric],col=up?'#2ee08a':'#ff5b6b',ctx=$('chart').getContext('2d');
-  const g=ctx.createLinearGradient(0,0,0,240);g.addColorStop(0,up?'rgba(46,224,138,.28)':'rgba(255,91,107,.28)');g.addColorStop(1,'rgba(0,0,0,0)');
-  const vals=pts.map(p=>p[metric]),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||hi*.002;
+  // 7 дней: крипта (CoinGecko, 48 точек), валюты (дневные курсы), запасной вариант: накопленная история
+  let vals=(SR.crypto&&SR.crypto[metric])||(SR.fx&&SR.fx[metric])||[];
+  let labels;
+  if(vals.length>=3){
+    const n=vals.length,end=Date.now(),step=7*864e5/(n-1);
+    vals=vals.slice();                                   // последняя точка = текущая цена, как на карточке
+    const cr=R.crypto.find(x=>x.sym===metric);if(cr)vals[n-1]=LIVE&&LIVE.px[metric]||cr.usd;
+    labels=vals.map((_,i)=>new Date(end-(n-1-i)*step).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}));
+  }else{
+    const pts=H.filter(p=>p[metric]).slice(-150);if(!pts.length)return;
+    vals=pts.map(p=>p[metric]);labels=pts.map(p=>new Date(p.t*1000).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}));
+  }
+  const isFx=metric===cur(cc)||(SR.fx&&SR.fx[metric]&&!(SR.crypto&&SR.crypto[metric]));
+  // для валют рост курса доллара = местная валюта слабеет: красный; для крипты рост = зелёный
+  const rising=vals[vals.length-1]>=vals[0],good=isFx?!rising:rising;
+  const col=good?'#34e89e':'#ff6b7d',rgb=good?'52,232,158':'255,107,125',ctx=$('chart').getContext('2d');
+  const g=ctx.createLinearGradient(0,0,0,260);g.addColorStop(0,`rgba(${rgb},.38)`);g.addColorStop(.6,`rgba(${rgb},.08)`);g.addColorStop(1,`rgba(${rgb},0)`);
+  const lo=Math.min(...vals),hi=Math.max(...vals),mid=(lo+hi)/2,span=Math.max(hi-lo,mid*.012),pad=span*.18;
   if(chart)chart.destroy();
-  chart=new Chart(ctx,{type:'line',data:{labels:pts.map(p=>new Date(p.t*1000).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})),
-    datasets:[{data:pts.map(p=>p[metric]),borderColor:col,backgroundColor:g,fill:true,tension:.3,pointRadius:0,borderWidth:2.5}]},
-    options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{position:'right',min:lo-pad,max:hi+pad,ticks:{color:'#a8a8a8',maxTicksLimit:5,callback:v=>fmt(v,Math.abs(v)>=1000?0:Math.abs(v)>=1?2:4)},grid:{color:'#1c1c1c'},border:{display:false}}},interaction:{intersect:false,mode:'index'}}});
+  // свечение линии (рисуется под самой линией)
+  const glow={id:'glow',beforeDatasetsDraw(c){const x=c.ctx;x.save();x.shadowColor=col;x.shadowBlur=18;x.shadowOffsetY=4},afterDatasetsDraw(c){c.ctx.restore()}};
+  // вертикальная «нить» и точка под пальцем
+  const cross={id:'cross',afterDatasetsDraw(c){const t=c.tooltip;if(!t||!t.getActiveElements().length)return;const e=t.getActiveElements()[0].element,x=c.ctx;
+    x.save();x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=1;x.setLineDash([3,4]);x.beginPath();x.moveTo(e.x,c.chartArea.top);x.lineTo(e.x,c.chartArea.bottom);x.stroke();
+    x.setLineDash([]);x.fillStyle='#fff';x.shadowColor=col;x.shadowBlur=14;x.beginPath();x.arc(e.x,e.y,5.5,0,7);x.fill();x.restore()}};
+  chart=new Chart(ctx,{type:'line',plugins:[glow,cross],
+    data:{labels,datasets:[{data:vals,borderColor:col,backgroundColor:g,fill:true,tension:.38,pointRadius:0,pointHoverRadius:0,borderWidth:3,borderCapStyle:'round',borderJoinStyle:'round'}]},
+    options:{responsive:true,animation:{duration:900,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},layout:{padding:{top:8,right:2}},
+      plugins:{legend:{display:false},tooltip:{enabled:true,displayColors:false,backgroundColor:'rgba(18,20,34,.82)',borderColor:'rgba(255,255,255,.22)',borderWidth:1,cornerRadius:14,padding:{x:14,y:10},
+        titleColor:'rgba(235,235,245,.65)',titleFont:{size:11,weight:'600'},bodyColor:'#fff',bodyFont:{size:16,weight:'800'},caretSize:0,
+        callbacks:{label:i=>fmt(i.parsed.y,Math.abs(i.parsed.y)>=1000?0:Math.abs(i.parsed.y)>=1?2:4)+(isFx?' '+metric:' $')}}},
+      scales:{x:{display:false},y:{position:'right',min:mid-span/2-pad,max:mid+span/2+pad,ticks:{color:'rgba(235,235,245,.5)',font:{size:11,weight:'600'},maxTicksLimit:5,padding:6,
+        callback:v=>fmt(v,Math.abs(v)>=1000?0:Math.abs(v)>=1?2:4)},grid:{color:'rgba(255,255,255,.06)',drawTicks:false},border:{display:false}}}}});
 }
 // подсветка вкладки при прокрутке
 const secs=['home','crypto','chartS','conv'].map($);
