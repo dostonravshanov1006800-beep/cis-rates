@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-+wPM5HAR/Nvg6Zggn6C/0XPLmKUfsD7WexdBbB/8S6o=' 'sha256-ZsJ8hnclPYllXIkSsraXn1vJh5yrONAXxFhUF54LsrY=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-+wPM5HAR/Nvg6Zggn6C/0XPLmKUfsD7WexdBbB/8S6o=' 'sha256-KE9HlssohVrE7FRbRO5Qh76QgrMcG0Gbdh+7zkS9VhE=' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="5c6a2170e0">
+<meta name="app-version" content="d90ed0ec7d">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -918,6 +918,8 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
     const out={pts:[],note:null};
     if(days<=7){
       const raw=kind==='c'?((SR.crypto&&SR.crypto[id])||[]):(fxSeries(id)||[]);
+      // у валют без короткого ряда (CNY, TRY, AED...) 1Н берём из длинной истории: последние 7 дней
+      if(!raw.length&&kind==='f'&&days>1&&LH){const a=fxLong(id,null);if(a&&a.length>=7){const vs=a.slice(-7),ds=LH.days.slice(-a.length).slice(-7);out.pts=vs.map((x,i)=>({v:x,d:ds[i]}));if(liveNow!=null&&isFinite(liveNow))out.pts[out.pts.length-1].v=liveNow;return out}}
       if(!raw.length)return out;
       let v=raw.slice();if(liveNow!=null&&isFinite(liveNow))v[v.length-1]=liveNow;
       if(kind==='c'){const n=days===1?Math.max(6,Math.round(v.length/7)):v.length;v=v.slice(-n);
