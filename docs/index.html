@@ -5,7 +5,7 @@
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="ff6d79faa6">
+<meta name="app-version" content="5fd5aa6828">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -18,7 +18,7 @@
 :root{--bg:#000;--card:#121212;--line:#262626;--tx:#fafafa;--mut:#a8a8a8;--gold:#f5c04a;--up:#2ee08a;--dn:#ff5b6b;--r:16px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:auto}
-section{scroll-margin-top:58px}
+section[hidden]{display:none !important}
 body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;padding-bottom:84px}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .wrap{max-width:640px;margin:0 auto}
@@ -191,7 +191,7 @@ h2{font-size:26px;font-weight:800;letter-spacing:-1px;padding:34px 20px 14px}
 footer{color:rgba(235,235,245,.4)}
 
 /* НИЖНЯЯ НАВИГАЦИЯ: стеклянная капсула + объёмные цветные кабошоны */
-nav{position:fixed;left:50%;right:auto;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(94vw,420px);z-index:40;border:0;background:none;padding:0;touch-action:manipulation}
+nav{position:fixed;left:50%;right:auto;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(94vw,420px);z-index:40;border:0 !important;background:transparent !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;box-shadow:none;padding:0 !important;touch-action:manipulation}
 nav div{position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 6px 6px;border-radius:34px;isolation:isolate;
   background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.05));
   -webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%);
@@ -200,19 +200,13 @@ nav a{position:relative;z-index:2;display:flex;flex-direction:column;align-items
   font-size:10.5px;font-weight:700;letter-spacing:.1px;color:rgba(235,235,245,.62);text-decoration:none;-webkit-user-select:none;user-select:none;transition:color .18s}
 nav a span{line-height:1}
 /* кабошон: в покое чуть приглушён и меньше, активный выпуклый, цветной, с лёгким «дыханием» */
-nav a .gem{width:44px;height:44px;display:block;filter:saturate(.72) brightness(.82);transform:scale(.86) translateY(1px);
-  transition:transform .32s cubic-bezier(.3,1.5,.5,1),filter .22s;box-shadow:none}
+nav a .gem{width:44px;height:44px;display:block;opacity:.72;transform:scale(.86) translateY(1px);
+  transition:transform .18s ease-out,opacity .18s;box-shadow:none}
 nav a .gem .glyph{transition:stroke-width .2s}
 nav a.on{color:#fff}
-nav a.on .gem{filter:none;transform:scale(1.0) translateY(-5px);animation:gemfloat 3.2s ease-in-out .35s infinite}
+nav a.on .gem{opacity:1;transform:scale(1.0) translateY(-4px)}
 nav a:active .gem{transform:scale(.8) translateY(2px)}
-@keyframes gemfloat{0%,100%{transform:scale(1) translateY(-5px)}50%{transform:scale(1.03) translateY(-7px)}}
 /* цветная подсветка под активным кабошоном (мягкая, без прямоугольных краёв) */
-nav .pillbg{position:absolute;z-index:1;bottom:5px;left:6px;width:calc((100% - 12px)/4);height:16px;border-radius:50%;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 50%,var(--glow,rgba(255,201,77,.55)),transparent 70%);
-  transform:translate3d(var(--i,0),0,0);transition:transform .32s cubic-bezier(.3,1.25,.5,1),background .3s}
-nav a[data-s=home].on ~ .x{}
-@media (prefers-reduced-motion:reduce){nav a.on .gem{animation:none}}
 
 /* мигание цены: короткая подсветка роста/падения + плавная смена числа */
 .tu{animation:tu .9s ease-out}.td{animation:td .9s ease-out}.fu{animation:tu .9s ease-out}.fd{animation:td .9s ease-out}
@@ -247,28 +241,18 @@ nav a[data-s=home].on ~ .x{}
 .top-gap{height:calc(58px + env(safe-area-inset-top))}
 nav a span{line-height:1}
 /* флаг страны: фон плитки, всегда на всю плитку (без <img>, inset и absolute — совместимо со старыми Android WebView) */
-.ring i.fb{background-color:#1a1f38;background-repeat:no-repeat;background-position:center center;background-size:cover}
 /* шапка: Земля слева, справа info и индикатор рядом */
 .earth{width:40px;height:40px;border-radius:50%;object-fit:cover;display:block;flex:none;background:#05060b;border:1px solid rgba(255,255,255,.22);box-shadow:0 4px 14px rgba(0,0,0,.35)}
 .hdr-r{display:flex;align-items:center;gap:10px}
-/* плитка страны: приглушённый флаг как фон + герб по центру */
-.ring i.fb{position:relative;background:#141830;overflow:hidden}
-.ring i.fb .fbg{position:absolute;top:0;right:0;bottom:0;left:0;background-size:cover;background-position:center;opacity:.55;filter:saturate(1.1)}
-.ring i.fb .fbg:after{content:none}
-.ring i.fb .crest{position:relative;z-index:1;display:block;width:46px;height:46px;margin:10px auto 0;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
-.ring i.fb.nocrest .fbg{opacity:1}
-.mf.crestmini{border-radius:0;object-fit:contain;box-shadow:none;background:none}
 nav a svg.gem{stroke:none;fill:none;margin:0}
-/* гербы: выбранная страна «дышит» и ловит бегущий блик; при касании наклон. Без filter/backdrop на самом гербе (Android WebView) */
-.ring i.fb .crest{transition:transform .35s cubic-bezier(.3,1.4,.5,1);will-change:auto}
-.st.on .ring i.fb .crest{animation:crestfloat 3.4s ease-in-out infinite}
-.st:active .ring i.fb .crest{transform:perspective(160px) rotateX(10deg) rotateY(-12deg) scale(.94)}
-@keyframes crestfloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.045)}}
-/* блик пробегает по плитке выбранной страны раз в несколько секунд */
-.st.on .ring i.fb:after{content:"";position:absolute;top:-20%;bottom:-20%;left:-60%;width:40%;z-index:2;pointer-events:none;
-  background:linear-gradient(100deg,transparent,rgba(255,255,255,.34),transparent);transform:skewX(-18deg);animation:sheen 4.2s ease-in-out 1s infinite}
-@keyframes sheen{0%{left:-60%}38%,100%{left:130%}}
-@media (prefers-reduced-motion:reduce){.st.on .ring i.fb .crest,.st.on .ring i.fb:after{animation:none}}
+/* плитка страны: простой герб на ровном тёмном фоне */
+.ring i.fb{position:relative;display:grid;place-items:center;overflow:hidden;background:#12162b}
+.ring i.fb .crest{position:relative;z-index:1;display:block;width:78%;height:78%;object-fit:contain}
+.ring i.fb .cc{position:absolute;z-index:0;font-size:15px;font-weight:800;color:rgba(255,255,255,.55);letter-spacing:.5px}
+/* резерв высоты под данные: загрузка не двигает вёрстку */
+#feed{min-height:560px;contain:layout}
+#src{min-height:20px}
+#clist{min-height:900px;contain:layout}
 </style>
 </head>
 <body>
@@ -291,6 +275,9 @@ nav a svg.gem{stroke:none;fill:none;margin:0}
     <div class="hero"><small id="hl">1 USD</small><h1 id="hv">—</h1><span class="pill" id="hc"></span></div>
     <div class="feed" id="feed"></div>
     <div class="src" id="src"></div>
+  <div class="cta"><h3>Курсы в Telegram</h3><p>Бот посчитает любую сумму, пришлёт картинку курсов и сигнал при скачке.</p>
+    <a class="btn" href="https://t.me/Well_Currency_bot" target="_blank" rel="noopener">Открыть бота</a><a class="btn o" href="https://t.me/gram_corporation" target="_blank" rel="noopener">Канал</a></div>
+  <footer>Данные: ЦБ Узбекистана, России, Казахстана, Украины, Беларуси, ExchangeRate-API, CoinGecko.<br>Гербы: Wikimedia Commons (общественное достояние; Дания и Великобритания: CC BY-SA). Для стран без открытого API курс рыночный. Не является финансовым советом.</footer>
   </section>
 
   <section id="crypto">
@@ -313,16 +300,11 @@ nav a svg.gem{stroke:none;fill:none;margin:0}
       <div class="res" id="res">—</div>
     </div>
   </section>
-
-  <div class="cta"><h3>Курсы в Telegram</h3><p>Бот посчитает любую сумму, пришлёт картинку курсов и сигнал при скачке.</p>
-    <a class="btn" href="https://t.me/Well_Currency_bot" target="_blank" rel="noopener">Открыть бота</a><a class="btn o" href="https://t.me/gram_corporation" target="_blank" rel="noopener">Канал</a></div>
-  <footer>Данные: ЦБ Узбекистана, России, Казахстана, Украины, Беларуси, ExchangeRate-API, CoinGecko.<br>Гербы: Wikimedia Commons (общественное достояние; Дания и Великобритания: CC BY-SA). Для стран без открытого API курс рыночный. Не является финансовым советом.</footer>
 </div>
 
 
 <div class="sheet" id="sheet" hidden><div class="sheet-b"><div class="sheet-h"><b id="shT"></b><button class="hdr-btn" id="shX" aria-label="Закрыть" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="shC"></div></div></div>
-<nav aria-label="Разделы"><div><span class="pillbg" id="pillbg"></span>
-  <a href="#home" class="on" data-s="home" role="tab" aria-label="Курсы"><svg class="gem" viewBox="0 0 48 48" aria-hidden="true">
+<nav aria-label="Разделы"><div><a href="#home" class="on" data-s="home" role="tab" aria-label="Курсы"><svg class="gem" viewBox="0 0 48 48" aria-hidden="true">
       <defs>
         <linearGradient id="g0b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd976"/><stop offset="1" stop-color="#f08a1a"/></linearGradient>
         <linearGradient id="g0h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".78"/><stop offset=".55" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
@@ -457,7 +439,7 @@ function render(){
   if(!R.countries[cc])cc='UZ';
   const c=R.countries[cc];
   // страны-«истории» выбранного региона
-  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${esc(k)}"><div class="ring"><i class="fb" role="img" aria-label="${esc(x.name)}"><span class="fbg" style="background-image:url(https://flagcdn.com/w80/${k.toLowerCase()}.png)"></span><img class="crest" src="crests/${k.toLowerCase()}.png" width="46" height="46" alt="" decoding="async" onerror="this.style.display='none';this.parentNode.classList.add('nocrest')"></i></div><span>${esc(x.name)}</span></button>`).join('');
+  $('stories').innerHTML=Object.entries(R.countries).filter(([,x])=>x.region===reg).map(([k,x])=>`<button class="st ${k===cc?'on':''}" data-k="${esc(k)}"><div class="ring"><i class="fb" role="img" aria-label="${esc(x.name)}"><img class="crest" src="crests/${k.toLowerCase()}.png" width="52" height="52" alt="" decoding="async" onerror="this.remove()"><b class="cc">${esc(k)}</b></i></div><span>${esc(x.name)}</span></button>`).join('');
   $('stories').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cc=b.dataset.k;localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
   $('seg').innerHTML=[['cis','СНГ'],['eu','Европа']].map(([k,n])=>`<button class="${k===reg?'on':''}" data-r="${k}">${n}</button>`).join('');
   $('seg').onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;localStorage.reg=r;cc=Object.keys(R.countries).find(k=>R.countries[k].region===r);localStorage.cc=cc;localStorage.manual=1;metric=null;render()}};
@@ -772,36 +754,26 @@ const NET=(()=>{
   // при открытии окна «Информация» шапка остаётся на месте
   addEventListener('hashchange',()=>top.classList.remove('hide'));
 })();
-// ===== NAVFX: нижний бар — мгновенный отклик =====
+// ===== NAVFX: вкладки — показываем один раздел, без прокрутки и без дёрганья =====
 (function(){
-  const nav=document.querySelector('nav div'),links=[...nav.querySelectorAll('a')],pill=document.getElementById('pillbg');
+  const nav=document.querySelector('nav div'),links=[...nav.querySelectorAll('a')];
   const ids=links.map(a=>a.dataset.s),secs=ids.map(i=>document.getElementById(i));
-  let lock=0,cur=0;
+  let cur=-1;
   const hap=()=>{try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(e){}};
-  function set(i,fromTap){
-    if(i===cur&&!fromTap)return;cur=i;
-    links.forEach((a,k)=>{a.classList.toggle('on',k===i);a.setAttribute('aria-selected',k===i)});
-    pill.style.setProperty('--i',(i*100)+'%');pill.style.setProperty('--glow',['rgba(255,190,70,.6)','rgba(255,120,50,.6)','rgba(60,220,140,.55)','rgba(80,150,255,.6)'][i]);
+  function show(i){
+    if(i===cur)return;cur=i;
+    secs.forEach((x,k)=>{if(x)x.hidden=(k!==i)});
+    links.forEach((a,k)=>{const on=k===i;a.classList.toggle('on',on);a.setAttribute('aria-selected',on)});
+    scrollTo(0,0);                                                          // новый раздел всегда с начала, один раз и мгновенно
+    const t=document.getElementById('top');if(t)t.classList.remove('hide');
+    try{history.replaceState(null,'','#'+ids[i])}catch(e){}
+    // графики внутри раздела пересчитывают размер, когда он стал видимым
+    try{dispatchEvent(new Event('resize'))}catch(e){}
   }
-  // тап: вкладка и «линза» меняются СРАЗУ, прокрутка идёт параллельно
-  nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;set(links.indexOf(a),true);hap()},{passive:true});
-  nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();
-    const i=links.indexOf(a);set(i,true);lock=Date.now()+700;                       // пока едет скролл, прокрутка не переключает вкладку
-    const y=secs[i].getBoundingClientRect().top+scrollY-(i===0?0:58);
-    scrollTo({top:Math.max(0,y),behavior:'auto'});if(i===0)document.getElementById('top')&&document.getElementById('top').classList.remove('hide');                                  // без плавной анимации: переход мгновенный
-    history.replaceState(null,'','#'+ids[i]);
-  });
-  // подсветка при ручной прокрутке: наблюдатель, а не чтение геометрии на каждый кадр
-  if('IntersectionObserver' in window){
-    const vis=new Map();
-    // зона «в фокусе» — полоса экрана 20%..55% высоты; активна та секция, что в этой полосе. Если их несколько — нижняя (читатель уже её достиг)
-    const io=new IntersectionObserver(es=>{es.forEach(en=>vis.set(en.target.id,en.isIntersecting));
-      if(Date.now()<lock)return;
-      let bi=-1;ids.forEach((id,i)=>{if(vis.get(id))bi=i});
-      if(bi>=0)set(bi)},{threshold:[0,.01],rootMargin:'-20% 0px -45% 0px'});
-    secs.forEach(x=>x&&io.observe(x));
-  }
-  set(0,true);
+  nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;show(links.indexOf(a));hap()},{passive:true});
+  nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();show(links.indexOf(a))});
+  const h=(location.hash||'').slice(1),start=ids.indexOf(h);
+  show(start>=0?start:0);
 })();
 
 // ===== самообновление: если на сервере вышла новая версия страницы, перезагружаемся (обход кэша вебвью Telegram) =====
