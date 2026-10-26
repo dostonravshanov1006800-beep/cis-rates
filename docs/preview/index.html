@@ -361,22 +361,26 @@ async function autoGeo(){
 let loading=false,lastOk=0;
 async function load(){
   if(loading)return;loading=true;
-  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),8000),q='?t='+Date.now();
+  const q='?t='+Date.now();
+  // отдельный таймаут и защита для каждого файла: сбой рядов/истории не должен выглядеть как «нет связи»
+  const get=async(url,ms,fallback)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);
+    try{const r=await fetch(url+q,{cache:'no-store',signal:c.signal});if(!r.ok)throw 0;return await r.json()}catch(e){return fallback}finally{clearTimeout(t)}};
+  let r=null;
   try{
-    const [r,h,sr]=await Promise.all([
-      fetch('../data/rates.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>{if(!x.ok)throw 0;return x.json()}),
-      fetch('../data/history.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>H||[]),
-      fetch('../data/series.json'+q,{cache:'no-store',signal:ctl.signal}).then(x=>x.json()).catch(()=>SR)]);   // ряды обязательно ДО первого рендера
+    // главный файл: курсы. Только его отказ считается обрывом связи.
+    [r]=await Promise.all([get('../data/rates.json',8000,null)]);
+    if(!r||!r.crypto)throw new Error('rates');
+    const [h,sr]=await Promise.all([get('../data/history.json',5000,H||[]),get('../data/series.json',5000,SR)]);
     SR=sr&&sr.crypto?sr:SR;
     const fresh=!R||r.updated!==R.updated||(SR.ts&&SR.ts!==window.__srts);window.__srts=SR.ts;
     R=r;H=h;lastOk=Date.now();R.crypto.forEach(c=>{if(LIVE.px[c.sym])c.usd=LIVE.px[c.sym]});
     if(fresh||!window.__rendered){try{render()}catch(e){e.__render=1;throw e}window.__rendered=1}else tick();
     if(!window.__geo){window.__geo=1;autoGeo()}
   }catch(e){
-    if(e&&e.__render){console.error('render:',e)}          // ошибка отрисовки: связь есть, не показываем «нет связи»
+    if(e&&e.__render){console.error('render:',e)}          // ошибка отрисовки: связь есть
     else if(!R)$('upd').textContent='нет связи'; else tick(true)   // старые данные не стираем
   }
-  finally{clearTimeout(to);loading=false}
+  finally{loading=false}
 }
 // живая подпись: «обновлено 20:34 · 3 мин назад»; каждые 15 с пересчитывается без запроса
 function tick(offline){
