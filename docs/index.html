@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AUCx64je4cpvg8nCzuawZTxdqu1f9WV12YpSXELpsqM=' 'sha256-H4xuwGscr6WExpMsfkxHGHwDAthB4WCti+mRdMWvBuQ=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AUCx64je4cpvg8nCzuawZTxdqu1f9WV12YpSXELpsqM=' 'sha256-UrqLKwZBdHL2UV3rx0QJ3w3KrbVPSefeGdxRcShP9CA=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="4c04ba0cb2">
+<meta name="app-version" content="8ee22249f0">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -276,11 +276,19 @@ html.lite .nv::after{opacity:.6}
 .shr{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin-top:var(--s3);border-radius:var(--r-l);font-weight:700;color:#10131f;background:linear-gradient(180deg,#ffe08a,#ffc94d)}
 
 /* ---------- ЭКРАН ДЕТАЛЕЙ ---------- */
-.dt{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(2,4,14,.55);opacity:0;visibility:hidden;transition:opacity var(--d2) var(--ease),visibility 0s var(--d2)}
-.dt.open{opacity:1;visibility:visible;transition:opacity var(--d2) var(--ease)}
+.dt{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(2,4,14,.55);opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .42s cubic-bezier(.32,.72,0,1),visibility 0s linear .42s}
+.dt.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .42s cubic-bezier(.32,.72,0,1),visibility 0s}
 .dt-b{width:min(100%,520px);height:92vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:var(--s4) var(--s4) calc(var(--s8) + var(--safe-b));border-radius:var(--r-xl) var(--r-xl) 0 0;
-  background:linear-gradient(160deg,rgba(40,44,78,.97),rgba(14,16,34,.98));box-shadow:var(--g-rim),0 -12px 40px rgba(0,0,0,.45);transform:translate3d(0,40px,0);transition:transform var(--d3) var(--ease);contain:layout paint}
-.dt.open .dt-b{transform:none}
+  background:linear-gradient(160deg,rgb(40,44,78),rgb(14,16,34));box-shadow:var(--g-rim),0 -12px 40px rgba(0,0,0,.45);transform:translate3d(0,100%,0);transition:transform .46s cubic-bezier(.32,.72,0,1);contain:layout paint;will-change:transform}
+.dt.open .dt-b{transform:translate3d(0,0,0)}
+/* содержимое проявляется чуть позже выезда, чтобы тяжёлая отрисовка не попала на первые кадры */
+.dt-b>*{opacity:0;transform:translate3d(0,10px,0)}
+.dt.open.rd .dt-b>*{opacity:1;transform:none;transition:opacity .28s ease-out,transform .34s cubic-bezier(.22,1,.36,1)}
+.dt.open.rd .dt-b>*:nth-child(2){transition-delay:.02s}.dt.open.rd .dt-b>*:nth-child(3){transition-delay:.04s}.dt.open.rd .dt-b>*:nth-child(4){transition-delay:.06s}.dt.open.rd .dt-b>*:nth-child(5){transition-delay:.08s}.dt.open.rd .dt-b>*:nth-child(n+6){transition-delay:.1s}
+.dt.nofx .dt-b>*{opacity:1;transform:none;transition:none}
+.dt-sk{height:420px}
+@media (prefers-reduced-motion:reduce){.dt,.dt-b{transition-duration:.01s!important}.dt-b>*{opacity:1;transform:none}}
 .dt-h{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s4)}
 .dt-h img,.dt-h .dt-fl-i{width:46px;height:46px;flex:0 0 46px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.22)}
 .dt-t{flex:1;min-width:0}.dt-t b{display:block;font-size:var(--t-xl);font-weight:700;letter-spacing:-.02em}.dt-t small{font-size:var(--t-s);color:var(--tx2)}
@@ -1241,17 +1249,35 @@ function showErr(){if(document.getElementById('errBox'))return;const feed=docume
     box.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch'){cancelAnimationFrame(rafI);rafI=requestAnimationFrame(()=>move(e.clientX))}});
     ['pointerup','pointercancel','pointerleave'].forEach(n=>box.addEventListener(n,end));
   }
-  function draw(){if(!cur_)return;const top=B.scrollTop;B.innerHTML=cur_.k==='c'?coinHTML(cur_.id):fxHTML(cur_.id);B.scrollTop=top;
+  function draw(keep){if(!cur_)return;const top=B.scrollTop;B.innerHTML=cur_.k==='c'?coinHTML(cur_.id):fxHTML(cur_.id);B.scrollTop=top;if(keep)el.classList.add('nofx');
     // данные графика для интерактива: пересчитываем тем же способом, что и при отрисовке
     const live=cur_.k==='c'?(R.crypto.find(x=>x.sym===cur_.id)||{}).usd:(rateOf(cur_.id)||{}).r,s=seriesFor(cur_.k,cur_.id,per,live);ptsNow=s.pts;
     const st=stats(ptsNow);chNow=ptsNow.length>=3?chartSVG(ptsNow,st&&st.last>=st.first?GRN:RED):null;bindChart()}
-  function open(k,id){cur_={k,id};per=7;openAt=Date.now();draw();el.classList.add('open');document.body.style.overflow='hidden';try{Telegram.WebApp.HapticFeedback.impactOccurred('light')}catch(e){}try{Telegram.WebApp.BackButton.show()}catch(e){}
-    loadLH().then(()=>{if(cur_&&cur_.id===id&&per>7)draw()})}
-  function close(){cur_=null;el.classList.remove('open');document.body.style.overflow='';try{Telegram.WebApp.BackButton.hide()}catch(e){}}
+  // Открытие: СНАЧАЛА запускаем выезд пустой шторки (дёшево), и только на следующем кадре строим содержимое.
+  // Тяжёлая сборка разметки и графика больше не попадает на первые кадры анимации: именно она давала «зависание» и скачки.
+  let openTok=0;
+  function open(k,id){const tok=++openTok;cur_={k,id};per=7;openAt=Date.now();
+    el.classList.remove('rd','nofx');B.innerHTML='';B.scrollTop=0;
+    el.classList.add('open');document.body.style.overflow='hidden';
+    try{Telegram.WebApp.HapticFeedback.impactOccurred('light')}catch(e){}try{Telegram.WebApp.BackButton.show()}catch(e){}
+    // шаг 1 (после первого показанного кадра): лёгкий каркас без графика: заголовок, цена, плашки
+    // шаг 2 (когда шторка почти доехала, ~330 мс): полная панель с графиком и статистикой, уже без конкуренции с анимацией
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{if(tok!==openTok||!cur_)return;
+      B.innerHTML=skeleton(k,id);void B.offsetHeight;el.classList.add('rd')}));
+    setTimeout(()=>{if(tok!==openTok||!cur_)return;
+      draw(true);loadLH().then(()=>{if(cur_&&cur_.id===id&&per>7)draw(true)})},340)}
+  // лёгкий каркас: только шапка (иконка, тикер, крестик) и цена; без графика, сетки, расчётов рангов
+  function skeleton(k,id){const l=L(),x=`<button class="dt-x" type="button" data-x aria-label="${esc(l.close)}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
+    if(k==='c'){const c=R.crypto.find(q=>q.sym===id);if(!c)return'';
+      return `<div class="dt-h"><img src="${safeUrl(c.img)}" alt=""><div class="dt-t"><b>${esc(c.sym)}</b><small>${esc(c.name)}</small></div>${x}</div><div class="dt-px" id="dtPx">${usdFmt(c.usd)}</div><div class="dt-sk"></div>`}
+    const base=cur(cc),rv=rateOf(id);if(!rv)return'';
+    return `<div class="dt-h">${flagImg(id).replace('class="mf"','class="dt-fl-i"')}<div class="dt-t"><b>${esc(id)} → ${esc(base)}</b><small>${esc(l.per1)} ${esc(id)}</small></div>${x}</div><div class="dt-px" id="dtPx">${fmt(rv.r)} <span style="font-size:20px;opacity:.6">${esc(base)}</span></div><div class="dt-sk"></div>`}
+  function close(){openTok++;cur_=null;el.classList.remove('open','rd');document.body.style.overflow='';try{Telegram.WebApp.BackButton.hide()}catch(e){}
+    setTimeout(()=>{if(!cur_){B.innerHTML='';el.classList.remove('nofx')}},520)}                  // очищаем после того, как шторка уехала
   try{Telegram.WebApp.BackButton.onClick(close)}catch(e){}
   el.addEventListener('click',e=>{
     if(e.target===el||e.target.closest('[data-x]')){close();return}
-    const r=e.target.closest('[data-r]');if(r){per=+r.dataset.r;try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}draw();if(per>7&&!LH)loadLH().then(()=>{if(cur_)draw()});return}
+    const r=e.target.closest('[data-r]');if(r){per=+r.dataset.r;try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}draw(true);if(per>7&&!LH)loadLH().then(()=>{if(cur_)draw(true)});return}
     const g=e.target.closest('[data-go]');if(g){const code=g.dataset.go,coin=g.dataset.from==='1';close();
       try{const f=$('from'),tt=$('to'),am=$('amt');
         if(f&&tt){
