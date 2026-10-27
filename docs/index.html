@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-U0G2wCTSN0zn7370H68SXnm5SbYdnIZPZnms+Q8eauA=' 'sha256-tVwWz5akyu6eDP/sfVBFwk1nQd3hKNWGGF1rp1lOmL4=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-U0G2wCTSN0zn7370H68SXnm5SbYdnIZPZnms+Q8eauA=' 'sha256-5F6tIGd7G9tTBPKdMRK05+AfZfPMEL9UMC3PuwXmiG0=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="a36ff91b6d">
+<meta name="app-version" content="f37fa8ef62">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -305,7 +305,9 @@ html.lite .nv .drop{transition-duration:.25s}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.seg,.hdr-btn{background:rgba(32,36,64,.92)}}
 @media (prefers-reduced-transparency:reduce){.seg,.hdr-btn{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(32,36,64,.95)}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms;animation-iteration-count:1;transition-duration:.01ms}}
-@media (max-width:359px){.card .v{font-size:24px}.cta-row{grid-template-columns:1fr}.row{grid-template-columns:36px minmax(0,1fr) 72px auto}}
+@media (max-width:359px){.card .v{font-size:24px}.cta-row{grid-template-columns:1fr}}
+/* узкие экраны: мини-график уступает место названию монеты */
+
 
 
 /* ---------- интерактивный график: подсказка, период, пустое состояние ---------- */
@@ -354,6 +356,44 @@ html.lite .nv .drop{transition-duration:.25s}
 .err svg{width:34px;height:34px;stroke:var(--dn);stroke-width:1.8;fill:none;stroke-linecap:round}
 .err b{font-size:var(--t-l);font-weight:700}.err p{color:var(--tx2);font-size:var(--t-s);line-height:1.45;max-width:30ch}
 .err .btn{margin-top:var(--s3);min-width:160px}
+
+/* ---------- ИЗБРАННОЕ И ПОРТФЕЛЬ ---------- */
+.fv{position:absolute;z-index:4;top:var(--s2);right:var(--s2);width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:var(--tx3);transition:color var(--d2),transform var(--d2) var(--spring)}
+.fv svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.fv.on{color:var(--gold)}.fv.on svg{filter:drop-shadow(0 0 6px rgba(255,201,77,.45))}
+.fv:active{transform:scale(.86)}
+.card .fv{top:auto;bottom:0;right:0}               /* правый нижний угол: верхний занят подписью валюты */
+.card .c{padding-right:36px}
+.row{position:relative}
+.row .fv{position:static;grid-column:5;width:44px;height:44px;margin:-4px -10px -4px -6px}
+.row{grid-template-columns:40px minmax(0,1fr) 68px minmax(78px,auto) 32px}
+.fvbox{margin:var(--s4) 0 0}
+.fv-h{padding:0 var(--s5) var(--s2);font-size:var(--t-l);font-weight:700;letter-spacing:-.01em}
+.fv-l{display:flex;gap:var(--s3);overflow-x:auto;padding:0 var(--s4) var(--s2);scrollbar-width:none;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
+.fv-l::-webkit-scrollbar{display:none}
+.fv-i{flex:0 0 auto;scroll-snap-align:start;min-width:158px;display:grid;grid-template-columns:32px minmax(0,1fr);grid-template-areas:"i n" "i p";column-gap:var(--s2);align-items:center;padding:var(--s3) var(--s4);text-align:left;border-radius:var(--r-l);background:var(--g-fill);box-shadow:var(--g-rim),var(--g-drop);transition:transform var(--d2) var(--spring)}
+.fv-i:active{transform:scale(.96)}
+.fv-i>img,.fv-i>.mf{grid-area:i;width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.22)}
+.fv-i>span{grid-area:n;min-width:0}.fv-i>span b{display:block;font-size:var(--t-m);font-weight:700;white-space:nowrap}.fv-i>span small{display:none}
+.fv-i>em{grid-area:p;font-style:normal;display:flex;align-items:baseline;gap:var(--s2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.fv-i>em b{font-size:var(--t-s);font-weight:700}.fv-i>em small{font-size:var(--t-xs);font-weight:700}
+.fv-i .up,.fv-i .dn{text-shadow:none}
+.pfbox{margin:0 var(--s4) var(--s4);padding:var(--s4) var(--s5);display:grid;grid-template-columns:1fr auto;grid-template-areas:"t t" "v c" "u u";row-gap:2px;border-radius:var(--r-xl);background:linear-gradient(145deg,rgba(122,167,255,.2),rgba(122,167,255,.06));box-shadow:var(--g-rim),var(--g-drop)}
+.pfbox>span{grid-area:t;font-size:var(--t-s);font-weight:600;color:var(--tx2)}
+.pfbox>b{grid-area:v;font-size:var(--t-2xl);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.pfbox>b em{font-style:normal;font-size:.55em;font-weight:600;color:var(--tx2)}
+.pfbox>small{grid-area:c;align-self:end;font-size:var(--t-s);font-weight:700;font-variant-numeric:tabular-nums}
+.pfbox .up,.pfbox .dn{text-shadow:none}
+.pfbox>i{grid-area:u;font-style:normal;font-size:var(--t-xs);color:var(--tx3);font-variant-numeric:tabular-nums}
+.dt-pf{display:grid;grid-template-columns:1fr;gap:var(--s3);margin-bottom:var(--s3)}
+.dt-fv{display:flex;align-items:center;justify-content:center;gap:var(--s2);min-height:48px;border-radius:var(--r-l);font-size:var(--t-m);font-weight:700;color:var(--tx);background:var(--g-fill);box-shadow:var(--g-rim);transition:transform var(--d2) var(--spring),color var(--d2)}
+.dt-fv svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dt-fv.on{color:var(--gold)}.dt-fv:active{transform:scale(.97)}
+.dt-pf label{display:flex;align-items:center;gap:var(--s3);padding:0 var(--s4);min-height:52px;border-radius:var(--r-l);background:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 1px rgba(255,255,255,.07)}
+.dt-pf label span{font-size:var(--t-s);font-weight:600;color:var(--tx2);white-space:nowrap}
+.dt-pf input{flex:1;min-width:0;height:48px;border:0;background:none;text-align:right;font-size:var(--t-l);font-weight:700;color:var(--tx);font-variant-numeric:tabular-nums;outline:none}
+.dt-pfv{padding:0 var(--s2);font-size:var(--t-s);color:var(--tx2)}.dt-pfv b{color:var(--tx);font-weight:700}.dt-pfv small{color:var(--tx3)}
+/* узкие экраны: мини-график уступает место названию монеты (правило ПОСЛЕ базовой сетки .row) */
+@media (max-width:379px){.row{grid-template-columns:36px minmax(0,1fr) minmax(76px,auto) 32px;column-gap:var(--s2)}.row>.sp,.row>span:not(.n){display:none}.row img{width:36px;height:36px}}
 </style>
 </head>
 <body>
@@ -947,7 +987,7 @@ function showErr(){if(document.getElementById('errBox'))return;const feed=docume
   const money=n=>{if(n==null||!isFinite(n))return'—';const a=Math.abs(n);return a>=1e12?'$'+fmt(n/1e12,2)+' T':a>=1e9?'$'+fmt(n/1e9,2)+' B':a>=1e6?'$'+fmt(n/1e6,2)+' M':'$'+fmt(n,0)};
   const usdFmt=v=>'$'+fmt(v,v>=1000?0:v>=1?2:4);
   // длинная история: один файл, грузится при первом открытии и кэшируется
-  function loadLH(){if(LH||LHp)return LHp;LHp=fetch('data/longhist.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{LH=j&&j.days?j:null;try{if(LH)localStorage.lhcache=JSON.stringify({t:Date.now(),d:LH})}catch(e){}return LH}).catch(()=>null);return LHp}
+  function loadLH(){if(LHp)return LHp;if(LH)return Promise.resolve(LH);LHp=fetch('data/longhist.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{LH=j&&j.days?j:null;try{if(LH)localStorage.lhcache=JSON.stringify({t:Date.now(),d:LH})}catch(e){}return LH}).catch(()=>null).then(v=>{LHp=null;return v});return LHp}
   try{const c=JSON.parse(localStorage.lhcache||'null');if(c&&c.d&&Date.now()-c.t<864e5*2)LH=c.d}catch(e){}
   const dayLabel=d=>{try{return new Date(d).toLocaleDateString(UL==='uz'?'uz-UZ':UL==='en'?'en-GB':'ru-RU',{day:'numeric',month:'short',year:'2-digit'})}catch(e){return d}};
   const hourLabel=(t)=>{try{return new Date(t).toLocaleString(UL==='uz'?'uz-UZ':UL==='en'?'en-GB':'ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return''}};
@@ -1062,7 +1102,7 @@ function showErr(){if(document.getElementById('errBox'))return;const feed=docume
     const card=e.target.closest('#feed .card');if(card){const n=[...card.parentNode.children].indexOf(card),k=(window.__feedKeys||[])[n];if(k)open('f',k)}},true);
   // живая цена в открытой шторке (не перерисовываем график, меняем только цифру)
   setInterval(()=>{if(!cur_||cur_.k!=='c')return;const c=R.crypto.find(x=>x.sym===cur_.id),p=document.getElementById('dtPx');if(c&&p){const tx=usdFmt(c.usd);if(p.textContent!==tx)p.textContent=tx}},2000);
-  window.__dtOpen=open;window.__dtClose=close;
+  window.__dtOpen=open;window.__dtClose=close;window.__dtCur=()=>cur_;
 })();
 
 // ===== ВКЛАДКА «РЫНОК»: тепловая карта, лидеры и аутсайдеры по периодам =====
@@ -1137,6 +1177,73 @@ function showErr(){if(document.getElementById('errBox'))return;const feed=docume
   (window.requestIdleCallback||function(f){return setTimeout(f,1800)})(()=>setTimeout(warm,1200),{timeout:4000});
   setInterval(()=>{if(!window.__warmed&&R)warm()},3000);
   window.__mkRender=()=>maybe(true);
+})();
+
+// ===== ИЗБРАННОЕ И ПОРТФЕЛЬ: данные в Telegram CloudStorage (между устройствами) с запасным localStorage =====
+(function(){
+  const T={ru:{fav:'Избранное',pf:'Мой портфель',amt:'Количество',total:'Всего',add:'В избранное',del:'Убрать из избранного',empty:'Нажмите звезду у валюты или монеты, и она появится здесь.',hold:'Укажите количество, чтобы увидеть стоимость',day:'за 24 ч',sync:'Синхронизируется с вашим аккаунтом Telegram'},
+           uz:{fav:'Sevimlilar',pf:'Mening portfelim',amt:'Miqdor',total:'Jami',add:'Sevimlilarga',del:'Sevimlilardan olib tashlash',empty:'Valyuta yoki tanga yonidagi yulduzni bosing, u shu yerda paydo bo\'ladi.',hold:'Qiymatni ko\'rish uchun miqdorni kiriting',day:'24 soat',sync:'Telegram hisobingiz bilan sinxronlanadi'},
+           en:{fav:'Favorites',pf:'My portfolio',amt:'Amount',total:'Total',add:'Add to favorites',del:'Remove from favorites',empty:'Tap the star on a currency or coin and it will appear here.',hold:'Enter an amount to see its value',day:'24h',sync:'Synced with your Telegram account'}};
+  const tr=()=>T[UL]||T.ru,cs=(()=>{try{const c=Telegram.WebApp.CloudStorage;return c&&Telegram.WebApp.isVersionAtLeast&&Telegram.WebApp.isVersionAtLeast('6.9')&&Telegram.WebApp.initData?c:null}catch(e){return null}})();
+  let FAV=[],PF={};                                   // FAV: ['c:BTC','f:EUR'] ; PF: {'c:BTC':0.5,'f:USD':1000}
+  const ls=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||'null')||d}catch(e){return d}};
+  FAV=ls('cr_fav',[]);PF=ls('cr_pf',{});
+  // облако: читаем один раз при старте, более «полную» версию берём как основную
+  if(cs)try{cs.getItems(['fav','pf'],(e,v)=>{if(e||!v)return;try{const f=JSON.parse(v.fav||'[]'),p=JSON.parse(v.pf||'{}');
+      if(Array.isArray(f)&&f.length>=FAV.length){FAV=f.filter(x=>typeof x==='string').slice(0,60);localStorage.cr_fav=JSON.stringify(FAV)}
+      if(p&&typeof p==='object'&&Object.keys(p).length>=Object.keys(PF).length){PF=p;localStorage.cr_pf=JSON.stringify(PF)}
+      paintAll()}catch(_){}})}catch(e){}
+  let sv=0;const save=()=>{try{localStorage.cr_fav=JSON.stringify(FAV);localStorage.cr_pf=JSON.stringify(PF)}catch(e){}
+    clearTimeout(sv);sv=setTimeout(()=>{try{cs&&cs.setItem('fav',JSON.stringify(FAV));cs&&cs.setItem('pf',JSON.stringify(PF))}catch(e){}},600)};
+  const key=(k,id)=>k+':'+id,isFav=(k,id)=>FAV.includes(key(k,id));
+  const star=(on)=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"${on?' fill="currentColor"':''}/></svg>`;   // Lucide: star
+  function toggle(k,id){const x=key(k,id),i=FAV.indexOf(x);if(i>=0)FAV.splice(i,1);else{FAV.unshift(x);if(FAV.length>60)FAV.length=60}save();try{Telegram.WebApp.HapticFeedback.impactOccurred(i>=0?'light':'medium')}catch(e){}paintAll()}
+  // ---- звёздочки в карточках валют, строках крипты и шапке деталей ----
+  function decorate(){
+    document.querySelectorAll('#feed .card').forEach((c,n)=>{const k=(window.__feedKeys||[])[n];if(!k)return;let b=c.querySelector('.fv');if(!b){b=document.createElement('button');b.type='button';b.className='fv';b.dataset.k='f';b.dataset.id=k;c.appendChild(b)}b.dataset.id=k;const on=isFav('f',k);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?tr().del:tr().add);b.innerHTML=star(on)});
+    document.querySelectorAll('#clist .row').forEach(r=>{const id=r.dataset.m;if(!id)return;let b=r.querySelector('.fv');if(!b){b=document.createElement('button');b.type='button';b.className='fv';b.dataset.k='c';b.dataset.id=id;r.appendChild(b)}const on=isFav('c',id);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?tr().del:tr().add);b.innerHTML=star(on)})}
+  // ---- блок «Избранное» над списком на главной ----
+  function favBlock(){const host=document.getElementById('home');if(!host||typeof R==='undefined'||!R)return;let box=document.getElementById('favBox');
+    const items=FAV.map(x=>{const [k,id]=x.split(':');if(k==='c'){const c=R.crypto.find(y=>y.sym===id);return c?{k,id,name:c.sym,sub:c.name,img:c.img,px:'$'+fmt(c.usd),ch:c.ch24h}:null}
+      const v=rateOf(id);return v?{k,id,name:id+' → '+cur(cc),sub:'',fl:flagImg(id),px:fmt(v.r),ch:v.d}:null}).filter(Boolean);
+    if(!items.length){if(box)box.remove();return}
+    const html=`<h3 class="fv-h">${tr().fav}</h3><div class="fv-l">${items.map(x=>`<button type="button" class="fv-i" data-k="${x.k}" data-id="${esc(x.id)}">${x.img?`<img src="${safeUrl(x.img)}" alt="">`:(x.fl||'')}<span><b>${esc(x.name)}</b>${x.sub?`<small>${esc(x.sub)}</small>`:''}</span><em><b>${x.px}</b>${x.ch!=null?`<small class="${x.ch>=0?'up':'dn'}">${x.ch>=0?'+':''}${typeof x.ch==='number'?(Math.abs(x.ch)<10?x.ch.toFixed(2):x.ch.toFixed(1)):x.ch}${x.k==='c'?'%':''}</small>`:''}</em></button>`).join('')}</div>`;
+    if(!box){box=document.createElement('div');box.id='favBox';box.className='fvbox';const hero=host.querySelector('.hero');(hero||host.firstChild).insertAdjacentElement('afterend',box)}
+    if(box.dataset.sig!==html){box.dataset.sig=html;box.innerHTML=html}}
+  // ---- итог портфеля на вкладке «Крипта» ----
+  function pfCalc(){let usd=0,usd24=0,n=0;if(typeof R==='undefined'||!R)return null;
+    for(const x of Object.keys(PF)){const a=+PF[x];if(!(a>0))continue;const [k,id]=x.split(':');
+      if(k==='c'){const c=R.crypto.find(y=>y.sym===id);if(!c)continue;const v=a*c.usd;usd+=v;usd24+=v/(1+(c.ch24h||0)/100);n++}
+      else{const r=convert(a,id,'USD');if(r==null)continue;usd+=r;usd24+=r;n++}}
+    return n?{usd,usd24,n}:null}
+  function pfBlock(){const host=document.getElementById('crypto');if(!host||typeof R==='undefined'||!R)return;let box=document.getElementById('pfBox');const p=pfCalc();
+    if(!p){if(box)box.remove();return}
+    const loc=cur(cc),val=convert(p.usd,'USD',loc),ch=p.usd24>0?(p.usd/p.usd24-1)*100:0;
+    const html=`<span>${tr().pf}</span><b>${fmt(val,0)} <em>${esc(loc)}</em></b><small class="${ch>=0?'up':'dn'}">${ch>=0?'+':''}${ch.toFixed(2)}% ${tr().day}</small><i>$${fmt(p.usd,p.usd>=1000?0:2)}</i>`;
+    if(!box){box=document.createElement('div');box.id='pfBox';box.className='pfbox';const h=host.querySelector('h2');(h||host.firstChild).insertAdjacentElement('afterend',box)}
+    if(box.dataset.sig!==html){box.dataset.sig=html;box.innerHTML=html}}
+  // ---- поле «Количество» в экране деталей ----
+  function detailField(){const B=document.getElementById('dtB');if(!B||!window.__dtCur)return;const cur_=window.__dtCur();if(!cur_)return;const k=cur_.k,id=cur_.id,x=key(k,id);
+    let box=B.querySelector('.dt-pf');
+    if(!box){box=document.createElement('div');box.className='dt-pf';const anchor=B.querySelector('.dt-g');if(!anchor)return;anchor.insertAdjacentElement('beforebegin',box);
+      box.innerHTML=`<button type="button" class="dt-fv" data-k="${k}" data-id="${esc(id)}"></button><label><span>${tr().amt}</span><input type="number" inputmode="decimal" min="0" step="any" placeholder="0"></label><p class="dt-pfv"></p>`;
+      const inp=box.querySelector('input');inp.value=PF[x]>0?PF[x]:'';
+      inp.addEventListener('input',()=>{const v=parseFloat(String(inp.value).replace(',','.'));if(v>0&&isFinite(v)&&v<1e15)PF[x]=v;else delete PF[x];save();upd();pfBlock()});}
+    const btn=box.querySelector('.dt-fv'),on=isFav(k,id);btn.classList.toggle('on',on);btn.innerHTML=star(on)+'<span>'+(on?tr().del:tr().add)+'</span>';btn.setAttribute('aria-pressed',on);
+    function upd(){const v=PF[x],p=box.querySelector('.dt-pfv');if(!(v>0)){p.textContent=tr().hold;return}
+      const loc=cur(cc);let usd=k==='c'?(R.crypto.find(y=>y.sym===id)||{usd:0}).usd*v:convert(v,id,'USD');const lv=usd!=null?convert(usd,'USD',loc):null;
+      p.innerHTML=`${tr().total}: <b>${lv!=null?fmt(lv,0)+' '+esc(loc):'—'}</b>${k==='c'&&usd?` <small>$${fmt(usd,usd>=1000?0:2)}</small>`:''}`}
+    upd()}
+  function paintAll(){try{decorate();favBlock();pfBlock();detailField()}catch(e){console.error('fav',e)}}
+  // клики: звёздочка не должна открывать детали (перехватываем в фазе захвата раньше модуля деталей)
+  // window в фазе захвата срабатывает раньше любого обработчика на document (в том числе модуля деталей)
+  window.addEventListener('click',e=>{const b=e.target.closest('.fv,.dt-fv');if(b){e.stopImmediatePropagation();e.preventDefault();toggle(b.dataset.k,b.dataset.id);return}
+    const i=e.target.closest('.fv-i');if(i){e.stopImmediatePropagation();e.preventDefault();if(window.__dtOpen)window.__dtOpen(i.dataset.k==='c'?'c':'f',i.dataset.id)}},true);
+  // перерисовка: после render(), при смене вкладки/языка и при открытии деталей (без постоянного опроса DOM)
+  let q=0;const sched=()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;paintAll()})};
+  new MutationObserver(m=>{if(m.some(x=>x.target&&(x.target.id==='feed'||x.target.id==='clist'||x.target.id==='dtB'||x.target.classList&&x.target.classList.contains('dt'))))sched()}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+  setInterval(()=>{if(!document.hidden){pfBlock();favBlock()}},4000);
+  window.__favPaint=paintAll;paintAll();
 })();
 </script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
