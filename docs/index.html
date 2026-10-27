@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-na3gNZNcnV5exgNn3oep0cjY9qj4QLmAD3negakh/po=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-GWqQq4JBvOiaEU73m139JYFY+SDUeoYK+FzM7OESiZA=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="ad02a23cdd">
+<meta name="app-version" content="cd789be70c">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -34,7 +34,7 @@
   /* материал стекла */
   --g-fill:linear-gradient(145deg,rgba(255,255,255,.15) 0%,rgba(255,255,255,.055) 46%,rgba(255,255,255,.035) 100%);
   --g-fill-hi:linear-gradient(145deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.06) 100%);
-  --g-rim:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.09),inset 1px 0 0 rgba(255,255,255,.14),inset -1px 0 0 rgba(255,255,255,.07),inset 0 0 22px rgba(255,255,255,.045);
+  --g-rim:inset 0 0 22px rgba(255,255,255,.04),inset 0 -10px 18px -12px rgba(2,4,18,.35);
   --g-drop:0 10px 34px rgba(2,4,18,.42),0 2px 6px rgba(2,4,18,.28);
   --g-blur:blur(16px) saturate(165%);
   /* движение */
@@ -192,18 +192,18 @@ footer{padding:var(--s6) var(--s6) var(--s4);text-align:center;font-size:var(--t
 .box{margin:0 var(--s4);padding:var(--s4);border-radius:var(--r-xl)}
 .tabs{display:flex;gap:var(--s2);overflow-x:auto;padding-bottom:var(--s3);scrollbar-width:none;overscroll-behavior-x:contain}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;min-height:40px;padding:0 var(--s4);border-radius:var(--r-full);font-size:var(--t-s);font-weight:700;color:var(--tx2);background:rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.14);transition:color var(--d2),background var(--d2)}
+.tab{flex:0 0 auto;min-height:40px;padding:0 var(--s4);border-radius:var(--r-full);font-size:var(--t-s);font-weight:700;color:var(--tx2);background:rgba(255,255,255,.06);box-shadow:inset 0 0 14px rgba(255,255,255,.035);transition:color var(--d2),background var(--d2)}
 .tab.on{color:var(--tx);background:rgba(122,167,255,.28);box-shadow:var(--g-rim)}
 canvas{display:block;width:100%;border-radius:var(--r-m)}
 .conv{display:flex;flex-direction:column;gap:var(--s2)}
 .conv label{font-size:var(--t-xs);font-weight:600;color:var(--tx2);padding:var(--s2) var(--s1) 0;letter-spacing:.2px}
-.conv input,.conv select{width:100%;min-height:52px;padding:0 var(--s4);border:0;border-radius:var(--r-m);background:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 1px rgba(255,255,255,.07);color:var(--tx);font-size:var(--t-l);font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+.conv input,.conv select{width:100%;min-height:52px;padding:0 var(--s4);border:0;border-radius:var(--r-m);background:rgba(255,255,255,.07);box-shadow:inset 0 0 14px rgba(255,255,255,.035),inset 0 0 0 1px rgba(255,255,255,.07);color:var(--tx);font-size:var(--t-l);font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
 .conv select option{background:#141a33;color:#fff}
 .swap{align-self:center;min-height:44px;margin:var(--s1) 0;padding:0 var(--s5);border-radius:var(--r-full);font-size:var(--t-s);font-weight:700;color:var(--acc2);background:var(--g-fill);box-shadow:var(--g-rim);transition:transform var(--d2) var(--spring)}
 .swap:active{transform:scale(.94)}
 .res{margin-top:var(--s3);padding:var(--s5) var(--s4);border-radius:var(--r-l);text-align:center;font-size:var(--t-2xl);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;background:linear-gradient(145deg,rgba(122,167,255,.22),rgba(122,167,255,.06));box-shadow:var(--g-rim)}
 .multi{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s2)}
-.mrow{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);padding:var(--s3) var(--s4);border-radius:var(--r-m);background:rgba(255,255,255,.055);box-shadow:inset 0 1px 0 rgba(255,255,255,.14);font-variant-numeric:tabular-nums}
+.mrow{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);padding:var(--s3) var(--s4);border-radius:var(--r-m);background:rgba(255,255,255,.055);box-shadow:inset 0 0 14px rgba(255,255,255,.035);font-variant-numeric:tabular-nums}
 .mrow span{font-size:var(--t-xs);font-weight:700;color:var(--tx2)}.mrow b{font-size:var(--t-m);font-weight:700}
 
 /* ---------- ВКЛАДКИ: все в DOM, fade + translateY(8px). Скрытая вкладка не участвует в раскладке и отрисовке ---------- */
@@ -286,7 +286,7 @@ html.lite .nv::after{opacity:.6}
 .dt-x svg{width:18px;height:18px;stroke:var(--tx);stroke-width:1.8;fill:none;stroke-linecap:round}
 .dt-px{font-size:40px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.1}
 .dt-chg{display:flex;gap:var(--s2);flex-wrap:wrap;margin:var(--s3) 0 var(--s4)}
-.dt-chg>span{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 var(--s3);border-radius:var(--r-full);font-size:var(--t-s);font-weight:700;background:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.14);font-variant-numeric:tabular-nums}
+.dt-chg>span{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 var(--s3);border-radius:var(--r-full);font-size:var(--t-s);font-weight:700;background:rgba(255,255,255,.07);box-shadow:inset 0 0 14px rgba(255,255,255,.035);font-variant-numeric:tabular-nums}
 .dt-chg em{font-style:normal;font-weight:500;color:var(--tx3)}
 .dt-chg .up,.dt-chg .dn{text-shadow:none}
 .dt-ch{border-radius:var(--r-l);padding:var(--s3) var(--s2) var(--s2);margin-bottom:var(--s3);background:var(--g-fill);box-shadow:var(--g-rim)}
@@ -302,7 +302,7 @@ html.lite .nv::after{opacity:.6}
 .dt-bar{height:8px;margin-top:var(--s3);border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}
 .dt-bar i{display:block;height:100%;width:100%;border-radius:4px;background:linear-gradient(90deg,var(--acc),var(--acc2));transform-origin:left;transform:scaleX(var(--p,0))}
 .dt-q{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s2);margin-top:var(--s3)}
-.dt-q>div{padding:var(--s3) var(--s1);text-align:center;border-radius:var(--r-m);background:rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.dt-q>div{padding:var(--s3) var(--s1);text-align:center;border-radius:var(--r-m);background:rgba(255,255,255,.06);box-shadow:inset 0 0 14px rgba(255,255,255,.035)}
 .dt-q small{display:block;font-size:var(--t-xs);color:var(--tx3)}.dt-q b{font-size:var(--t-s);font-variant-numeric:tabular-nums}
 .dt-go{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin-top:var(--s4);border-radius:var(--r-l);font-size:var(--t-m);font-weight:700;color:#10131f;background:linear-gradient(180deg,#ffe08a,#ffc94d);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 8px 22px rgba(255,201,77,.28);transition:transform var(--d2) var(--spring)}
 .dt-go:active{transform:scale(.97)}
@@ -399,12 +399,32 @@ html.lite .nv .drop{transition-duration:.25s}
 .dt-fv{display:flex;align-items:center;justify-content:center;gap:var(--s2);min-height:48px;border-radius:var(--r-l);font-size:var(--t-m);font-weight:700;color:var(--tx);background:var(--g-fill);box-shadow:var(--g-rim);transition:transform var(--d2) var(--spring),color var(--d2)}
 .dt-fv svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .dt-fv.on{color:var(--gold)}.dt-fv:active{transform:scale(.97)}
-.dt-pf label{display:flex;align-items:center;gap:var(--s3);padding:0 var(--s4);min-height:52px;border-radius:var(--r-l);background:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 1px rgba(255,255,255,.07)}
+.dt-pf label{display:flex;align-items:center;gap:var(--s3);padding:0 var(--s4);min-height:52px;border-radius:var(--r-l);background:rgba(255,255,255,.07);box-shadow:inset 0 0 14px rgba(255,255,255,.035),inset 0 0 0 1px rgba(255,255,255,.07)}
 .dt-pf label span{font-size:var(--t-s);font-weight:600;color:var(--tx2);white-space:nowrap}
 .dt-pf input{flex:1;min-width:0;height:48px;border:0;background:none;text-align:right;font-size:var(--t-l);font-weight:700;color:var(--tx);font-variant-numeric:tabular-nums;outline:none}
 .dt-pfv{padding:0 var(--s2);font-size:var(--t-s);color:var(--tx2)}.dt-pfv b{color:var(--tx);font-weight:700}.dt-pfv small{color:var(--tx3)}
 /* узкие экраны: мини-график уступает место названию монеты (правило ПОСЛЕ базовой сетки .row) */
 @media (max-width:379px){.row{grid-template-columns:36px minmax(0,1fr) minmax(76px,auto) 32px;column-gap:var(--s2)}.row>.sp,.row>span:not(.n){display:none}.row img{width:36px;height:36px}}
+
+/* ===== v10: чистый Liquid Glass. Кромка = градиентная обводка 1px через маску (как у нижней панели): яркая в верхнем левом углу, гаснет к низу.
+   Вместо ровной белой нити по всему периметру. Рисуется ::before, поэтому не мешает содержимому и не требует blur. ===== */
+.glass,.card,.box,.list,.cta,.hero-card,.res,.swap,.multi>div,.mrow,.tab,.dt-q>div,.dt-chg>span,.dt-pf label,.conv input,.conv select{position:relative}
+.glass::before,.card::before,.box::before,.list::before,.cta::before,.hero-card::before,.res::before,.swap::before,.multi>div::before,.mrow::before,.tab::before,.dt-q>div::before,.dt-chg>span::before,.dt-pf label::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;
+  background:linear-gradient(150deg,rgba(255,255,255,.46),rgba(255,255,255,.10) 32%,rgba(255,255,255,.03) 64%,rgba(255,255,255,.16));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* поля ввода «утоплены» в стекло: тёмная внутренняя тень сверху и тонкая плавная кромка, без светлой нити */
+.conv input,.conv select{background:rgba(6,10,28,.34);box-shadow:inset 0 2px 7px rgba(2,4,18,.34),inset 0 0 0 1px rgba(255,255,255,.06)}
+.conv input:focus,.conv select:focus{outline:0;box-shadow:inset 0 2px 7px rgba(2,4,18,.34),inset 0 0 0 1px rgba(122,167,255,.55)}
+.res{background:linear-gradient(145deg,rgba(122,167,255,.20),rgba(122,167,255,.05))}
+/* нижний текст: часть дизайна, а не сноска. Тонкая стеклянная плашка, мелкий приглушённый текст, место под панелью */
+footer{margin:var(--s5) var(--s4) calc(112px + env(safe-area-inset-bottom,0px));padding:var(--s3) var(--s4);border-radius:var(--r-l);font-size:11px;line-height:1.5;letter-spacing:.1px;color:var(--tx3);background:rgba(255,255,255,.03);position:relative}
+footer::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(150deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 40%,rgba(255,255,255,.02) 70%,rgba(255,255,255,.10));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+footer span:last-child{opacity:.8}
+/* долгое нажатие: никакого меню, выделения, перетаскивания ссылок и предпросмотра адреса */
+html,body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+a,img,svg,button{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
+input,select,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 </style>
 </head>
 <body>
@@ -914,6 +934,7 @@ const NET=(()=>{
   window.__goTab=id=>{const i=ids.indexOf(id);if(i>=0)show(i)};   // переход на вкладку из кода (кнопка «Открыть в конвертере» и др.)
   nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;show(links.indexOf(a));hap()},{passive:true});
   nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();show(links.indexOf(a))});
+  nav.addEventListener('keydown',e=>{const a=e.target.closest('a');if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();show(links.indexOf(a))}});
   const h=(location.hash||'').slice(1),start=ids.indexOf(h);
   show(start>=0?start:0);
   // Браузер после загрузки прокручивает к элементу, id которого совпадает с #якорем в адресе (<section id="home"> лежит ниже историй и переключателя).
@@ -939,6 +960,24 @@ const NET=(()=>{
   }
   document.addEventListener('visibilitychange',check);setTimeout(check,4000);setInterval(check,120000);
 })();
+document.addEventListener('contextmenu',e=>{if(!e.target.closest('input,select,textarea'))e.preventDefault()});document.addEventListener('dragstart',e=>e.preventDefault());
+/* ===== ссылки на бота и канал: открываем только коротким тапом через Telegram, без перехода по href; длинное нажатие ничего не делает ===== */
+(function(){
+  const links=[...document.querySelectorAll('a.btn[href^="https://t.me/"]')];
+  links.forEach(a=>{a.dataset.u=a.getAttribute('href');a.setAttribute('role','button');a.removeAttribute('href');a.style.cursor='pointer'});   // без href: нечего показывать, копировать и открывать долгим нажатием
+  let t0=0,x0=0,y0=0,moved=false;
+  const open=u=>{try{const w=window.Telegram&&Telegram.WebApp;if(w&&w.openTelegramLink){w.openTelegramLink(u);return}}catch(e){}window.open(u,'_blank','noopener')};
+  document.addEventListener('pointerdown',e=>{if(!e.target.closest('a.btn[data-u]'))return;t0=Date.now();x0=e.clientX;y0=e.clientY;moved=false},true);
+  document.addEventListener('pointermove',e=>{if(t0&&(Math.abs(e.clientX-x0)>10||Math.abs(e.clientY-y0)>10))moved=true},true);
+  document.addEventListener('click',e=>{const a=e.target.closest('a.btn[data-u]');if(!a)return;e.preventDefault();
+    const dt=Date.now()-t0;t0=0;if(moved||dt>450)return;      // долгое нажатие или перетаскивание: ничего не открываем
+    try{Telegram.WebApp.HapticFeedback.impactOccurred('light')}catch(_){}open(a.dataset.u)},true);
+  document.addEventListener('keydown',e=>{const a=e.target.closest&&e.target.closest('a.btn[data-u]');if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();open(a.dataset.u)}});
+  // служебный параметр версии из адреса убираем (он нужен только для обхода кэша при самообновлении)
+  try{const u=new URL(location.href);if(u.searchParams.has('v')){u.searchParams.delete('v');history.replaceState(null,'',u.pathname+u.search+u.hash)}}catch(e){}
+})();
+
+(function(){document.querySelectorAll('nav .nv a[href^="#"]').forEach(a=>{a.removeAttribute('href');a.setAttribute('tabindex','0')})})();
 NET.start();
 // смена вкладки нижней навигации = мгновенное обновление
 document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg button'))NET.wake()},{passive:true});
