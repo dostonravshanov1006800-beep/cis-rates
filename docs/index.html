@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-GWqQq4JBvOiaEU73m139JYFY+SDUeoYK+FzM7OESiZA=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-DKKBb+Gzw22ShRSU21A2bII19WW8klN56KivRLybYqk=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="e87c59caaa">
+<meta name="app-version" content="3d52fa93c2">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -425,6 +425,11 @@ footer span:last-child{opacity:.8}
 html,body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 a,img,svg,button{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
 input,select,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+
+/* ===== v11: капля панели = чистое ровное стекло. Без дуги-«полумесяца», без блика-точки, без белых внутренних теней ===== */
+.nv .drop i::before,.nv .drop i::after,.drop i::before,.drop i::after{content:none;display:none}
+.nv .drop i,.drop i{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06) 55%,rgba(120,160,255,.10));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 8px 20px -10px rgba(90,130,255,.42),0 4px 10px -6px rgba(2,4,18,.6)}
 </style>
 </head>
 <body>
@@ -919,6 +924,8 @@ const NET=(()=>{
 (function(){
   const nav=document.querySelector('nav div'),links=[...nav.querySelectorAll('a')];
   const ids=links.map(a=>a.dataset.s),secs=ids.map(i=>document.getElementById(i));
+  let H0=(location.hash||'').slice(1);                                   // старый #якорь читаем один раз, до первой очистки адреса
+  if(!H0){try{H0=sessionStorage.cr_tab||''}catch(e){}}                       // после самообновления страницы возвращаемся на ту же вкладку
   let cur=-1;
   const hap=()=>{try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(e){}};
   function show(i){
@@ -927,7 +934,8 @@ const NET=(()=>{
     links.forEach((a,k)=>{const on=k===i;a.classList.toggle('on',on);a.setAttribute('aria-selected',on)});
     scrollTo(0,0);                                                          // новый раздел всегда с начала, один раз и мгновенно
     const t=document.getElementById('top');if(t)t.classList.remove('hide');
-    try{history.replaceState(null,'','#'+ids[i])}catch(e){}
+    try{sessionStorage.cr_tab=ids[i]}catch(e){}                                  // вкладку помним в памяти сеанса, а адрес страницы держим чистым: Android показывает его в меню долгого нажатия
+    try{if(location.hash||location.search)history.replaceState(null,'',location.pathname)}catch(e){}
     // графики внутри раздела пересчитывают размер, когда он стал видимым
     try{dispatchEvent(new Event('resize'))}catch(e){}
   }
@@ -935,8 +943,8 @@ const NET=(()=>{
   nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;show(links.indexOf(a));hap()},{passive:true});
   nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();show(links.indexOf(a))});
   nav.addEventListener('keydown',e=>{const a=e.target.closest('a');if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();show(links.indexOf(a))}});
-  const h=(location.hash||'').slice(1),start=ids.indexOf(h);
-  show(start>=0?start:0);
+  const start=ids.indexOf(H0);                                    // обратно в адрес вкладку не пишем
+  cur=-1;show(start>=0?start:0);
   // Браузер после загрузки прокручивает к элементу, id которого совпадает с #якорем в адресе (<section id="home"> лежит ниже историй и переключателя).
   // Хеш нужен только чтобы помнить вкладку, поэтому гасим прыжок: пока пользователь сам ничего не листал, держим страницу вверху.
   let touched=false;const mark=()=>{touched=true};
@@ -955,7 +963,7 @@ const NET=(()=>{
     try{
       const r=await fetch('data/version.json?_='+Date.now(),{cache:'no-store'});if(!r.ok)return;
       const v=(await r.json()).v;
-      if(v&&v!==mine&&!sessionStorage['reloaded_'+v]){sessionStorage['reloaded_'+v]=1;location.replace(location.pathname+'?v='+v+location.hash)}
+      if(v&&v!==mine&&!sessionStorage['reloaded_'+v]){sessionStorage['reloaded_'+v]=1;location.replace(location.pathname+'?v='+v)}
     }catch(e){}finally{busy=0}
   }
   document.addEventListener('visibilitychange',check);setTimeout(check,4000);setInterval(check,120000);
@@ -978,6 +986,13 @@ document.addEventListener('contextmenu',e=>{if(!e.target.closest('input,select,t
 })();
 
 (function(){document.querySelectorAll('nav .nv a[href^="#"]').forEach(a=>{a.removeAttribute('href');a.setAttribute('tabindex','0')})})();
+
+/* ===== долгое нажатие: событие contextmenu гасим везде, кроме полей ввода; выделение и перетаскивание тоже (меню «Открыть в Telegram / Копировать» с адресом) ===== */
+(function(){
+  document.addEventListener('contextmenu',e=>{if(!e.target.closest||!e.target.closest('input,select,textarea')){e.preventDefault();e.stopPropagation()}},true);
+  document.addEventListener('selectstart',e=>{if(!e.target.closest||!e.target.closest('input,select,textarea'))e.preventDefault()},true);
+  document.addEventListener('dragstart',e=>e.preventDefault(),true);
+})();
 NET.start();
 // смена вкладки нижней навигации = мгновенное обновление
 document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg button'))NET.wake()},{passive:true});
