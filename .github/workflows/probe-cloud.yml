@@ -4,14 +4,18 @@ permissions: { contents: read }
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "20" }
-      - name: tgcloud status (только чтение)
+      - name: сравнение облака и репозитория
         env: { TGCLOUD_TOKEN: "${{ secrets.TGCLOUD_TOKEN }}" }
         run: |
-          echo "формат токена: $(echo "$TGCLOUD_TOKEN" | sed -E 's/app[0-9]+:/app<id>:/; s/:[A-Za-z0-9_-]+$/:<секрет>/' | cut -c1-30), длина ${#TGCLOUD_TOKEN}"
           npm ci --silent 2>/dev/null || npm install --silent
-          npx tgcloud status 2>&1 | sed -E 's/app[0-9]+:[A-Za-z0-9_-]+/app<id>:<секрет>/g' | head -40
+          mkdir -p /tmp/cloud && cp -r tgcloud tgcloud.jsonc package.json /tmp/cloud/ 2>/dev/null
+          rm -rf tgcloud && npx tgcloud pull --yes 2>&1 | sed -E 's/app[0-9]+:[A-Za-z0-9_-]+/app<id>:<секрет>/g' | tail -15
+          echo "=== файлы в облаке ==="; find tgcloud -type f | sort
+          echo "=== различия облако ↔ репозиторий ==="
+          diff -rq tgcloud /tmp/cloud/tgcloud && echo "ИДЕНТИЧНО"
+          for f in $(cd tgcloud && find . -name '*.js' | sort); do if [ -f "/tmp/cloud/tgcloud/$f" ]; then diff -q "tgcloud/$f" "/tmp/cloud/tgcloud/$f" >/dev/null || { echo "--- отличается: $f"; diff "tgcloud/$f" "/tmp/cloud/tgcloud/$f" | head -12; }; fi; done
