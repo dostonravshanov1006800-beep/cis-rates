@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-DKKBb+Gzw22ShRSU21A2bII19WW8klN56KivRLybYqk=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-690F3otsRN0199ZcoFjyxsq/XWnV0Z8m3R9B25fSVf0=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="94b3605ce4">
+<meta name="app-version" content="eaa53a849c">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -430,6 +430,13 @@ input,select,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-ca
 .nv .drop i::before,.nv .drop i::after,.drop i::before,.drop i::after{content:none;display:none}
 .nv .drop i,.drop i{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06) 55%,rgba(120,160,255,.10));
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 8px 20px -10px rgba(90,130,255,.42),0 4px 10px -6px rgba(2,4,18,.6)}
+
+/* ===== v12: «Та же сумма в других валютах»: подпись под плитками, плитки строго 2 колонки одной высоты ===== */
+.multi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2);align-items:stretch}
+.multi .mrow{min-height:48px;margin:0}
+.multi .mrow:last-child:nth-child(odd){grid-column:1/-1}
+#multiH.mh{margin-top:var(--s3);text-align:center;font-size:var(--t-xs);font-weight:600;letter-spacing:.2px;color:var(--tx3)}
+#multiH.mh:empty{display:none}
 </style>
 </head>
 <body>
@@ -476,6 +483,7 @@ input,select,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-ca
       <label data-i="c.to">В</label><select id="to"></select>
       <div class="res" id="res">—</div>
       <div class="multi" id="multi" aria-live="polite"></div>
+      <div class="mh" id="multiH"></div>
     </div>
   </section>
 </div>
@@ -624,7 +632,8 @@ function multi(a,f){
   const el=$('multi');if(!el||!R)return;
   const loc=cur(cc),want=['USD','EUR','RUB','CNY',loc].filter((k,i,x)=>x.indexOf(k)===i&&k!==f);
   const rows=want.map(k=>{const v=convert(a,f,k);return v==null?'':`<div class="mrow"><span>${esc(k)}</span><b>${fmt(v)}</b></div>`}).join('');
-  el.innerHTML=a>0&&rows?`<div class="mh">${esc(t('c.multi'))}</div>${rows}`:''
+  el.innerHTML=a>0&&rows?rows:'';
+  const h=$('multiH');if(h){h.textContent=a>0&&rows?t('c.multi'):''}
 }
 
 }
