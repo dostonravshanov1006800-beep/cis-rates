@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-eCflW9iFbkJtwkjU0t8DAHGzy1ca0alcaXGK+U56T4M=' 'sha256-9Lvjb3RD9LNTJuK1lOHImNIWJ9zfIc6xbYbEq5PMmKQ=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-eCflW9iFbkJtwkjU0t8DAHGzy1ca0alcaXGK+U56T4M=' 'sha256-IdV3rMW8zJuIG+5aCsHx1fa28PsTY+/pP1Rg+hLZcIw=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="e8a2b737de">
+<meta name="app-version" content="0873af2d62">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -856,18 +856,25 @@ const NET=(()=>{
     c.usd=price;LIVE.px[sym]=price;LIVE.t=Date.now();st.cryptoOk=Date.now();dirty.add(sym);
     if(old!==price){
       const now=performance.now(),last=PX_T[sym]||0;
+      if(now-last<1200){                                                     // тик пришёл рано: не теряем его, а доносим до строки по истечении паузы (иначе у редко торгуемых монет список застревал на старой цене)
+        if(!PX_W[sym])PX_W[sym]=setTimeout(()=>{PX_W[sym]=0;const cc=R&&R.crypto.find(x=>x.sym===sym);if(cc)setRowPx(sym,cc)},1200-(now-last)+20)}
       if(now-last>=1200){                                                    // на экране строка обновляется не чаще раза в 1,2 с: меньше мерцания, цифры читаются
         PX_T[sym]=now;
-        const row=document.querySelector(`#clist [data-m="${sym}"]`);
-        if(row){const b=row.querySelector('.p b'),from=PX_S[sym]!==undefined?PX_S[sym]:old;
-          if(Math.abs(price/from-1)>.0015)animateNum(b,from,price,v=>'$'+fmt(v),380);   // заметное движение: плавный счёт
-          else{cancelAnimationFrame(b._a);b.textContent='$'+fmt(price)}                   // мелкий тик: просто меняем текст, без бега цифр
-          if(Math.abs(price/from-1)>.0006)flash(b,price>from);                              // подсветка только при заметном движении (>0,06%)
-          PX_S[sym]=price;
-          const v=c.ch24h;if(v!==undefined&&v!==null){const sm=row.querySelector('.p small'),tx=(v>=0?'+':'')+v+'%';if(sm.textContent!==tx)sm.textContent=tx;const cl=v>=0?'up':'dn';if(sm.className!==cl)sm.className=cl}}
+        setRowPx(sym,c);
       }
     }
     if(!raf)raf=setTimeout(()=>{raf=0;afterPrices()},700);   // конвертер и график — те же свежие данные, не чаще раза в 0,7 с
+  }
+  const PX_W={};
+  function setRowPx(sym,c){
+    const price=c.usd;PX_T[sym]=performance.now();
+    const row=document.querySelector(`#clist [data-m="${sym}"]`);
+    if(row){const b=row.querySelector('.p b'),from=PX_S[sym]!==undefined?PX_S[sym]:price;
+      if(Math.abs(price/from-1)>.0015)animateNum(b,from,price,v=>'$'+fmt(v),380);   // заметное движение: плавный счёт
+      else{cancelAnimationFrame(b._a);b.textContent='$'+fmt(price)}                   // мелкий тик: просто меняем текст, без бега цифр
+      if(Math.abs(price/from-1)>.0006)flash(b,price>from);                              // подсветка только при заметном движении (>0,06%)
+      PX_S[sym]=price;
+      const v=c.ch24h;if(v!==undefined&&v!==null){const sm=row.querySelector('.p small'),tx=(v>=0?'+':'')+v+'%';if(sm.textContent!==tx)sm.textContent=tx;const cl=v>=0?'up':'dn';if(sm.className!==cl)sm.className=cl}}
   }
   function afterPrices(){
     if(!R)return;
