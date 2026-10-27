@@ -9,13 +9,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "20" }
-      - name: сравнение облака и репозитория
+      - name: сравнение облака и репозитория (только чтение)
         env: { TGCLOUD_TOKEN: "${{ secrets.TGCLOUD_TOKEN }}" }
         run: |
           npm ci --silent 2>/dev/null || npm install --silent
-          mkdir -p /tmp/cloud && cp -r tgcloud tgcloud.jsonc package.json /tmp/cloud/ 2>/dev/null
-          rm -rf tgcloud && npx tgcloud pull --yes 2>&1 | sed -E 's/app[0-9]+:[A-Za-z0-9_-]+/app<id>:<секрет>/g' | tail -15
-          echo "=== файлы в облаке ==="; find tgcloud -type f | sort
-          echo "=== различия облако ↔ репозиторий ==="
-          diff -rq tgcloud /tmp/cloud/tgcloud && echo "ИДЕНТИЧНО"
-          for f in $(cd tgcloud && find . -name '*.js' | sort); do if [ -f "/tmp/cloud/tgcloud/$f" ]; then diff -q "tgcloud/$f" "/tmp/cloud/tgcloud/$f" >/dev/null || { echo "--- отличается: $f"; diff "tgcloud/$f" "/tmp/cloud/tgcloud/$f" | head -12; }; fi; done
+          npx tgcloud fetch 2>&1 | sed -E 's/app[0-9]+:[A-Za-z0-9_-]+/app<id>:<секрет>/g' | tail -4
+          echo "=== status ==="; npx tgcloud status --no-pager 2>&1 | tail -25
+          echo "=== diff ==="; npx tgcloud diff --no-pager 2>&1 | head -60
