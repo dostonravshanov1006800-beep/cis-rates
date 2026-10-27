@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-690F3otsRN0199ZcoFjyxsq/XWnV0Z8m3R9B25fSVf0=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-690F3otsRN0199ZcoFjyxsq/XWnV0Z8m3R9B25fSVf0=' 'sha256-H4xuwGscr6WExpMsfkxHGHwDAthB4WCti+mRdMWvBuQ=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="17db3b51b1">
+<meta name="app-version" content="c70dda090f">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -1060,8 +1060,9 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
   class Sp{constructor(v,o){this.v=v;this.t=v;this.vel=0;this.k=o.k;this.d=o.d}
     step(dt){for(let r=dt;r>0;r-=1/240){const h=Math.min(1/240,r);this.vel+=(this.k*(this.t-this.v)-this.d*this.vel)*h;this.v+=this.vel*h}return this.v}
     rest(e){return Math.abs(this.t-this.v)<e&&Math.abs(this.vel)<e*10}}
-  const SETTLE=calm?{k:200,d:28}:{k:230,d:17},FOLLOW={k:380,d:36};
-  const x=new Sp(0,SETTLE),st=new Sp(0,{k:260,d:22}),pr=new Sp(0,{k:260,d:24});
+  // критическое демпфирование d=2*sqrt(k): капля едет плавно и садится ровно в центр иконки, без перелёта и качания
+  const SETTLE=calm?{k:300,d:2*Math.sqrt(300)}:{k:900,d:2*Math.sqrt(900)},FOLLOW={k:2500,d:2*Math.sqrt(2500)};
+  const x=new Sp(0,SETTLE),st=new Sp(0,{k:400,d:2*Math.sqrt(400)}),pr=new Sp(0,{k:400,d:2*Math.sqrt(400)});
   let pad=6,slot=0,idx=Math.max(0,links.findIndex(a=>a.classList.contains('on'))),ptr=null,run=0,last=0,wasOn=idx;
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
   function measure(){const cs=getComputedStyle(nv);pad=parseFloat(cs.paddingLeft)||6;slot=(nv.clientWidth-2*pad)/N}
@@ -1070,11 +1071,11 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
   function wake(){if(!run){run=1;last=performance.now();requestAnimationFrame(frame)}}
   function draw(){const s=st.v,p=pr.v;
     const sx=(1+s)*(1+.1*p),sy=(1/(1+.55*s))*(1+.1*p);                        // быстрее = длиннее и тоньше, нажатие = набухает
-    const tail=calm?0:clamp(-.006*x.vel,-6,6);                                 // задняя кромка капли чуть отстаёт
+    const tail=0;                                                              // центр капли всегда точно на траектории
     drop.style.setProperty('--lx',(x.v+tail).toFixed(2)+'px');lensEl.style.setProperty('--ls',sx.toFixed(4));lensEl.style.setProperty('--lsy',sy.toFixed(4))}
   function frame(now){const dt=Math.min(.032,(now-last)/1000);last=now;x.step(dt);
-    const sp=Math.min(Math.abs(x.vel)/900,1);st.t=calm?0:.22*sp;st.step(dt);pr.step(dt);draw();
-    if(ptr||!(x.rest(.05)&&st.rest(.001)&&pr.rest(.001)))requestAnimationFrame(frame);else{run=0;draw()}}
+    const sp=Math.min(Math.abs(x.vel)/1100,1);st.t=calm?0:.12*sp;st.step(dt);pr.step(dt);draw();
+    if(ptr||!(x.rest(.05)&&st.rest(.001)&&pr.rest(.001)))requestAnimationFrame(frame);else{run=0;x.v=x.t;x.vel=0;st.v=0;st.vel=0;pr.v=0;pr.vel=0;draw()}}
   // выбор вкладки (вызывается и по клику, и при смене .on другим кодом, например по хэшу)
   function settle(i,fromUser){if(i===idx&&!fromUser&&Math.abs(x.v-i*slot)<.5)return;
     if(i!==idx&&!calm)nv.dispatchEvent(new CustomEvent('lens-change',{detail:i}));
@@ -1087,7 +1088,7 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
   nv.addEventListener('pointermove',e=>{if(!ptr||e.pointerId!==ptr.id)return;if(Math.abs(e.clientX-ptr.x0)>8&&!ptr.moved){ptr.moved=true;try{nv.setPointerCapture(e.pointerId)}catch(_){}}
     x.t=clamp(fingerX(e),0,(N-1)*slot)},{passive:true});
   function up(e,commit){if(!ptr||e.pointerId!==ptr.id)return;const moved=ptr.moved,p=ptr;ptr=null;pr.t=0;nv.classList.remove('drag');
-    x.vel=clamp(x.vel,-900,900);if(!calm)st.vel+=1.4;                           // посадка: короткое «шлёп»
+    x.vel=clamp(x.vel,-900,900);
     if(moved&&commit){const i=nearest(x.t);if(i!==p.start){try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}links[i].click()}else settle(i,true)}
     else if(moved){settle(p.start,true)}
     wake()}
