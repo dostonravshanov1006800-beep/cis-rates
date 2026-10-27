@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-3ohxCTETq7uJZLaGSZXZxJbXW/jtiMJLuSfBVk+vjqw=' 'sha256-9Lvjb3RD9LNTJuK1lOHImNIWJ9zfIc6xbYbEq5PMmKQ=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-eCflW9iFbkJtwkjU0t8DAHGzy1ca0alcaXGK+U56T4M=' 'sha256-9Lvjb3RD9LNTJuK1lOHImNIWJ9zfIc6xbYbEq5PMmKQ=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="abee3fc4ec">
+<meta name="app-version" content="e8a2b737de">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -82,18 +82,22 @@ img{display:block}
 
 /* ---------- ЗАСТАВКА: одна Земля летит в шапку и остаётся логотипом ---------- */
 html.intro #hdrEarth{visibility:hidden}
-#intro{position:fixed;inset:0;z-index:200;pointer-events:none;background:#070b1a;opacity:1}
-html[data-theme=light] #intro{background:#eef2fb}
+#intro{position:fixed;inset:0;z-index:200;pointer-events:none;background:radial-gradient(120% 80% at 50% 38%,#0a1430 0%,#060a18 55%,#03050c 100%);opacity:1;overflow:hidden}
+html[data-theme=light] #intro{background:radial-gradient(120% 80% at 50% 38%,#f6f9ff 0%,#e9effb 60%,#dfe7f7 100%)}
 #introEarth{position:fixed;left:0;top:0;z-index:202;border-radius:50%;object-fit:cover;display:block;transform-origin:top left;will-change:transform;pointer-events:none;user-select:none;-webkit-user-drag:none}
 #introStars{position:absolute;inset:0;pointer-events:none;opacity:.9;
   background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 78% 12%,#cfe0ff,transparent),radial-gradient(1.4px 1.4px at 34% 72%,#fff,transparent),radial-gradient(1px 1px at 88% 64%,#fff,transparent),radial-gradient(1.2px 1.2px at 62% 86%,#bcd2ff,transparent),radial-gradient(1px 1px at 22% 44%,#fff,transparent),radial-gradient(1px 1px at 93% 32%,#fff,transparent),radial-gradient(1.3px 1.3px at 50% 8%,#dbe7ff,transparent),radial-gradient(1px 1px at 6% 82%,#fff,transparent),radial-gradient(1px 1px at 71% 48%,#fff,transparent),radial-gradient(1.2px 1.2px at 42% 30%,#fff,transparent),radial-gradient(1px 1px at 84% 90%,#cfe0ff,transparent),radial-gradient(1px 1px at 16% 60%,#fff,transparent),radial-gradient(1.2px 1.2px at 58% 62%,#fff,transparent),radial-gradient(1px 1px at 30% 6%,#fff,transparent),radial-gradient(1px 1px at 96% 78%,#fff,transparent)}
 html[data-theme=light] #introStars{opacity:0}
-#introBar{position:fixed;left:50%;width:min(64vw,260px);height:12px;margin-left:calc(min(64vw,260px)/-2);z-index:201;border-radius:99px;pointer-events:none;
-  border:1px solid rgba(120,170,255,.45);background:rgba(120,170,255,.08);overflow:hidden}
-#introBar i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;border-radius:inherit;background:linear-gradient(90deg,#2f6bff,#7fb0ff);will-change:transform}
-#introPct{position:fixed;left:0;right:0;z-index:201;text-align:center;font:600 12px/1 system-ui,-apple-system,sans-serif;letter-spacing:.06em;color:rgba(190,215,255,.9);pointer-events:none}
-html[data-theme=light] #introBar{border-color:rgba(47,107,255,.4);background:rgba(47,107,255,.08)}
-html[data-theme=light] #introPct{color:rgba(13,19,48,.7)}
+#introStars{animation:stDrift 6s linear infinite;will-change:transform}
+@keyframes stDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-18px,10px,0)}}
+@media (prefers-reduced-motion:reduce){#introStars{animation:none}}
+#introBar{position:fixed;left:50%;width:min(88vw,520px);height:14px;margin-left:calc(min(88vw,520px)/-2);z-index:201;border-radius:99px;pointer-events:none;
+  border:1px solid rgba(140,185,255,.5);background:rgba(120,170,255,.10);overflow:hidden;box-shadow:0 0 18px rgba(70,120,255,.25)}
+#introBar i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;border-radius:inherit;background:linear-gradient(90deg,#3a78ff,#9cc4ff);will-change:transform}
+#introPct{position:fixed;left:50%;width:min(88vw,520px);margin-left:calc(min(88vw,520px)/-2);z-index:201;display:flex;justify-content:space-between;align-items:baseline;font:600 12px/1 system-ui,-apple-system,sans-serif;letter-spacing:.1em;color:rgba(200,222,255,.92);pointer-events:none;text-transform:uppercase}
+#introPct b{font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+html[data-theme=light] #introBar{border-color:rgba(47,107,255,.45);background:rgba(47,107,255,.08);box-shadow:none}
+html[data-theme=light] #introPct{color:rgba(13,19,48,.72)}
 #introGlow{position:fixed;left:0;top:0;z-index:201;border-radius:50%;pointer-events:none;will-change:opacity;
   background:radial-gradient(closest-side,rgba(120,170,255,.55),rgba(80,130,255,.22) 55%,transparent 100%);transform-origin:center}
 html[data-theme=light] #introGlow{background:radial-gradient(closest-side,rgba(70,120,230,.38),rgba(70,120,230,.14) 55%,transparent 100%)}
@@ -514,7 +518,7 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><div id="introStars"></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct">0%</div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"></div>
+<div id="intro" aria-hidden="true"><div id="introStars"></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct"><span>CIS Rates</span><b>0%</b></div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"></div>
 <div class="bg" aria-hidden="true"></div>
 <script>
 // ===== заставка: ОДНА Земля. Большая по центру, затем та же картинка улетает на место логотипа в шапке =====
@@ -528,10 +532,10 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   const cal0=matchMedia('(prefers-reduced-motion: reduce)').matches;
   // крупный размер: 56% меньшей стороны, но не больше 280 и не меньше 160
-  const size=()=>Math.round(Math.min(280,Math.max(160,Math.min(vw(),vh())*.56)));
-  function place(){const S=size();fly.style.width=fly.style.height=S+'px';fly.style.left=Math.round((vw()-S)/2)+'px';fly.style.top=Math.round(vh()*.44-S/2)+'px';
-    const by=Math.round(vh()*.44+S/2+Math.max(36,S*.2));bar.style.top=by+'px';pct.style.top=(by+22)+'px';
-    const G=Math.round(S*1.7);glow.style.width=glow.style.height=G+'px';glow.style.left=Math.round((vw()-G)/2)+'px';glow.style.top=Math.round(vh()*.44-G/2)+'px'}
+  const size=()=>Math.round(Math.min(320,Math.max(170,Math.min(vw(),vh())*.62)));
+  function place(){const S=size();fly.style.width=fly.style.height=S+'px';fly.style.left=Math.round((vw()-S)/2)+'px';fly.style.top=Math.round(vh()*.42-S/2)+'px';
+    const by=Math.round(vh()-Math.max(64,vh()*.1)-14);bar.style.top=by+'px';pct.style.top=(by-22)+'px';
+    const G=Math.round(S*1.7);glow.style.width=glow.style.height=G+'px';glow.style.left=Math.round((vw()-G)/2)+'px';glow.style.top=Math.round(vh()*.42-G/2)+'px'}
   place();
   const wait=p=>Promise.race([p,sleep(2500)]);
   (async function(){
@@ -543,9 +547,11 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
       // 1) картинка заставки и настоящий значок декодированы, шрифты готовы: размеры и позиция больше не поменяются
       await wait(Promise.all([fly.decode?fly.decode():0,real.decode?real.decode():0,document.fonts&&document.fonts.ready].map(x=>Promise.resolve(x).catch(()=>0))));
       // короткая пауза: Telegram успевает прислать safe area, и шапка встаёт на своё место
+      // мягкий наезд в начале, как в референсе: Земля появляется с лёгким увеличением (только opacity+transform)
+      if(!cal0){fly.animate([{opacity:0,transform:'scale(.86)'},{opacity:1,transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.22,.8,.3,1)',fill:'backwards'});glow.animate([{opacity:0},{opacity:1}],{duration:520,fill:'backwards'})}
       // шкала: заполняется за время ожидания (≈1,1 с), проценты считаются от того же прогресса
       const T=cal0?0:1100,t0=performance.now();
-      await new Promise(res=>{(function step(){const k=T?Math.min(1,(performance.now()-t0)/T):1,e=1-Math.pow(1-k,2);fill.style.transform='scaleX('+e.toFixed(3)+')';pct.textContent=Math.round(e*100)+'%';k<1?requestAnimationFrame(step):res()})()});
+      await new Promise(res=>{(function step(){const k=T?Math.min(1,(performance.now()-t0)/T):1,e=1-Math.pow(1-k,2);fill.style.transform='scaleX('+e.toFixed(3)+')';pct.lastElementChild.textContent=Math.round(e*100)+'%';k<1?requestAnimationFrame(step):res()})()});
       await sleep(cal0?0:180);
       place();
       // 2) берём реальные прямоугольники прямо перед стартом (значок невидим, но стоит на своём месте)
