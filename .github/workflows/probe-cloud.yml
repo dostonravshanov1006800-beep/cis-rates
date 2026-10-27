@@ -1,0 +1,17 @@
+name: Probe cloud
+on: workflow_dispatch
+permissions: { contents: read }
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: tgcloud status (только чтение)
+        env: { TGCLOUD_TOKEN: "${{ secrets.TGCLOUD_TOKEN }}" }
+        run: |
+          echo "формат токена: $(echo "$TGCLOUD_TOKEN" | sed -E 's/app[0-9]+:/app<id>:/; s/:[A-Za-z0-9_-]+$/:<секрет>/' | cut -c1-30), длина ${#TGCLOUD_TOKEN}"
+          npm ci --silent 2>/dev/null || npm install --silent
+          npx tgcloud status 2>&1 | sed -E 's/app[0-9]+:[A-Za-z0-9_-]+/app<id>:<секрет>/g' | head -40
