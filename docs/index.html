@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AUCx64je4cpvg8nCzuawZTxdqu1f9WV12YpSXELpsqM=' 'sha256-UrqLKwZBdHL2UV3rx0QJ3w3KrbVPSefeGdxRcShP9CA=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-TqAJOA3YB87n8q33EZJ41KGR4QEgiM9SP5tvVlJKdA4=' 'sha256-FzaLXSKsokFM355Ed3jfLCi0Pf28J+Hjzsl/iZ3HZuQ=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="5b61bd9efc">
+<meta name="app-version" content="aef4fb7b45">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -80,7 +80,7 @@ img{display:block}
 .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
   padding:calc(var(--s3) + max(env(safe-area-inset-top,0px),var(--tg-safe-area-inset-top,0px)) + var(--tg-content-safe-area-inset-top,0px)) var(--s4) var(--s3);
   /* положение и прозрачность задаёт JS каждый кадр (--hy: пиксели вверх, --ho: 0..1), CSS-переход не используется: в Telegram Android он схлопывался в 1-2 кадра */
-  transform:translate3d(0,var(--hy,0px),0);opacity:var(--ho,1);will-change:transform,opacity}
+  min-height:68px;transform:translate3d(0,var(--hy,0px),0);opacity:var(--ho,1);will-change:transform,opacity}
 .top::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(7,11,26,.78),rgba(7,11,26,0));pointer-events:none}
 .top.hide{pointer-events:none}
 .top.hide .hdr-btn,.top.hide .live{pointer-events:none}
@@ -98,7 +98,7 @@ img{display:block}
 @keyframes pu{0%{box-shadow:0 0 0 0 rgba(52,227,154,.5),0 0 12px rgba(52,227,154,.7)}70%,100%{box-shadow:0 0 0 9px rgba(52,227,154,0),0 0 12px rgba(52,227,154,.7)}}
 
 /* ---------- ИСТОРИИ-СТРАНЫ ---------- */
-.stories{display:flex;gap:var(--s3);overflow-x:auto;padding:var(--s2) var(--s4) var(--s4);scrollbar-width:none;scroll-snap-type:x proximity;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.stories{display:flex;gap:var(--s3);overflow-x:auto;min-height:116px;padding:var(--s2) var(--s4) var(--s4);scrollbar-width:none;scroll-snap-type:x proximity;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
 .stories::-webkit-scrollbar{display:none}
 .st{flex:0 0 auto;width:72px;display:flex;flex-direction:column;align-items:center;gap:var(--s2);scroll-snap-align:start;color:var(--tx2);font-size:var(--t-xs);font-weight:600;transition:transform var(--d1) var(--ease)}
 .st:active{transform:scale(.94)}
@@ -111,7 +111,7 @@ img{display:block}
 .fb .cc{position:absolute;z-index:0;font-size:15px;font-weight:800;color:var(--tx3)}
 
 /* ---------- ПЕРЕКЛЮЧАТЕЛЬ СНГ / ЕВРОПА ---------- */
-.seg{position:relative;display:flex;margin:0 var(--s4) var(--s3);padding:4px;border-radius:var(--r-full);background:var(--g-fill);box-shadow:var(--g-rim),0 6px 20px rgba(2,4,18,.3);
+.seg{position:relative;display:flex;min-height:52px;margin:0 var(--s4) var(--s3);padding:4px;border-radius:var(--r-full);background:var(--g-fill);box-shadow:var(--g-rim),0 6px 20px rgba(2,4,18,.3);
   -webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur)}
 .seg button{flex:1;position:relative;z-index:1;padding:11px 0;min-height:44px;border-radius:var(--r-full);font-size:var(--t-m);font-weight:600;color:var(--tx2);transition:color var(--d2),background var(--d2),box-shadow var(--d2)}
 .seg button.on{color:var(--tx);background:var(--g-fill-hi);box-shadow:var(--g-rim),0 3px 10px rgba(0,0,0,.25)}
@@ -120,14 +120,15 @@ img{display:block}
 .geo button{color:var(--acc);font-size:inherit;font-weight:600;min-height:32px}
 
 /* ---------- ГЛАВНАЯ ЦИФРА ---------- */
-.hero{padding:var(--s6) var(--s5) var(--s4);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s2)}
-.hero small{display:flex;align-items:center;gap:var(--s2);font-size:var(--t-s);font-weight:600;color:var(--tx2);letter-spacing:.2px}
-.mf{width:20px;height:20px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.3)}
+.hero{min-height:203px;padding:var(--s6) var(--s5) var(--s4);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s2)}
+.hero small{display:flex;align-items:center;gap:var(--s2);min-height:24px;font-size:var(--t-s);font-weight:600;color:var(--tx2);letter-spacing:.2px}
+.mf{width:20px;height:20px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.1);box-shadow:0 0 0 1px rgba(255,255,255,.3);animation:imgin .25s ease-out}
 .mf.big{width:24px;height:24px}
-.hero h1{font-size:clamp(46px,14.5vw,68px);font-weight:700;letter-spacing:-.035em;line-height:1.02;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--s2)}
+.hero h1{min-height:1.02em;font-size:clamp(46px,14.5vw,68px);font-weight:700;letter-spacing:-.035em;line-height:1.02;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--s2)}
 .hero h1 em{font-style:normal;font-size:.38em;font-weight:600;color:var(--tx2);letter-spacing:0}
 .pill{display:inline-flex;align-items:center;gap:var(--s1);min-height:30px;padding:0 var(--s3);border-radius:var(--r-full);font-size:var(--t-s);font-weight:700;background:var(--g-fill);box-shadow:var(--g-rim);font-variant-numeric:tabular-nums}
-.pill:empty{display:none}
+.pill:empty{visibility:hidden}                       /* занимает место заранее, чтобы блок не прыгал при заполнении */
+.pill:empty::before{content:"\00a0"}
 
 /* ---------- КАРТОЧКИ ВАЛЮТ ---------- */
 .feed{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);padding:0 var(--s4);min-height:560px;contain:layout}
@@ -143,9 +144,9 @@ img{display:block}
 .dn{color:var(--dn);text-shadow:0 0 14px rgba(255,93,115,.45)}
 .card.in-view{animation:cin var(--d3) var(--ease) both}
 @keyframes cin{from{opacity:0;transform:translate3d(0,14px,0)}}
-.tu{animation:tu .9s var(--ease)}.td{animation:td .9s var(--ease)}
-@keyframes tu{0%{color:var(--up)}100%{color:inherit}}
-@keyframes td{0%{color:var(--dn)}100%{color:inherit}}
+.tu{animation:tu 1.5s ease-out}.td{animation:td 1.5s ease-out}
+@keyframes tu{0%,35%{color:var(--up)}100%{color:inherit}}
+@keyframes td{0%,35%{color:var(--dn)}100%{color:inherit}}
 .src{padding:var(--s4) var(--s5) 0;font-size:var(--t-xs);color:var(--tx3);font-weight:500}
 
 /* ---------- SKELETON ---------- */
@@ -181,7 +182,8 @@ footer{padding:var(--s6) var(--s6) var(--s4);text-align:center;font-size:var(--t
   transition:background var(--d1)}
 .row+.row::before{content:"";position:absolute;left:var(--s4);right:var(--s4);top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)}
 .row:active,.row.on{background:rgba(255,255,255,.07)}
-.row img{width:40px;height:40px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+.row img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.08);box-shadow:0 0 0 1px rgba(255,255,255,.18);animation:imgin .25s ease-out}
+@keyframes imgin{from{opacity:0}to{opacity:1}}
 .row .n{min-width:0}
 .row .n b{display:block;font-size:var(--t-l);font-weight:700;letter-spacing:-.01em}
 .row .n small{display:block;font-size:var(--t-xs);color:var(--tx3);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -235,7 +237,9 @@ nav{position:fixed;left:50%;bottom:calc(12px + var(--safe-b));transform:translat
 .nv a span{display:block;white-space:nowrap}
 /* активная капсула: прозрачная линза. Середина почти не видна, стекло читается по кромке (идея и пропорции: MIT domvybe-liquid-tabs) */
 .nv .drop{position:absolute;z-index:1;top:var(--pad);bottom:var(--pad);left:var(--pad);width:calc((100% - var(--pad)*2)/4);border-radius:28px;pointer-events:none;
-  transform:translate3d(var(--lx,0px),0,0);will-change:transform}
+  transform:translate3d(var(--lx,0px),0,0);will-change:transform;
+  transition:transform var(--ld,480ms) cubic-bezier(.45,.05,.25,1)}            /* едет на композиторе: прокрутка и нагрузка JS её не тормозят */
+.nv.drag .drop{transition:none}                                  /* пока ведёт палец: без задержки */
 .nv .drop i{position:absolute;inset:0;border-radius:inherit;transform:scale(var(--ls,1),var(--lsy,1));transform-origin:50% 50%;overflow:hidden;
   background:radial-gradient(closest-side,rgba(255,255,255,0) 58%,rgba(255,255,255,.06) 82%,rgba(255,255,255,.2) 100%),linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 48%,rgba(120,160,255,.14));
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),inset 0 2px 5px rgba(255,255,255,.3),inset 0 -3px 8px rgba(110,150,255,.2),0 10px 24px -10px rgba(90,130,255,.5),0 5px 12px -6px rgba(2,4,18,.7)}
@@ -462,7 +466,7 @@ input,select,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-ca
   <div class="top-gap" aria-hidden="true"></div>
 
   <div class="stories" id="stories"></div>
-  <div class="seg" id="seg"></div>
+  <div class="seg" id="seg"><button class="on" data-r="cis">СНГ</button><button data-r="eu">Европа</button></div>
   <div class="geo" id="geo"></div>
 
   <section id="home">
@@ -624,7 +628,7 @@ function render(){
      fd.innerHTML=items.map(([k,v],n)=>`<div class="card in-view" style="animation-delay:${Math.min(n,10)*45}ms"><div class="l"><span>${flagImg(k)}${k}</span><span>${esc(c.cur)}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');fd.dataset.sig=sig}}
   $('src').textContent=t('m.src')+' '+(R.official[cc]?bn(R.official[cc].src):t('m.market')+' (ExchangeRate-API)')+' · '+c.sym;
   // крипта
-  $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${esc(x.sym)}"><img src="${safeUrl(x.img)}" loading="lazy" alt=""><div class="n"><b>${esc(x.sym)}</b><small>${esc(x.name)}</small></div>${spark(((SR.crypto[x.sym]||[]).slice(0,-1)).concat([x.usd]),trendColor(SR.crypto[x.sym]))||'<span></span>'}<div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
+  $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${esc(x.sym)}"><img src="${safeUrl(x.img)}" width="40" height="40" decoding="async" alt=""><div class="n"><b>${esc(x.sym)}</b><small>${esc(x.name)}</small></div>${spark(((SR.crypto[x.sym]||[]).slice(0,-1)).concat([x.usd]),trendColor(SR.crypto[x.sym]))||'<span></span>'}<div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
   $('clist').onclick=e=>{const r=e.target.closest('[data-m]');if(r){metric=r.dataset.m;render();$('chartS').scrollIntoView({behavior:'smooth'})}};
   // конвертер
   if(!$('from').dataset.init){
@@ -704,10 +708,13 @@ const NET=(()=>{
     const step=t=>{const k=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-k,3);el.textContent=fmtFn(from+(to-from)*e);if(k<1)el._a=requestAnimationFrame(step)};
     el._a=requestAnimationFrame(step);
   }
-  function flash(el,up){el.classList.remove('tu','td');void el.offsetWidth;el.classList.add(up?'tu':'td')}
+  function flash(el,up){const k=up?'tu':'td';
+    if(el.classList.contains(k))return;                                    // та же вспышка уже идёт: не перезапускаем (иначе цена мигает)
+    el.classList.remove('tu','td');el.classList.add(k);
+    clearTimeout(el._f);el._f=setTimeout(()=>el.classList.remove(k),1550)}
 
   // ---- применение цены крипты: данные + строка списка ----
-  const ANOM={};
+  const ANOM={},PX_T={},PX_S={};
   function applyCrypto(sym,price,change){
     if(!(price>0)||!isFinite(price))return;
     const c=R&&R.crypto.find(x=>x.sym===sym);if(!c)return;
@@ -719,10 +726,17 @@ const NET=(()=>{
     if(change!==null&&change!==undefined&&!isNaN(change))c.ch24h=Math.round(change*100)/100;
     c.usd=price;LIVE.px[sym]=price;LIVE.t=Date.now();st.cryptoOk=Date.now();dirty.add(sym);
     if(old!==price){
-      const row=document.querySelector(`#clist [data-m="${sym}"]`);
-      if(row){const b=row.querySelector('.p b');
-        animateNum(b,old,price,v=>'$'+fmt(v));flash(b,price>old);
-        const v=c.ch24h;if(v!==undefined&&v!==null){const sm=row.querySelector('.p small');sm.textContent=(v>=0?'+':'')+v+'%';sm.className=v>=0?'up':'dn'}}
+      const now=performance.now(),last=PX_T[sym]||0;
+      if(now-last>=1200){                                                    // на экране строка обновляется не чаще раза в 1,2 с: меньше мерцания, цифры читаются
+        PX_T[sym]=now;
+        const row=document.querySelector(`#clist [data-m="${sym}"]`);
+        if(row){const b=row.querySelector('.p b'),from=PX_S[sym]!==undefined?PX_S[sym]:old;
+          if(Math.abs(price/from-1)>.0015)animateNum(b,from,price,v=>'$'+fmt(v),380);   // заметное движение: плавный счёт
+          else{cancelAnimationFrame(b._a);b.textContent='$'+fmt(price)}                   // мелкий тик: просто меняем текст, без бега цифр
+          if(Math.abs(price/from-1)>.0006)flash(b,price>from);                              // подсветка только при заметном движении (>0,06%)
+          PX_S[sym]=price;
+          const v=c.ch24h;if(v!==undefined&&v!==null){const sm=row.querySelector('.p small'),tx=(v>=0?'+':'')+v+'%';if(sm.textContent!==tx)sm.textContent=tx;const cl=v>=0?'up':'dn';if(sm.className!==cl)sm.className=cl}}
+      }
     }
     if(!raf)raf=setTimeout(()=>{raf=0;afterPrices()},700);   // конвертер и график — те же свежие данные, не чаще раза в 0,7 с
   }
@@ -967,17 +981,26 @@ const NET=(()=>{
   if(!H0){try{H0=sessionStorage.cr_tab||''}catch(e){}}                       // после самообновления страницы возвращаемся на ту же вкладку
   let cur=-1;
   const hap=()=>{try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(e){}};
+  let swTok=0;
   function show(i){
-    if(i===cur)return;cur=i;
-    secs.forEach((x,k)=>{if(x){x.classList.add('vtab');x.hidden=false;x.classList.toggle('off',k!==i);x.setAttribute('aria-hidden',k!==i)}});
+    if(i===cur)return;cur=i;const tok=++swTok;
+    // 1) в этом же кадре только лёгкое: подсветка вкладки (запускает переезд капли на композиторе)
     links.forEach((a,k)=>{const on=k===i;a.classList.toggle('on',on);a.setAttribute('aria-selected',on)});
-    scrollTo(0,0);                                                          // новый раздел всегда с начала, один раз и мгновенно
-    if(window.__hdrShow)window.__hdrShow();
-    try{sessionStorage.cr_tab=ids[i]}catch(e){}                                  // вкладку помним в памяти сеанса, а адрес страницы держим чистым: Android показывает его в меню долгого нажатия
-    try{if(location.hash||location.search)history.replaceState(null,'',location.pathname)}catch(e){}
-    // графики внутри раздела пересчитывают размер, когда он стал видимым
-    try{dispatchEvent(new Event('resize'))}catch(e){}
+    // 2) тяжёлое (смена разделов, сброс прокрутки, пересчёт графиков) начинаем, когда капля уже тронулась: два кадра спустя,
+    //    чтобы пересчёт стилей и раскладки не попал на первые кадры её движения
+    // тяжёлое делим на три шага в РАЗНЫХ кадрах: каждый стоит 10-16 мс, вместе в одном кадре они давали 40+ мс и «залипание» капли
+    const A=()=>{if(tok!==swTok)return;                                       // кадр 1: показываем нужный раздел
+      secs.forEach((x,k)=>{if(x){x.classList.add('vtab');x.hidden=false;x.classList.toggle('off',k!==i);x.setAttribute('aria-hidden',k!==i)}});
+      try{sessionStorage.cr_tab=ids[i]}catch(e){}
+      try{if(location.hash||location.search)history.replaceState(null,'',location.pathname)}catch(e){}};
+    const Bb=()=>{if(tok!==swTok)return;                                      // кадр 2: новый раздел с начала, шапка возвращается
+      scrollTo(0,0);if(window.__hdrShow)window.__hdrShow()};
+    const C=()=>{if(tok!==swTok)return;                                       // кадр 3: графики пересчитывают размер
+      try{dispatchEvent(new Event('resize'))}catch(e){}};
+    if(first){first=0;A();Bb();C()}
+    else requestAnimationFrame(()=>requestAnimationFrame(()=>{A();requestAnimationFrame(()=>{Bb();requestAnimationFrame(C)})}))
   }
+  let first=1;
   window.__goTab=id=>{const i=ids.indexOf(id);if(i>=0)show(i)};   // переход на вкладку из кода (кнопка «Открыть в конвертере» и др.)
   nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;show(links.indexOf(a));hap()},{passive:true});
   nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();show(links.indexOf(a))});
@@ -1109,7 +1132,12 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
   // выбор вкладки (вызывается и по клику, и при смене .on другим кодом, например по хэшу)
   function settle(i,fromUser){if(i===idx&&!fromUser&&Math.abs(x.v-i*slot)<.5)return;
     if(i!==idx&&!calm)nv.dispatchEvent(new CustomEvent('lens-change',{detail:i}));
-    idx=i;x.k=SETTLE.k;x.d=SETTLE.d;x.t=i*slot;wake()}
+    const dist=Math.abs(i-idx);drop.style.setProperty('--ld',(dist>=3?760:dist===2?620:480)+'ms');   // дальше едем дольше: шаг остаётся мягким
+    idx=i;
+    // переезд делает CSS (transition на transform, 420 мс): одна установка значения, дальше всё на композиторе, без JS-кадров
+    run=0;x.v=x.t=i*slot;x.vel=0;st.v=st.t=0;st.vel=0;pr.v=pr.t=0;pr.vel=0;
+    lensEl.style.setProperty('--ls',1);lensEl.style.setProperty('--lsy',1);
+    drop.style.setProperty('--lx',(i*slot).toFixed(2)+'px')}
   // следим за .on: любое переключение (клик, хэш, код) двигает линзу
   new MutationObserver(()=>{const i=links.findIndex(a=>a.classList.contains('on'));if(i>=0&&!ptr&&i!==wasOn){wasOn=i;settle(i)}}).observe(nv,{subtree:true,attributes:true,attributeFilter:['class']});
   // палец: ведём линзу, отпускаем — садимся на ближайшую вкладку
@@ -1121,7 +1149,8 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
     x.vel=clamp(x.vel,-900,900);
     if(moved&&commit){const i=nearest(x.t);if(i!==p.start){try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}links[i].click()}else settle(i,true)}
     else if(moved){settle(p.start,true)}
-    wake()}
+    else{settle(idx,true)}
+    if(moved&&!(commit&&nearest(x.t)!==p.start))wake()}
   nv.addEventListener('pointerup',e=>up(e,true));nv.addEventListener('pointercancel',e=>up(e,false));
   addEventListener('resize',()=>{measure();x.v=x.t=idx*slot;draw()});
   measure();x.v=x.t=idx*slot;draw();
