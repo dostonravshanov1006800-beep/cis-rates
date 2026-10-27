@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-690F3otsRN0199ZcoFjyxsq/XWnV0Z8m3R9B25fSVf0=' 'sha256-H4xuwGscr6WExpMsfkxHGHwDAthB4WCti+mRdMWvBuQ=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AUCx64je4cpvg8nCzuawZTxdqu1f9WV12YpSXELpsqM=' 'sha256-H4xuwGscr6WExpMsfkxHGHwDAthB4WCti+mRdMWvBuQ=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="4423730fd4">
+<meta name="app-version" content="788712cb0b">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -79,9 +79,11 @@ img{display:block}
 /* ---------- ШАПКА ---------- */
 .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
   padding:calc(var(--s3) + max(env(safe-area-inset-top,0px),var(--tg-safe-area-inset-top,0px)) + var(--tg-content-safe-area-inset-top,0px)) var(--s4) var(--s3);
-  transition:transform var(--d2) var(--ease),opacity var(--d2) var(--ease)}
+  /* положение и прозрачность задаёт JS каждый кадр (--hy: пиксели вверх, --ho: 0..1), CSS-переход не используется: в Telegram Android он схлопывался в 1-2 кадра */
+  transform:translate3d(0,var(--hy,0px),0);opacity:var(--ho,1);will-change:transform,opacity}
 .top::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(7,11,26,.78),rgba(7,11,26,0));pointer-events:none}
-.top.hide{transform:translate3d(0,-110%,0);opacity:0;pointer-events:none}
+.top.hide{pointer-events:none}
+.top.hide .hdr-btn,.top.hide .live{pointer-events:none}
 .top-gap{height:var(--s1)}
 .earth{width:40px;height:40px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.28),0 4px 14px rgba(0,0,0,.4)}
 .hdr-r{display:flex;align-items:center;gap:var(--s3)}
@@ -914,20 +916,40 @@ const NET=(()=>{
 })();
 
 
-// ===== шапка: прячется при прокрутке вниз, возвращается при прокрутке вверх =====
+// ===== шапка: плавно едет за прокруткой (пружина, без щелчков), по остановке доезжает до края без перелёта =====
+// target = накопленная прокрутка, ограниченная высотой шапки: вниз прячет, вверх возвращает.
+// Видимая позиция pos НЕ прыгает за целью, а догоняет её критически демпфированной пружиной: быстрый бросок
+// превращается в ~0,3 с плавного выезда (а не в 2-3 кадра), медленная протяжка идёт почти 1:1 с пальцем.
 (function(){
   const top=document.getElementById('top');if(!top)return;
-  let last=scrollY,ticking=0,acc=0;
-  function upd(){
-    ticking=0;const y=Math.max(0,scrollY),d=y-last;last=y;
-    if(y<24){top.classList.remove('hide');acc=0;return}              // у самого верха всегда видна
-    if(Math.sign(d)!==Math.sign(acc))acc=0;acc+=d;                    // накапливаем направление, чтобы дрожь пальца не мигала шапкой
-    if(acc>14)top.classList.add('hide');                              // вниз
-    else if(acc<-8)top.classList.remove('hide');                      // вверх
-  }
-  addEventListener('scroll',()=>{if(!ticking){ticking=1;requestAnimationFrame(upd)}},{passive:true});
-  // при открытии окна «Информация» шапка остаётся на месте
-  addEventListener('hashchange',()=>top.classList.remove('hide'));
+  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let H=72,pos=0,vel=0,target=0,last=scrollY,lastT=0,run=0,idle=0;           // 0 = видна, H = спрятана (пиксели)
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+  const measure=()=>{H=Math.max(48,top.offsetHeight+4)};
+  const K=calm?400:230,D=2*Math.sqrt(K);                                      // k=230, d=2*sqrt(k): без перелёта, ~0,35 с на полный ход
+  function paint(){const f=clamp(pos/H,0,1);
+    top.style.setProperty('--hy',(-pos).toFixed(2)+'px');
+    top.style.setProperty('--ho',(1-Math.pow(f,1.15)).toFixed(3));            // логотип и кнопки гаснут в такт выезду
+    top.classList.toggle('hide',f>0.6)}
+  function frame(now){
+    const dt=Math.min(.032,(now-lastT)/1000||.016);lastT=now;
+    for(let r=dt;r>0;r-=1/240){const h=Math.min(1/240,r);vel+=(K*(target-pos)-D*vel)*h;pos+=vel*h}
+    pos=clamp(pos,0,H);
+    if(Math.abs(target-pos)<.05&&Math.abs(vel)<.4){pos=target;vel=0;paint();run=0;return}
+    paint();requestAnimationFrame(frame)}
+  function wake(){if(!run){run=1;lastT=performance.now();requestAnimationFrame(frame)}}
+  function onScroll(){
+    const y=Math.max(0,scrollY),d=y-last;last=y;clearTimeout(idle);
+    if(y<24){target=0;wake();return}                                          // у самого верха всегда видна
+    target=calm?(d>0?H:0):clamp(target+d,0,H);                                // палец задаёт цель, шапка плавно догоняет
+    wake();
+    idle=setTimeout(()=>{target=target>H*.5?H:0;wake()},calm?0:140)}          // отпустили: доезжаем до ближайшего края
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',()=>{measure();paint()});
+  measure();paint();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{measure();paint()});
+  const show=()=>{target=0;wake()};                                           // окно «Информация», смена вкладки: шапка возвращается
+  addEventListener('hashchange',show);
+  window.__hdrShow=show;
 })();
 // ===== NAVFX: вкладки — показываем один раздел, без прокрутки и без дёрганья =====
 (function(){
@@ -942,7 +964,7 @@ const NET=(()=>{
     secs.forEach((x,k)=>{if(x){x.classList.add('vtab');x.hidden=false;x.classList.toggle('off',k!==i);x.setAttribute('aria-hidden',k!==i)}});
     links.forEach((a,k)=>{const on=k===i;a.classList.toggle('on',on);a.setAttribute('aria-selected',on)});
     scrollTo(0,0);                                                          // новый раздел всегда с начала, один раз и мгновенно
-    const t=document.getElementById('top');if(t)t.classList.remove('hide');
+    if(window.__hdrShow)window.__hdrShow();
     try{sessionStorage.cr_tab=ids[i]}catch(e){}                                  // вкладку помним в памяти сеанса, а адрес страницы держим чистым: Android показывает его в меню долгого нажатия
     try{if(location.hash||location.search)history.replaceState(null,'',location.pathname)}catch(e){}
     // графики внутри раздела пересчитывают размер, когда он стал видимым
