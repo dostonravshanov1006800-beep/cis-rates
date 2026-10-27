@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-U0G2wCTSN0zn7370H68SXnm5SbYdnIZPZnms+Q8eauA=' 'sha256-5F6tIGd7G9tTBPKdMRK05+AfZfPMEL9UMC3PuwXmiG0=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-na3gNZNcnV5exgNn3oep0cjY9qj4QLmAD3negakh/po=' 'sha256-gKLeHLk0SBD+RcyKAZQejmTy9StqOouHDry+ir28Yqw=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
-<meta name="app-version" content="f37fa8ef62">
+<meta name="app-version" content="0d5e0a2b23">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -211,7 +211,7 @@ canvas{display:block;width:100%;border-radius:var(--r-m)}
 .vtab.off{opacity:0;visibility:hidden;pointer-events:none;position:absolute;left:0;right:0;top:0;max-height:100vh;overflow:hidden;content-visibility:hidden;contain:strict;transition:opacity var(--d1) var(--ease),visibility 0s var(--d1)}
 /* ---------- НИЖНЯЯ ПАНЕЛЬ · Liquid Glass ---------- */
 nav{position:fixed;left:50%;bottom:calc(12px + var(--safe-b));transform:translate3d(-50%,0,0);width:min(calc(100vw - 24px),400px);z-index:50;pointer-events:none}
-.nv{--pad:6px;position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding:var(--pad);border-radius:34px;pointer-events:auto;isolation:isolate;
+.nv{--pad:6px;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding:var(--pad);border-radius:34px;pointer-events:auto;isolation:isolate;
   /* 1) тон: тёмное тонированное стекло, читаемо на любом фоне под ним */
   background:linear-gradient(180deg,rgba(34,40,74,.74),rgba(14,18,40,.84));
   /* 2) объём: верхний и нижний кант, внутреннее свечение, мягкая падающая тень */
@@ -229,15 +229,26 @@ nav{position:fixed;left:50%;bottom:calc(12px + var(--safe-b));transform:translat
 .nv a:active{transform:scale(.93)}
 .nv a.on{color:#fff}
 .nv .ic{width:24px;height:24px;flex:0 0 24px;display:block;transition:transform .45s var(--spring),filter .3s var(--ease)}
-.nv a.on .ic{transform:translate3d(0,-1px,0) scale(1.06);filter:drop-shadow(0 0 6px rgba(150,185,255,.55))}
+.nv a.on .ic{filter:drop-shadow(0 0 6px rgba(150,185,255,.5))}
 .nv a span{display:block;white-space:nowrap}
-/* активная капсула: собственное маленькое стекло, плавно переезжает между вкладками */
+/* активная капсула: прозрачная линза. Середина почти не видна, стекло читается по кромке (идея и пропорции: MIT domvybe-liquid-tabs) */
 .nv .drop{position:absolute;z-index:1;top:var(--pad);bottom:var(--pad);left:var(--pad);width:calc((100% - var(--pad)*2)/4);border-radius:28px;pointer-events:none;
-  transform:translate3d(calc(var(--i,0)*100%),0,0) scale(var(--sx,1),var(--sy,1)) scale(var(--ds,1));transition:transform .55s var(--spring);will-change:transform}
-.nv .drop i{position:absolute;inset:0;border-radius:inherit;
-  background:linear-gradient(165deg,rgba(255,255,255,.3),rgba(190,208,255,.12) 50%,rgba(255,255,255,.1));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.12),inset 0 0 14px rgba(170,195,255,.16),0 6px 16px -2px rgba(2,4,18,.45),0 0 18px rgba(120,160,255,.22)}
-.nv:active .drop{--ds:1.05}
+  transform:translate3d(var(--lx,0px),0,0);will-change:transform}
+.nv .drop i{position:absolute;inset:0;border-radius:inherit;transform:scale(var(--ls,1),var(--lsy,1));transform-origin:50% 50%;overflow:hidden;
+  background:radial-gradient(closest-side,rgba(255,255,255,0) 58%,rgba(255,255,255,.06) 82%,rgba(255,255,255,.2) 100%),linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 48%,rgba(120,160,255,.14));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),inset 0 2px 5px rgba(255,255,255,.3),inset 0 -3px 8px rgba(110,150,255,.2),0 10px 24px -10px rgba(90,130,255,.5),0 5px 12px -6px rgba(2,4,18,.7)}
+.nv .drop i::before{content:"";position:absolute;inset:2px 14% auto;height:42%;border-radius:999px 999px 40% 40%/999px 999px 30% 30%;border-top:1.5px solid rgba(255,255,255,.7);background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,0) 72%)}
+.nv .drop i::after{content:"";position:absolute;top:13%;left:24%;width:15%;height:9%;border-radius:999px;background:rgba(255,255,255,.8);filter:blur(1.5px)}
+/* выбранная иконка получает заливку (Apple HIG: «prefer filled symbols» для таб-бара), остальные остаются контурными */
+.nv .ic{overflow:visible}
+.nv .ic *{transition:fill .35s var(--ease),stroke .3s var(--ease)}
+.nv a.on .ic{--fillc:rgba(190,210,255,.34)}
+.nv a.on .ic path,.nv a.on .ic rect{fill:var(--fillc)}
+.nv a.on .ic .nofill{fill:none}
+.nv a.on .ic{stroke:#fff;animation:icpop .6s cubic-bezier(.28,1.6,.5,1) both}
+@keyframes icpop{0%{transform:scale(.8)}55%{transform:translate3d(0,-1px,0) scale(1.14)}100%{transform:translate3d(0,-1px,0) scale(1.06)}}
+.nv.drag a:not(.on){opacity:.85}
+@media (prefers-reduced-motion:reduce){.nv a.on .ic{animation:none}}
 /* запасной вариант: без backdrop-filter или при «уменьшить прозрачность» */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.nv{background:linear-gradient(180deg,rgba(40,46,82,.96),rgba(20,24,50,.98))}}
 @media (prefers-reduced-transparency:reduce){.nv{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(180deg,rgba(40,46,82,.97),rgba(20,24,50,.98))}}
@@ -446,7 +457,7 @@ html.lite .nv .drop{transition-duration:.25s}
 
 
 <div class="sheet" id="sheet" hidden><div class="sheet-b"><div class="sheet-h"><b id="shT"></b><button class="hdr-btn" id="shX" aria-label="Закрыть" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="shC"></div></div></div>
-<nav aria-label="Разделы"><div class="nv"><i class="drop" aria-hidden="true"><i></i></i><a href="#home" data-s="home" role="tab" aria-label="Курсы" class="on"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span data-i="nav.rates">Курсы</span></a><a href="#crypto" data-s="crypto" role="tab" aria-label="Крипта"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 4.26m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727"/></svg><span data-i="nav.crypto">Крипта</span></a><a href="#chartS" data-s="chartS" role="tab" aria-label="Рынок"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5v4"/><rect width="4" height="6" x="7" y="9" rx="1"/><path d="M9 15v2"/><path d="M17 3v2"/><rect width="4" height="8" x="15" y="5" rx="1"/><path d="M17 13v3"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/></svg><span data-i="nav.chart">Рынок</span></a><a href="#conv" data-s="conv" role="tab" aria-label="Конвертер"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span data-i="nav.conv">Конвертер</span></a></div></nav>
+<nav aria-label="Разделы"><div class="nv"><i class="drop" aria-hidden="true"><i></i></i><a href="#home" data-s="home" role="tab" aria-label="Курсы" class="on"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span data-i="nav.rates">Курсы</span></a><a href="#crypto" data-s="crypto" role="tab" aria-label="Крипта"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path class="nofill" d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 4.26m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727"/></svg><span data-i="nav.crypto">Крипта</span></a><a href="#chartS" data-s="chartS" role="tab" aria-label="Рынок"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path class="nofill" d="M9 5v4"/><rect width="4" height="6" x="7" y="9" rx="1"/><path class="nofill" d="M9 15v2"/><path class="nofill" d="M17 3v2"/><rect width="4" height="8" x="15" y="5" rx="1"/><path class="nofill" d="M17 13v3"/><path class="nofill" d="M3 3v16a2 2 0 0 0 2 2h16"/></svg><span data-i="nav.chart">Рынок</span></a><a href="#conv" data-s="conv" role="tab" aria-label="Конвертер"><svg class="ic lucide" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path class="nofill" d="M8 3 4 7l4 4"/><path class="nofill" d="M4 7h16"/><path class="nofill" d="m16 21 4-4-4-4"/><path class="nofill" d="M20 17H4"/></svg><span data-i="nav.conv">Конвертер</span></a></div></nav>
 
 <script>
 document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.getAttribute('data-rm'))t.remove()},true);
@@ -605,7 +616,7 @@ const secs=['home','crypto','chartS','conv'].map($);
    ===================================================================== */
 const NET=(()=>{
   const T=5000, st={state:'wait',srvOk:0,fxOk:0,cryptoOk:0,fail:0,seriesAt:0};
-  let ws=null,wsKind='',wsTimer=0,restTimer=0,backoff=1000,lastMsg=0,dirty=new Set(),raf=0,lastRender=0,gen=0;
+  let ws=null,ws3=null,ws4=null,wsKind='',wsTimer=0,restTimer=0,backoff=1000,lastMsg=0,dirty=new Set(),raf=0,lastRender=0,gen=0;
   const out={cryptoSrc:'',lastGood:0};
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -614,7 +625,8 @@ const NET=(()=>{
     for(let k=0;k<2;k++){
       const c=new AbortController(),t=setTimeout(()=>c.abort(),T);
       try{
-        const r=await fetch(url+(url.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store',signal:c.signal,...opt});
+        const own=!/^https?:/.test(url);   // лишний параметр нужен только нашим файлам; внешние API (Binance) отвечают на него ошибкой 400 без CORS-заголовка
+        const r=await fetch(own?url+(url.includes('?')?'&':'?')+'_='+Date.now():url,{cache:'no-store',signal:c.signal,...opt});
         if(!r.ok)throw new Error(r.status);
         return await r.json();
       }catch(e){ if(k===0)await sleep(350) }   // быстрый повтор
@@ -681,7 +693,7 @@ const NET=(()=>{
   // ---- WebSocket ----
   const SYMS=()=>R?R.crypto.map(c=>c.sym).filter(s=>s!=='USDT'&&s!=='DAI'||true):[];
   const BIN_SKIP=new Set(['USDT','TON','XMR','LEO','RAIN','DAI','CC','USD1']);   // пар к USDT на Binance нет (проверено по exchangeInfo); их цены даёт Gate.io / сервер
-  function closeWs(){gen++;const a=ws,b=ws2;ws=null;ws2=null;clearTimeout(wsTimer);[a,b].forEach(x=>{if(x){x.onclose=x.onerror=x.onmessage=x.onopen=null;try{x.close()}catch(e){}}})}
+  function closeWs(){gen++;const a=ws,b=ws2,c3=ws3,c4=ws4;ws=null;ws2=null;ws3=null;ws4=null;clearTimeout(wsTimer);[a,b,c3,c4].forEach(x=>{if(x){x.onclose=x.onerror=x.onmessage=x.onopen=null;try{x.close()}catch(e){}}})}
   function openBinance(){
     closeWs();wsKind='binance';const my=gen;
     const list=SYMS().filter(s=>!BIN_SKIP.has(s)).map(s=>s.toLowerCase()+'usdt@miniTicker');
@@ -690,7 +702,7 @@ const NET=(()=>{
     try{sock=new WebSocket('wss://data-stream.binance.vision/stream?streams='+list.join('/'))}catch(e){return openGate()}
     ws=sock;
     const guard=setTimeout(()=>{if(my===gen&&!got){closeWs();openGate()}},6000);   // нет данных за 6 с -> запасной источник
-    sock.onopen=()=>{if(my===gen)openGateExtra(my)};
+    sock.onopen=()=>{if(my===gen){openGateExtra(my);openCoinbase(my);openKraken(my)}};
     sock.onmessage=ev=>{if(my!==gen)return;try{const d=JSON.parse(ev.data).data;if(!d||!d.s)return;got++;lastMsg=Date.now();out.cryptoSrc='Binance';backoff=1000;
       const p=+d.c,o=+d.o;applyCrypto(d.s.replace(/USDT$/,''),p,o>0?(p/o-1)*100:null)}catch(e){}};
     sock.onclose=()=>{clearTimeout(guard);if(my===gen)reconnect()};
@@ -708,6 +720,29 @@ const NET=(()=>{
     sock.onmessage=ev=>{if(my!==gen)return;try{const m=JSON.parse(ev.data);if(m.channel!=='spot.tickers'||m.event!=='update'||!m.result)return;const r=m.result;
       applyCrypto(r.currency_pair.replace('_USDT',''),+r.last,+r.change_percentage)}catch(e){}};
     sock.onerror=()=>{try{sock.close()}catch(e){}};
+  }
+    // TON торгуется на Coinbase (пара TON-USD), на Binance и Gate её нет; процент за 24 ч считаем от open_24h
+  function openCoinbase(my){
+    if(!R||!R.crypto.some(c=>c.sym==='TON'))return;
+    let sock;try{sock=new WebSocket('wss://ws-feed.exchange.coinbase.com')}catch(e){return}
+    ws3=sock;
+    sock.onopen=()=>{if(my===gen)sock.send(JSON.stringify({type:'subscribe',product_ids:['TON-USD'],channels:['ticker']}))};
+    sock.onmessage=ev=>{if(my!==gen)return;try{const m=JSON.parse(ev.data);if(m.type!=='ticker'||m.product_id!=='TON-USD')return;
+      const p=+m.price,o=+m.open_24h;lastMsg=Date.now();applyCrypto('TON',p,o>0?(p/o-1)*100:null)}catch(e){}};
+    sock.onerror=()=>{try{sock.close()}catch(e){}};
+    sock.onclose=()=>{if(my===gen&&ws3===sock){ws3=null;setTimeout(()=>{if(my===gen&&!document.hidden&&!ws3)openCoinbase(my)},5000)}};   // свой повтор: основной поток не страдает
+  }
+  // XMR (и запасной канал для TON) торгуются на Kraken: публичный сокет v2, в тике есть last и change_pct
+  function openKraken(my){
+    if(!R)return;const want=['XMR','TON'].filter(x=>R.crypto.some(c=>c.sym===x));if(!want.length)return;
+    let sock;try{sock=new WebSocket('wss://ws.kraken.com/v2')}catch(e){return}
+    ws4=sock;
+    sock.onopen=()=>{if(my===gen)sock.send(JSON.stringify({method:'subscribe',params:{channel:'ticker',symbol:want.map(x=>x+'/USD')}}))};
+    sock.onmessage=ev=>{if(my!==gen)return;try{const m=JSON.parse(ev.data);if(m.channel!=='ticker'||!m.data)return;
+      m.data.forEach(d=>{const sym=String(d.symbol||'').split('/')[0];if(!want.includes(sym))return;const p=+d.last;if(!(p>0))return;
+        lastMsg=Date.now();applyCrypto(sym,p,d.change_pct!==undefined?+d.change_pct:null)})}catch(e){}};
+    sock.onerror=()=>{try{sock.close()}catch(e){}};
+    sock.onclose=()=>{if(my===gen&&ws4===sock){ws4=null;setTimeout(()=>{if(my===gen&&!document.hidden&&!ws4)openKraken(my)},5000)}};
   }
   function openGate(){
     closeWs();wsKind='gate';const my=gen;
@@ -876,6 +911,7 @@ const NET=(()=>{
     // графики внутри раздела пересчитывают размер, когда он стал видимым
     try{dispatchEvent(new Event('resize'))}catch(e){}
   }
+  window.__goTab=id=>{const i=ids.indexOf(id);if(i>=0)show(i)};   // переход на вкладку из кода (кнопка «Открыть в конвертере» и др.)
   nav.addEventListener('pointerdown',e=>{const a=e.target.closest('a');if(!a)return;show(links.indexOf(a));hap()},{passive:true});
   nav.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();show(links.indexOf(a))});
   const h=(location.hash||'').slice(1),start=ids.indexOf(h);
@@ -952,16 +988,51 @@ document.addEventListener('click',e=>{if(e.target.closest('#stories .st, #seg bu
 // ===== TELEGRAM: на весь экран, цвета под фон, без закрытия свайпом вниз =====
 (function(){try{const w=Telegram.WebApp;w.ready();w.expand();w.setHeaderColor('#070b1a');w.setBackgroundColor('#070b1a');w.setBottomBarColor&&w.setBottomBarColor('#140d2b');w.disableVerticalSwipes&&w.disableVerticalSwipes()}catch(e){}})();
 
-// ===== капля нижней панели: едет за вкладкой .on, растягивается в движении =====
+// ===== линза нижней панели: пружинная физика (идея и пропорции пружин: MIT domvybe-liquid-tabs, код написан заново) =====
+// палец ведёт линзу, скорость растягивает её, при отпускании она садится на ближайшую вкладку с мягким перелётом
 (function(){
-  const nv=document.querySelector('nav .nv'),drop=nv&&nv.querySelector('.drop');if(!nv||!drop)return;
-  const links=[...nv.querySelectorAll('a')];let last=-1,tm;
-  function place(){const i=Math.max(0,links.findIndex(a=>a.classList.contains('on')));
-    if(last>=0&&i!==last){const d=Math.abs(i-last);drop.style.setProperty('--sx',1+Math.min(.34,.14*d));drop.style.setProperty('--sy',.9);
-      clearTimeout(tm);tm=setTimeout(()=>{drop.style.removeProperty('--sx');drop.style.removeProperty('--sy')},150)}
-    drop.style.setProperty('--i',i);last=i}
-  new MutationObserver(place).observe(nv,{subtree:true,attributes:true,attributeFilter:['class']});
-  place();
+  const nv=document.querySelector('nav .nv'),drop=nv&&nv.querySelector('.drop'),lensEl=drop&&drop.firstElementChild;if(!nv||!lensEl)return;
+  const links=[...nv.querySelectorAll('a')],N=links.length,calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // пружина: ускорение = жёсткость*(цель-значение) - демпфирование*скорость; шаг 1/240 с, одинаково на 60 и 120 Гц
+  class Sp{constructor(v,o){this.v=v;this.t=v;this.vel=0;this.k=o.k;this.d=o.d}
+    step(dt){for(let r=dt;r>0;r-=1/240){const h=Math.min(1/240,r);this.vel+=(this.k*(this.t-this.v)-this.d*this.vel)*h;this.v+=this.vel*h}return this.v}
+    rest(e){return Math.abs(this.t-this.v)<e&&Math.abs(this.vel)<e*10}}
+  const SETTLE=calm?{k:200,d:28}:{k:230,d:17},FOLLOW={k:380,d:36};
+  const x=new Sp(0,SETTLE),st=new Sp(0,{k:260,d:22}),pr=new Sp(0,{k:260,d:24});
+  let pad=6,slot=0,idx=Math.max(0,links.findIndex(a=>a.classList.contains('on'))),ptr=null,run=0,last=0,wasOn=idx;
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+  function measure(){const cs=getComputedStyle(nv);pad=parseFloat(cs.paddingLeft)||6;slot=(nv.clientWidth-2*pad)/N}
+  const fingerX=e=>{const r=nv.getBoundingClientRect(),k=r.width/nv.offsetWidth||1;return (e.clientX-r.left)/k-pad-slot/2};
+  const nearest=v=>clamp(Math.round(v/slot),0,N-1);
+  function wake(){if(!run){run=1;last=performance.now();requestAnimationFrame(frame)}}
+  function draw(){const s=st.v,p=pr.v;
+    const sx=(1+s)*(1+.1*p),sy=(1/(1+.55*s))*(1+.1*p);                        // быстрее = длиннее и тоньше, нажатие = набухает
+    const tail=calm?0:clamp(-.006*x.vel,-6,6);                                 // задняя кромка капли чуть отстаёт
+    drop.style.setProperty('--lx',(x.v+tail).toFixed(2)+'px');lensEl.style.setProperty('--ls',sx.toFixed(4));lensEl.style.setProperty('--lsy',sy.toFixed(4))}
+  function frame(now){const dt=Math.min(.032,(now-last)/1000);last=now;x.step(dt);
+    const sp=Math.min(Math.abs(x.vel)/900,1);st.t=calm?0:.22*sp;st.step(dt);pr.step(dt);draw();
+    if(ptr||!(x.rest(.05)&&st.rest(.001)&&pr.rest(.001)))requestAnimationFrame(frame);else{run=0;draw()}}
+  // выбор вкладки (вызывается и по клику, и при смене .on другим кодом, например по хэшу)
+  function settle(i,fromUser){if(i===idx&&!fromUser&&Math.abs(x.v-i*slot)<.5)return;
+    if(i!==idx&&!calm)nv.dispatchEvent(new CustomEvent('lens-change',{detail:i}));
+    idx=i;x.k=SETTLE.k;x.d=SETTLE.d;x.t=i*slot;wake()}
+  // следим за .on: любое переключение (клик, хэш, код) двигает линзу
+  new MutationObserver(()=>{const i=links.findIndex(a=>a.classList.contains('on'));if(i>=0&&!ptr&&i!==wasOn){wasOn=i;settle(i)}}).observe(nv,{subtree:true,attributes:true,attributeFilter:['class']});
+  // палец: ведём линзу, отпускаем — садимся на ближайшую вкладку
+  nv.addEventListener('pointerdown',e=>{if(e.button>0||!e.isPrimary)return;measure();
+    ptr={id:e.pointerId,x0:e.clientX,moved:false,start:idx};x.k=FOLLOW.k;x.d=FOLLOW.d;x.t=clamp(fingerX(e),0,(N-1)*slot);pr.t=calm?0:1;nv.classList.add('drag');wake()},{passive:true});
+  nv.addEventListener('pointermove',e=>{if(!ptr||e.pointerId!==ptr.id)return;if(Math.abs(e.clientX-ptr.x0)>8&&!ptr.moved){ptr.moved=true;try{nv.setPointerCapture(e.pointerId)}catch(_){}}
+    x.t=clamp(fingerX(e),0,(N-1)*slot)},{passive:true});
+  function up(e,commit){if(!ptr||e.pointerId!==ptr.id)return;const moved=ptr.moved,p=ptr;ptr=null;pr.t=0;nv.classList.remove('drag');
+    x.vel=clamp(x.vel,-900,900);if(!calm)st.vel+=1.4;                           // посадка: короткое «шлёп»
+    if(moved&&commit){const i=nearest(x.t);if(i!==p.start){try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}links[i].click()}else settle(i,true)}
+    else if(moved){settle(p.start,true)}
+    wake()}
+  nv.addEventListener('pointerup',e=>up(e,true));nv.addEventListener('pointercancel',e=>up(e,false));
+  addEventListener('resize',()=>{measure();x.v=x.t=idx*slot;draw()});
+  measure();x.v=x.t=idx*slot;draw();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{measure();x.v=x.t=idx*slot;draw()});
+  window.__lens={settle,draw};
 })();
 
 
@@ -1055,7 +1126,7 @@ function showErr(){if(document.getElementById('errBox'))return;const feed=docume
       <div><small>${l.rank}</small><b>${rank} ${l.of} ${R.crypto.length}</b></div><div><small>${l.vc}</small><b>${c.cap&&c.vol?fmt(c.vol/c.cap*100,2)+'%':'—'}</b></div>
       <div class="w"><small>${l.share}</small><b>${share!=null?fmt(share*100,2)+'%':'—'}</b><div class="dt-bar"><i style="--p:${share!=null?Math.min(1,share):0}"></i></div></div>
       <div><small>${esc(loc)}</small><b>${pL!=null?fmt(pL):'—'}</b></div><div><small>${second.l}</small><b>${second.v}</b></div>
-    </div><p class="dt-note">${isStable?'':l.liveN+'. '}${l.src}: CoinGecko, Binance, Gate.io.</p>`}
+    </div><button class="dt-go" type="button" data-go="${esc(sym)}" data-from="1">${esc(l.conv)}</button><p class="dt-note">${isStable?'':l.liveN+'. '}${l.src}: CoinGecko, Binance, Gate.io.</p>`}
   function fxHTML(code){
     const base=cur(cc),o=R.official[cc]&&R.official[cc].rates&&R.official[cc].rates[code],rv=rateOf(code);if(!rv)return'';const l=L(),official=!!o,cb=chartBlock('f',code,rv.r),st=cb.st,qk=[1,10,100,1000];
     return `<div class="dt-h">${flagImg(code).replace('class="mf"','class="dt-fl-i"')}<div class="dt-t"><b>${esc(code)} → ${esc(base)}</b><small>${esc(l.per1)} ${esc(code)}</small></div><button class="dt-x" type="button" data-x aria-label="${esc(l.close)}">${X}</button></div>
@@ -1095,7 +1166,19 @@ function showErr(){if(document.getElementById('errBox'))return;const feed=docume
   el.addEventListener('click',e=>{
     if(e.target===el||e.target.closest('[data-x]')){close();return}
     const r=e.target.closest('[data-r]');if(r){per=+r.dataset.r;try{Telegram.WebApp.HapticFeedback.selectionChanged()}catch(_){}draw();if(per>7&&!LH)loadLH().then(()=>{if(cur_)draw()});return}
-    const g=e.target.closest('[data-go]');if(g){const code=g.dataset.go;close();try{const f=$('from'),tt=$('to');if(f&&tt){f.value=cur(cc);tt.value=code;f.dispatchEvent(new Event('change'));tt.dispatchEvent(new Event('change'))}}catch(_){}location.hash='#conv'}});
+    const g=e.target.closest('[data-go]');if(g){const code=g.dataset.go,coin=g.dataset.from==='1';close();
+      try{const f=$('from'),tt=$('to'),am=$('amt');
+        if(f&&tt){
+          // монета: «из» монета, «в» валюта страны, сумма 1 (удобно сразу видеть цену); валюта: «из» валюта страны, «в» выбранная
+          const A=code,Bc=cur(cc)||'USD';                                  // выбранная монета/валюта -> валюта страны: сразу видно, сколько она стоит у вас
+          const has=v=>[...f.options].some(o=>o.value===v);
+          if(has(A))f.value=A;if(has(Bc))tt.value=Bc;
+          if(am)am.value=coin||code===Bc?'1':'100';                        // монета: 1 штука; валюта: 100 единиц (1 евро в сумах и так понятно, но 100 нагляднее для мелких курсов)
+          tt.dataset.set=cc;                                           // защита: render() не должен затереть выбор
+          // поля конвертера слушают именно input (change их не будит)
+          [am,f,tt].forEach(x=>x&&x.dispatchEvent(new Event('input',{bubbles:true})));
+        }}catch(_){}
+      if(window.__goTab)window.__goTab('conv');else location.hash='#conv'}});
   addEventListener('keydown',e=>{if(e.key==='Escape'&&cur_)close()});
   document.addEventListener('click',e=>{if(Date.now()-openAt<40)return;
     const row=e.target.closest('#clist [data-m]');if(row){e.stopImmediatePropagation();e.preventDefault();open('c',row.dataset.m);return}
