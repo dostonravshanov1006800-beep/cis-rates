@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-eCflW9iFbkJtwkjU0t8DAHGzy1ca0alcaXGK+U56T4M=' 'sha256-IdV3rMW8zJuIG+5aCsHx1fa28PsTY+/pP1Rg+hLZcIw=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-38554S8ULTUbJeVXIjjIrcxwzL8k5xxlqCOvRtomkCs=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="0873af2d62">
+<meta name="app-version" content="b507cd9a92">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -549,9 +549,10 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
       // короткая пауза: Telegram успевает прислать safe area, и шапка встаёт на своё место
       // мягкий наезд в начале, как в референсе: Земля появляется с лёгким увеличением (только opacity+transform)
       if(!cal0){fly.animate([{opacity:0,transform:'scale(.86)'},{opacity:1,transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.22,.8,.3,1)',fill:'backwards'});glow.animate([{opacity:0},{opacity:1}],{duration:520,fill:'backwards'})}
-      // шкала: заполняется за время ожидания (≈1,1 с), проценты считаются от того же прогресса
-      const T=cal0?0:1100,t0=performance.now();
-      await new Promise(res=>{(function step(){const k=T?Math.min(1,(performance.now()-t0)/T):1,e=1-Math.pow(1-k,2);fill.style.transform='scaleX('+e.toFixed(3)+')';pct.lastElementChild.textContent=Math.round(e*100)+'%';k<1?requestAnimationFrame(step):res()})()});
+      // шкала: заполняется INTRO_MS (10 с), проценты считаются от того же прогресса
+      const INTRO_MS=10000;                                                  // сколько секунд идёт заполнение шкалы (меняется одной цифрой)
+      const T=cal0?0:INTRO_MS,t0=performance.now();
+      await new Promise(res=>{(function step(){const k=T?Math.min(1,(performance.now()-t0)/T):1,e=T>3000?k:1-Math.pow(1-k,2);fill.style.transform='scaleX('+e.toFixed(3)+')';pct.lastElementChild.textContent=Math.round(e*100)+'%';k<1?requestAnimationFrame(step):res()})()});
       await sleep(cal0?0:180);
       place();
       // 2) берём реальные прямоугольники прямо перед стартом (значок невидим, но стоит на своём месте)
@@ -1180,7 +1181,9 @@ const NET=(()=>{
   const mine=(document.querySelector('meta[name="app-version"]')||{}).content;if(!mine)return;
   let busy=0;
   async function check(){
-    if(busy||document.hidden)return;busy=1;
+    if(busy||document.hidden)return;
+    if(document.documentElement.classList.contains('intro')&&!window.__introDone){setTimeout(check,1000);return}   // заставка идёт (до 10 с): перезагрузка посреди неё оборвала бы анимацию, ждём её конца
+    busy=1;
     try{
       const r=await fetch('data/version.json?_='+Date.now(),{cache:'no-store'});if(!r.ok)return;
       const v=(await r.json()).v;
