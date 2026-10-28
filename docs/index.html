@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-GzDj8HMD1xFu1y6RbDBBB7PbJgustd32/fYTCtkLthg=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-VEppkyfcqt/tA5/4vmrQo9TKXX0COAjiGIPYrRmqtRc=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro){document.documentElement.classList.add("intro");var q=+localStorage.iw_seen||0;if(q&&Date.now()-q<18e5)window.__quick=1}}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="ad8b611918">
+<meta name="app-version" content="99c8197a8e">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>Info Wallet: курсы валют и крипты СНГ 24/7</title>
@@ -122,6 +122,22 @@ html[data-theme=light] #introBar{box-shadow:inset 0 0 0 1px rgba(47,107,255,.35)
 html[data-theme=light] #introBar{background:rgba(47,107,255,.14)}
 html[data-theme=light] #introBar i{background:linear-gradient(90deg,#2f6bff,#5b8dff);box-shadow:0 0 10px rgba(47,107,255,.45)}
 html[data-theme=light] #introTap{color:rgba(13,19,48,.78)}
+#introCandles{position:fixed;left:0;right:0;z-index:202;width:100%;pointer-events:none;opacity:0}
+#introCandles.on{opacity:1;transition:opacity .6s ease}
+#introTape{position:fixed;left:0;right:0;bottom:0;height:calc(54px + env(safe-area-inset-bottom,0px));z-index:203;pointer-events:none;overflow:hidden;opacity:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.09));border-top:1px solid rgba(255,255,255,.12);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+#introTape.on{opacity:1;transition:opacity .6s ease}
+#introTape .tp{position:absolute;left:0;top:0;height:54px;display:flex;align-items:center;gap:26px;padding-left:20px;white-space:nowrap;will-change:transform;animation:tpRun 28s linear infinite}
+#introTape .it{display:inline-flex;align-items:center;gap:8px;font:700 13px/1 Inter,-apple-system,system-ui,sans-serif;color:#eaf1ff}
+#introTape .it img{width:24px;height:24px;border-radius:50%;display:block}
+#introTape .it u{text-decoration:none;font-weight:600;color:rgba(214,228,255,.78)}
+#introTape .it .up{color:#34d399}#introTape .it .dn{color:#f87171}
+@keyframes tpRun{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+html[data-theme=light] #introTape{background:linear-gradient(180deg,rgba(13,19,48,.03),rgba(13,19,48,.07));border-top-color:rgba(13,19,48,.14)}
+html[data-theme=light] #introTape .it{color:#0d1330}html[data-theme=light] #introTape .it u{color:rgba(13,19,48,.72)}
+html[data-theme=light] #introTape .it .up{color:#047857}html[data-theme=light] #introTape .it .dn{color:#b91c1c}
+@media (prefers-reduced-motion:reduce){#introTape .tp{animation:none}}
 #introGlow{position:fixed;left:0;top:0;z-index:201;border-radius:50%;pointer-events:none;will-change:opacity;
   background:radial-gradient(closest-side,rgba(120,170,255,.55),rgba(80,130,255,.22) 55%,transparent 100%);transform-origin:center}
 html[data-theme=light] #introGlow{background:radial-gradient(closest-side,rgba(70,120,230,.38),rgba(70,120,230,.14) 55%,transparent 100%)}
@@ -542,9 +558,51 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"><i class="sf"></i><i class="sm"></i><i class="sn"></i></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introTitle"></div><div id="introTap">Нажми, чтобы войти</div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div></div>
+<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"><i class="sf"></i><i class="sm"></i><i class="sn"></i></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introTitle"></div><div id="introTap">Нажми, чтобы войти</div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div><canvas id="introCandles" aria-hidden="true"></canvas><div id="introTape" aria-hidden="true"><div class="tp"></div></div></div>
 <div class="bg" aria-hidden="true"></div>
 <script>
+
+// ===== заставка: свечи и бегущая лента логотипов внизу (лёгкий canvas 2D + CSS, без WebGL) =====
+(function(){
+  const cv=document.getElementById('introCandles'),tp=document.getElementById('introTape');
+  if(!cv||!tp||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const TOP=['BTC','ETH','TON','SOL','XRP','BNB','DOGE','TRX','ADA','USDT'];
+  const fmt=v=>v>=1000?Math.round(v).toLocaleString('en-US'):v>=1?v.toFixed(2):v.toFixed(4);
+  function candles(arr,n){ // ряд цен -> n свечей OHLC (группировка по соседним точкам + лёгкий разброс)
+    const a=arr.filter(x=>x>0),k=Math.max(1,Math.floor(a.length/n)),o=[];
+    for(let i=0;i+k<=a.length&&o.length<n;i+=k){const g=a.slice(i,i+k+1);const op=g[0],cl=g[g.length-1];const mx=Math.max(...g),mn=Math.min(...g);const pad=(mx-mn)*.18+op*.0006;o.push([op,mx+pad,mn-pad,cl])}
+    return o}
+  function draw(c,t){ // t 0..1: сколько свечей уже нарисовано
+    const W=cv.clientWidth,H=cv.clientHeight,dpr=Math.min(2,devicePixelRatio||1);
+    if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr)}
+    const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);
+    const light=document.documentElement.dataset.theme==='light',n=c.length;
+    const mx=Math.max(...c.map(q=>q[1])),mn=Math.min(...c.map(q=>q[2])),pad=(mx-mn)*.08;
+    const Y=v=>H-6-(v-(mn-pad))/((mx+pad)-(mn-pad))*(H-12);
+    x.strokeStyle=light?'rgba(13,19,48,.07)':'rgba(255,255,255,.07)';x.lineWidth=1;
+    for(let i=1;i<4;i++){const y=Math.round(H*i/4)+.5;x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke()}
+    const step=W/n,bw=Math.max(3,Math.min(10,step*.56)),vis=Math.floor(t*n),part=t*n-vis;
+    for(let i=0;i<Math.min(n,vis+1);i++){
+      const q=c[i],up=q[3]>=q[0],col=up?(light?'#059669':'#34d399'):(light?'#dc2626':'#f87171'),cx=step*(i+.5),k=i===vis?part:1;
+      x.globalAlpha=.25+.75*(i/n)*.6+.4*k;x.strokeStyle=col;x.fillStyle=col;x.lineWidth=1.4;
+      x.beginPath();x.moveTo(cx,Y(q[1]));x.lineTo(cx,Y(q[2]));x.stroke();
+      const y1=Y(Math.max(q[0],q[3])),y2=Y(Math.min(q[0],q[3]));x.fillRect(cx-bw/2,y1,bw,Math.max(2,(y2-y1)*k))}
+    x.globalAlpha=1}
+  window.__introBottom=async function(){
+    try{
+      const [r,s]=await Promise.all([fetch('data/rates.json').then(x=>x.json()),fetch('data/series.json').then(x=>x.json())]);
+      const cr={};(r.crypto||[]).forEach(q=>{cr[q.sym]=q});const ser=s.crypto||{};
+      const items=TOP.filter(k=>cr[k]&&cr[k].usd>0).map(k=>({k,price:cr[k].usd,ch:cr[k].ch24h||0,arr:ser[k]||[]}));
+      if(!items.length)return;
+      const cell=i=>`<span class="it"><img src="coins/${i.k.toLowerCase()}.webp" alt="" width="24" height="24">${i.k}<u>$${fmt(i.price)}</u><b class="${i.ch>=0?'up':'dn'}">${i.ch>=0?'+':''}${(+i.ch).toFixed(2)}%</b></span>`;
+      const html=items.map(cell).join('');tp.querySelector('.tp').innerHTML=html+html;tp.classList.add('on');
+      const base=(items.find(i=>i.k==='BTC')||items[0]).arr,c=candles(base.length>8?base:[...base,...base],Math.max(14,Math.min(34,Math.floor(innerWidth/12))));
+      const by=Math.round(innerHeight-Math.max(56,innerHeight*.085)-8),h=Math.round(Math.min(150,innerHeight*.17));
+      cv.style.top=(by-h-44)+'px';cv.style.height=h+'px';cv.classList.add('on');
+      const t0=performance.now(),D=3600;(function f(now){const t=Math.min(1,(now-t0)/D);draw(c,t);if(t<1&&document.getElementById('introCandles'))requestAnimationFrame(f)})(t0);
+    }catch(e){}}
+  window.__introBottom();
+})();
 // ===== заставка: ОДНА Земля. Большая по центру, затем та же картинка улетает на место логотипа в шапке =====
 (function(){
   const root=document.documentElement,intro=document.getElementById('intro'),fly=document.getElementById('introEarth'),glow=document.getElementById('introGlow'),bar=document.getElementById('introBar'),pct=document.getElementById('introTitle'),tap=document.getElementById('introTap'),fill=bar&&bar.firstElementChild;
