@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-ipzCulY10H61LrdNAgkQVf4tczyEXyoHOP65GfBKqf0=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-y2TdgFmWc310/CcaQSHO7L1AAl0D+/w4s2m3rcRSXTA=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="84c456f68d">
+<meta name="app-version" content="467da123c5">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -539,52 +539,62 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
     const G=Math.round(S*1.7);glow.style.width=glow.style.height=G+'px';glow.style.left=Math.round((vw()-G)/2)+'px';glow.style.top=Math.round(vh()*.42-G/2)+'px'}
   place();
   const wait=p=>Promise.race([p,sleep(2500)]);
-/* Единый рендер Земли: вращение в заставке и статичный значок шапки рисует ЭТА функция.
-   Геометрия (не зависит от поворота) считается один раз на размер; на кадр остаётся только выборка из карты. */
-function makeEarth(T,TW,TH){
-  const gam=new Uint8Array(256);for(let i=0;i<256;i++)gam[i]=Math.min(255,255*Math.pow(i/255,.62));
-  const P=new Uint8ClampedArray(T.length);
-  for(let i=0;i<T.length;i+=4){P[i]=gam[T[i]]*.90;P[i+1]=gam[T[i+1]];P[i+2]=gam[T[i+2]]*1.14;P[i+3]=255}
-  const cache={};
-  function geo(N,latDeg){
-    const key=N+'_'+latDeg;if(cache[key])return cache[key];
-    const n=N*N,lo0=new Float32Array(n),row=new Int32Array(n),fy=new Float32Array(n),sh=new Float32Array(n),rim=new Float32Array(n),al=new Uint8Array(n);
-    const la0=latDeg*Math.PI/180,ca=Math.cos(la0),sa=Math.sin(la0),R=N/2,cc=(N-1)/2;
-    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
-      const X=(x-cc)/R,Y=-(y-cc)/R,r2=X*X+Y*Y,i=y*N+x,rr=Math.sqrt(r2);
-      if(rr>1){continue}
-      const Z=Math.sqrt(Math.max(0,1-r2)),Y2=Y*ca+Z*sa,Z2=-Y*sa+Z*ca;
-      lo0[i]=Math.atan2(X,Z2);const f=(.5-Math.asin(Math.max(-1,Math.min(1,Y2)))/Math.PI)*(TH-1);row[i]=f|0;fy[i]=f-(f|0);
-      const d=Math.max(0,X*-.55+Y*.5+Z*.67);sh[i]=(.78+.46*Math.pow(d,.8))*(1-.22*Math.pow(1-Z,1.5));
-      rim[i]=Math.pow(Math.max(0,Math.min(1,(rr-.78)/.22)),2)*(.30+.70*d)*.5;
-      al[i]=Math.round(Math.max(0,Math.min(1,(1-rr)*R*.9+.5))*255)||1}
-    return cache[key]={lo0,row,fy,sh,rim,al,out:null,N}}
-  return function draw(cv,N,a,latDeg,y0,y1){
-    const G=geo(N,latDeg===undefined?10:latDeg),g=cv.getContext('2d'),r0_=y0===undefined?0:y0,r1_=y1===undefined?N:y1;
-    if(!G.out)G.out=g.createImageData(N,N);const O=G.out.data,{lo0,row,fy,sh,rim,al}=G,n=N*N,K=1/(2*Math.PI);
-    for(let i=r0_*N,iE=r1_*N;i<iE;i++){
-      if(!al[i]){O[i*4+3]=0;continue}
-      let u=lo0[i]*K+.5+a*K;u-=Math.floor(u);
-      const fx=u*(TW-1),x0=fx|0,x1=x0+1<TW?x0+1:0,tx=fx-x0,r0=row[i]*TW,r1=(row[i]+1<TH?row[i]+1:row[i])*TW,ty=fy[i],s=sh[i],rm=rim[i]*255;
-      const a00=(r0+x0)*4,a10=(r0+x1)*4,a01=(r1+x0)*4,a11=(r1+x1)*4,w00=(1-tx)*(1-ty),w10=tx*(1-ty),w01=(1-tx)*ty,w11=tx*ty;
-      const o=i*4;
-      let c=(P[a00]*w00+P[a10]*w10+P[a01]*w01+P[a11]*w11)*s+rm*.314;O[o]=c>255?255:c;
-      c=(P[a00+1]*w00+P[a10+1]*w10+P[a01+1]*w01+P[a11+1]*w11)*s+rm*.588;O[o+1]=c>255?255:c;
-      c=(P[a00+2]*w00+P[a10+2]*w10+P[a01+2]*w01+P[a11+2]*w11)*s+rm;O[o+2]=c>255?255:c;O[o+3]=al[i]}
-    g.putImageData(G.out,0,0)}
+/* Реалистичная Земля на WebGL (один полноэкранный квад, вся математика в фрагментном шейдере).
+   makeEarthGL(canvas, dayImg, wcImg) -> {draw(angle), ok}. Тот же вид и в заставке, и в значке шапки (рисуется этим же кодом). */
+function makeEarthGL(cv,dayImg,wcImg){
+  const gl=cv.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:true,preserveDrawingBuffer:true,powerPreference:'low-power'});
+  if(!gl)return null;
+  const vs='attribute vec2 p;varying vec2 v;void main(){v=p;gl_Position=vec4(p,0.,1.);}';
+  const fs=`precision highp float;varying vec2 v;uniform sampler2D D,M;uniform float A,CA,LAT,PX;
+  const float PI=3.14159265;
+  void main(){
+    vec2 q=v;float rr=length(q);
+    float a=clamp((1.-rr)/PX*.9+.5,0.,1.);if(rr>1.+PX){gl_FragColor=vec4(0.);return;}
+    float Z=sqrt(max(0.,1.-rr*rr));vec3 n=vec3(q.x,q.y,Z);
+    float ca=cos(LAT),sa=sin(LAT);float Y2=n.y*ca+n.z*sa,Z2=-n.y*sa+n.z*ca;
+    float lo=atan(n.x,Z2),la=asin(clamp(Y2,-1.,1.));
+    vec2 uv=vec2(fract(lo/(2.*PI)+.5+A/(2.*PI)),.5-la/PI);
+    vec2 uc=vec2(fract(lo/(2.*PI)+.5+CA/(2.*PI)),uv.y);
+    vec3 col=texture2D(D,uv).rgb;vec4 mk=texture2D(M,uv);float water=mk.r;float cloud=texture2D(M,uc).g;
+    vec3 L=normalize(vec3(-.25,.35,.90));float ndl=dot(n,L);float t=clamp((ndl+.12)/.55,0.,1.);float lit=t*t*(3.-2.*t);
+    float lt=.16+.84*lit;
+    col*=lt*(1.-.28*cloud*lit);
+    col=mix(col,vec3(lt),.85*cloud);
+    vec3 H=normalize(L+vec3(0.,0.,1.));float sp=pow(max(0.,dot(n,H)),55.);
+    col+=water*(1.-cloud)*sp*.55*vec3(1.,.96,.88);
+    float rim=pow(clamp((rr-.86)/.14,0.,1.),1.8)*(.25+.75*lit);
+    vec3 at=vec3(.42,.66,1.)*rim*.8;col=1.-(1.-clamp(col,0.,1.))*(1.-at);
+    col*=.80+.20*Z;
+    gl_FragColor=vec4(col*a,a);
+  }`;
+  function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){window.__glErr=gl.getShaderInfoLog(o);return null}return o}
+  const pr=gl.createProgram(),a=sh(gl.VERTEX_SHADER,vs),b=sh(gl.FRAGMENT_SHADER,fs);if(!a||!b)return null;
+  gl.attachShader(pr,a);gl.attachShader(pr,b);gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return null;gl.useProgram(pr);
+  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  function tex(img,unit){const t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t}
+  tex(dayImg,0);tex(wcImg,1);
+  const U=n=>gl.getUniformLocation(pr,n);gl.uniform1i(U('D'),0);gl.uniform1i(U('M'),1);
+  const uA=U('A'),uCA=U('CA'),uLAT=U('LAT'),uPX=U('PX');
+  return {gl,draw(angle,latDeg){gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uA,angle);gl.uniform1f(uCA,angle*1.06);gl.uniform1f(uLAT,(latDeg===undefined?12:latDeg)*Math.PI/180);gl.uniform1f(uPX,1/(cv.width/2));gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
 }
 
   // ---- вращение настоящей Земли (карта NASA) на canvas: рисуется только пока идёт шкала, затем останавливается на ракурсе значка ----
-  const spin=document.getElementById('introSpin'),REST=60*Math.PI/180,LAT=10;
-  let spinDraw=null,spinA=REST,spinOn=false;
+  const spin=document.getElementById('introSpin'),REST=60*Math.PI/180,LAT=12;
+  let spinGL=null;
   function spinPlace(){if(!spin)return;const S=fly.style;spin.style.width=S.width;spin.style.height=S.height;spin.style.left=S.left;spin.style.top=S.top}
   async function spinInit(){
     if(!spin||cal0)return false;
-    try{const im=new Image();im.src='assets/earthmap.jpg';await im.decode();
-      const tc=document.createElement('canvas');tc.width=1024;tc.height=512;const tx=tc.getContext('2d');tx.drawImage(im,0,0,1024,512);
-      spinDraw=makeEarth(tx.getImageData(0,0,1024,512).data,1024,512);spinDraw(spin,192,REST,LAT);
-      setTimeout(()=>{try{const w=document.createElement('canvas');w.width=w.height=512;spinDraw(w,512,REST,LAT)}catch(e){}},1200);   // прогрев: геометрия и память под финальный кадр 512 готовы заранее, в финале рывка нет
-      return true}catch(e){return false}}
+    try{
+      const ld=src=>new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=src});
+      const [d,m]=await Promise.all([ld('assets/earth-day.jpg'),ld('assets/earth-wc.jpg')]);
+      spin.width=spin.height=512;                                           // сразу полный размер: GPU рисует 512 так же легко, как 192
+      spinGL=makeEarthGL(spin,d,m);if(!spinGL)return false;
+      spinGL.draw(REST,LAT);return true}catch(e){return false}}
   (async function(){
     try{
       // 0) ждём, пока шапка попадёт в DOM
@@ -603,13 +613,11 @@ function makeEarth(T,TW,TH){
       const INTRO_MS=10000;                                                  // сколько секунд идёт заполнение шкалы (меняется одной цифрой)
       const T=cal0?0:INTRO_MS,t0=performance.now();
       const TURNS=1;                                                         // один спокойный оборот за заставку; к концу замедляется и встаёт ровно на ракурс значка
-      let lastDraw=0;
-      let spinFin=null,finRow=0;
       const K0=.85,W=1/(K0+(1-K0)/2),spinQ=k=>{if(k>=1)return 1;if(k<K0)return k*W;const u=k-K0;return W*(K0+u-u*u/(2*(1-K0)))};
       await new Promise(res=>{(function step(){const now=performance.now(),k=T?Math.min(1,(now-t0)/T):1,e=T>3000?k:1-Math.pow(1-k,2);fill.style.transform='scaleX('+e.toFixed(3)+')';pct.lastElementChild.textContent=Math.round(e*100)+'%';
-        if(spinOK&&now-lastDraw>=16){lastDraw=now;spinDraw(spin,192,REST+spinQ(k)*TURNS*2*Math.PI,LAT);if(k>=.95&&finRow<512){if(!spinFin){spinFin=document.createElement('canvas');spinFin.width=spinFin.height=512}spinDraw(spinFin,512,REST,LAT,finRow,Math.min(512,finRow+64));finRow+=64}}   // при k>=.95 скорость уже <6°/с: тяжёлый кадр 512 считаем здесь, а не в момент подмены   // постоянная скорость, в конце плавно до нуля
+        if(spinOK)spinGL.draw(REST+spinQ(k)*TURNS*2*Math.PI,LAT);                                  // каждый кадр: GPU, без ограничения частоты
         k<1?requestAnimationFrame(step):res()})()});
-      if(spinOK){if(!spinFin){spinFin=document.createElement('canvas');spinFin.width=spinFin.height=512}if(finRow<512){spinDraw(spinFin,512,REST,LAT,finRow,512);finRow=512}spin.width=spin.height=512;spin.getContext('2d').drawImage(spinFin,0,0)}      // финальный кадр в полном размере и тем же кодом, что запёк значок: идентичен ему
+      if(spinOK)spinGL.draw(REST,LAT);                                       // финал: ровно ракурс значка (его тоже рисовал этот шейдер)
       await sleep(cal0?0:180);
       place();
       if(spinOK){spin.style.display='none'}                                   // вращение закончено: дальше летит тот же кадр (<img>) на место значка
