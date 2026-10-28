@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-tGIHUWc1LyAvd3gfVegUezmwhAjRoYAy9MSNh9IErQw=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-QsfbM78VMxVcSBriYRGWBDha/IufhCOzEI99i8N+T+E=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro){document.documentElement.classList.add("intro");var q=+localStorage.iw_seen||0;if(q&&Date.now()-q<18e5)window.__quick=1}}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="8da9f569ab">
+<meta name="app-version" content="8eec7e5868">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>Info Wallet: курсы валют и крипты СНГ 24/7</title>
@@ -941,14 +941,14 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
     }catch(e){CN.on=false}}
   // ---- звук заставки (5 с) на WebAudio: громкость через GainNode (audio.volume на iOS не работает), буфер декодируется заранее.
   // Автозапуск пробуем несколько раз за первые секунды; если платформа требует жест, любое касание/клик включает звук с НУЖНОЙ секунды (синхронно со шкалой) ----
-  const SND={ctx:null,gain:null,buf:null,src:null,on:false,t0:0,vol:.6,tries:0,timer:0,stopped:false};
+  const SND={ctx:null,gain:null,buf:null,src:null,on:false,t0:0,vol:.85,tries:0,timer:0,stopped:false};
   const sndPref=()=>{try{return localStorage.iw_snd!=='0'}catch(e){return true}};   // выбор пользователя из «Информации»; по умолчанию звук включён
   const SND_EV=['touchend','pointerup','click','keyup','touchstart','pointerdown','mousedown'];
   async function sndInit(){
     if(cal0||quick||!sndPref())return;
     try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
       SND.ctx=new C();SND.gain=SND.ctx.createGain();SND.gain.gain.value=0;SND.gain.connect(SND.ctx.destination);
-      const r=await fetch('assets/loading.mp3');const ab=await r.arrayBuffer();
+      const r=await fetch('assets/loading.mp3?v=2');const ab=await r.arrayBuffer();
       SND.buf=await new Promise((ok,no)=>SND.ctx.decodeAudioData(ab,ok,no));        // callback-форма: работает и в старых WebView
     }catch(e){SND.ctx=null}}
   function sndPlayNow(){                                                          // реально запускает воспроизведение с текущей секунды шкалы
@@ -978,8 +978,8 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
     }catch(e){}}
   function sndStop(){SND.stopped=true;sndUnbind();
     if(!SND.ctx||!SND.on){const c0=SND.ctx;setTimeout(()=>{try{c0&&c0.close()}catch(e){}},2600);return}
-    try{const t=SND.ctx.currentTime;SND.gain.gain.cancelScheduledValues(t);SND.gain.gain.setValueAtTime(SND.gain.gain.value,t);SND.gain.gain.linearRampToValueAtTime(0,t+.35);
-      setTimeout(()=>{try{SND.src&&SND.src.stop()}catch(e){}SND.on=false},420);setTimeout(()=>{try{SND.ctx.close()}catch(e){}},2600)}catch(e){}}
+    try{const t=SND.ctx.currentTime;SND.gain.gain.cancelScheduledValues(t);SND.gain.gain.setValueAtTime(SND.gain.gain.value,t);SND.gain.gain.linearRampToValueAtTime(0,t+.9);
+      setTimeout(()=>{try{SND.src&&SND.src.stop()}catch(e){}SND.on=false},980);setTimeout(()=>{try{SND.ctx.close()}catch(e){}},2600)}catch(e){}}
   document.addEventListener('visibilitychange',()=>{if(!SND.ctx||SND.stopped)return;
     if(document.hidden){try{SND.ctx.suspend()}catch(e){}}else if(!window.__introDone){try{SND.ctx.resume()}catch(e){}if(!SND.on)sndStart()}});
   // ---- вращение настоящей Земли (карта NASA) на canvas: рисуется только пока идёт шкала, затем останавливается на ракурсе значка ----
