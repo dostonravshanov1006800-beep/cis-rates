@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-/7UeB4GrR+FvlK3XsNvB0y0J2OF7PlgOntMUqQ5nDvk=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-hxU4celkMZmpYZTkqqbuwqVuXhL4yP8otsSbtoPOCpQ=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="6a4ef3a76a">
+<meta name="app-version" content="a0e23c7ae2">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -98,18 +98,23 @@ html[data-theme=light] #introSky{display:none}
 #introSnd svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 @keyframes sndPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 html[data-theme=light] #introSnd{display:none}
-.cn{position:absolute;left:0;top:0;border-radius:50%;opacity:0;will-change:transform,opacity;contain:layout paint;backface-visibility:hidden}
-.cn img{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 6px 18px rgba(2,4,18,.55),0 0 0 1px rgba(255,255,255,.10)}
-.cn i{position:absolute;right:50%;top:50%;height:2px;margin-top:-1px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(170,200,255,.6));transform-origin:100% 50%;pointer-events:none}
+.cn{position:absolute;left:0;top:0;border-radius:50%;opacity:0;will-change:transform,opacity;contain:layout paint;backface-visibility:hidden;--gl:170,200,255}
+.cn::before{content:"";position:absolute;inset:-26%;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--gl),.55),rgba(var(--gl),.16) 55%,transparent 100%);filter:none;z-index:-1}
+.cn img{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 8px 20px rgba(2,4,18,.6)}
 #introTitle{position:fixed;left:0;right:0;z-index:201;text-align:center;pointer-events:none;color:#f5f7ff;opacity:0}
 #introTitle b{display:block;font:800 22px/1.1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif;letter-spacing:.02em}
 #introTitle span{display:block;margin-top:7px;font:500 12.5px/1.2 -apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif;color:rgba(190,212,255,.78);letter-spacing:.06em;text-transform:uppercase}
-#introStars{position:absolute;inset:0;pointer-events:none;opacity:.9;
-  background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 78% 12%,#cfe0ff,transparent),radial-gradient(1.4px 1.4px at 34% 72%,#fff,transparent),radial-gradient(1px 1px at 88% 64%,#fff,transparent),radial-gradient(1.2px 1.2px at 62% 86%,#bcd2ff,transparent),radial-gradient(1px 1px at 22% 44%,#fff,transparent),radial-gradient(1px 1px at 93% 32%,#fff,transparent),radial-gradient(1.3px 1.3px at 50% 8%,#dbe7ff,transparent),radial-gradient(1px 1px at 6% 82%,#fff,transparent),radial-gradient(1px 1px at 71% 48%,#fff,transparent),radial-gradient(1.2px 1.2px at 42% 30%,#fff,transparent),radial-gradient(1px 1px at 84% 90%,#cfe0ff,transparent),radial-gradient(1px 1px at 16% 60%,#fff,transparent),radial-gradient(1.2px 1.2px at 58% 62%,#fff,transparent),radial-gradient(1px 1px at 30% 6%,#fff,transparent),radial-gradient(1px 1px at 96% 78%,#fff,transparent)}
+#introStars{position:absolute;inset:-3%;pointer-events:none}
+#introStars i{position:absolute;inset:0;background-repeat:no-repeat;background-position:center;background-size:cover;will-change:transform,opacity}
+#introStars .sf{background-image:url(assets/stars_far.webp);animation:stP1 5.6s linear forwards}
+#introStars .sm{background-image:url(assets/stars_mid.webp);animation:stP2 5.6s linear forwards}
+#introStars .sn{background-image:url(assets/stars_near.webp);animation:stP3 5.6s linear forwards,stTw 2.3s ease-in-out infinite}
+@keyframes stP1{from{transform:translate3d(0,0,0)}to{transform:translate3d(-12px,6px,0)}}
+@keyframes stP2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-40px,20px,0)}}
+@keyframes stP3{from{transform:translate3d(0,0,0)}to{transform:translate3d(-92px,46px,0)}}
+@keyframes stTw{0%,100%{opacity:1}50%{opacity:.55}}
 html[data-theme=light] #introStars{opacity:0}
-#introStars{animation:stDrift 6s linear infinite;will-change:transform}
-@keyframes stDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-18px,10px,0)}}
-@media (prefers-reduced-motion:reduce){#introStars{animation:none}}
+@media (prefers-reduced-motion:reduce){#introStars i{animation:none}}
 #introBar{position:fixed;left:50%;width:min(88vw,520px);height:14px;margin-left:calc(min(88vw,520px)/-2);z-index:201;border-radius:99px;pointer-events:none;
   border:1px solid rgba(140,185,255,.5);background:rgba(120,170,255,.10);overflow:hidden;box-shadow:0 0 18px rgba(70,120,255,.25)}
 #introBar i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;border-radius:inherit;background:linear-gradient(90deg,#3a78ff,#9cc4ff);will-change:transform}
@@ -537,7 +542,7 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct"><span></span><b>0%</b></div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div><div id="introSnd" role="button" aria-label="Включить звук"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg></div></div>
+<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"><i class="sf"></i><i class="sm"></i><i class="sn"></i></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct"><span></span><b>0%</b></div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div><div id="introSnd" role="button" aria-label="Включить звук"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg></div></div>
 <div class="bg" aria-hidden="true"></div>
 <script>
 // ===== заставка: ОДНА Земля. Большая по центру, затем та же картинка улетает на место логотипа в шапке =====
@@ -557,54 +562,55 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
     const G=Math.round(S*1.7);glow.style.width=glow.style.height=G+'px';glow.style.left=Math.round((vw()-G)/2)+'px';glow.style.top=Math.round(vh()*.42-G/2)+'px'}
   place();
   const wait=p=>Promise.race([p,sleep(2500)]);
-/* Реалистичная Земля на WebGL (один полноэкранный квад, вся математика в фрагментном шейдере).
-   makeEarthGL(canvas, dayImg, wcImg) -> {draw(angle), ok}. Тот же вид и в заставке, и в значке шапки (рисуется этим же кодом). */
-function makeEarthGL(cv,dayImg,wcImg){
-  const gl=cv.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:true,preserveDrawingBuffer:true,powerPreference:'low-power'});
+/* Реалистичная Земля на WebGL v4. Карты: D день (без облаков), N ночь (огни городов), M маска: R вода, G облака, B рельеф.
+   Рецепт: день/ночь по освещению, красноватые сумерки, блик только на воде, тени облаков, атмосферное свечение, огни гаснут под облаками. */
+function makeEarthGL(cv,dayImg,nightImg,maskImg){
+  const gl=cv.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});
   if(!gl)return null;
   const vs='attribute vec2 p;varying vec2 v;void main(){v=p;gl_Position=vec4(p,0.,1.);}';
-  const fs=`precision highp float;varying vec2 v;uniform sampler2D D,M;uniform float A,CA,LAT,PX,TS,Q;
+  const fs=`precision highp float;varying vec2 v;uniform sampler2D D,N,M;uniform float A,CA,LAT,PX,Q,TM;
   const float PI=3.14159265;
-  float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
-  float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}
-  float fbm(vec2 p){return .55*vn(p)+.30*vn(p*2.03+7.1)+.15*vn(p*4.1+3.7);}
   void main(){
     vec2 q=v;float rr=length(q);
-    float a=clamp((1.-rr)/PX*.9+.5,0.,1.);if(rr>1.+PX){gl_FragColor=vec4(0.);return;}
+    if(rr>1.+PX){gl_FragColor=vec4(0.);return;}
+    float a=clamp((1.-rr)/PX*.9+.5,0.,1.);
     float Z=sqrt(max(0.,1.-rr*rr));vec3 n=vec3(q.x,q.y,Z);
     float ca=cos(LAT),sa=sin(LAT);float Y2=n.y*ca+n.z*sa,Z2=-n.y*sa+n.z*ca;
     float lo=atan(n.x,Z2),la=asin(clamp(Y2,-1.,1.));
     vec2 uv=vec2(fract(lo/(2.*PI)+.5+A/(2.*PI)),.5-la/PI);
     vec2 uc=vec2(fract(lo/(2.*PI)+.5+CA/(2.*PI)),uv.y);
-    vec3 c0=texture2D(D,uv).rgb;
-    vec3 col=c0;
-    if(Q>.5){vec3 bl=(texture2D(D,uv+vec2(TS,0.)).rgb+texture2D(D,uv-vec2(TS,0.)).rgb+texture2D(D,uv+vec2(0.,TS)).rgb+texture2D(D,uv-vec2(0.,TS)).rgb)*.25;
-      col=clamp(c0+(c0-bl)*.9,0.,1.);}
-    col=pow(col,vec3(.93))*vec3(1.04,1.0,.97);                                   // unsharp: возвращает мелкий контраст, потерянный при растяжении карты
-    vec4 mk=texture2D(M,uv);float water=mk.r;
-    vec2 sp2=vec2(lo/(2.*PI)+.5+CA/(2.*PI),la/PI+.5);
-    float cloud=texture2D(M,uc).g;
-    float dn=.5;if(Q>.5)dn=fbm(sp2*vec2(420.,210.));                                     // мелкая фактура, привязана к поверхности и вращается вместе с ней
-    cloud=clamp(cloud*(.78+.44*dn)+(cloud>.08?(dn-.5)*.10:0.),0.,1.);
-    if(Q>.5)col*=1.+(fbm(vec2(lo/(2.*PI)+A/(2.*PI),la/PI)*vec2(900.,450.))-.5)*.10*water;   // едва заметная рябь океана
-    vec3 L=normalize(vec3(-.90,.28,.34));float ndl=dot(n,L);float t=clamp((ndl+.02)/.40,0.,1.);float lit=t*t*(3.-2.*t);
-    float twi=smoothstep(-.20,.10,ndl)*(1.-smoothstep(.10,.34,ndl));          // сумеречная полоса: тёплая кайма вдоль терминатора
-    float lt=.022+.978*lit;
-    col*=lt*(1.-.28*cloud*lit);
-    col=mix(col,vec3(lt),.85*cloud);
-    float city=mk.b*(1.-smoothstep(.02,.30,lit))*(1.-.8*cloud);
-    col+=city*vec3(1.,.74,.38)*1.15;
-    col+=twi*vec3(.28,.12,.03)*.55*(.35+.65*(1.-cloud));
-    vec3 H=normalize(L+vec3(0.,0.,1.));float sp=pow(max(0.,dot(n,H)),55.);
-    float wv=water*(1.-cloud);
-    float oc=.5;if(Q>.5)oc=fbm(vec2(lo/(2.*PI)+A/(2.*PI),la/PI)*vec2(14.,7.));                           // крупные пятна: глубины и течения
-    col=mix(col,col*vec3(.55,.86,1.42)*(.80+.50*oc),.70*wv);                                 // тон океана живёт, а не одна плоская заливка
-    float fr=pow(1.-Z,3.);col+=wv*fr*vec3(.10,.17,.28)*(.35+.65*lit);                         // Френель: у края вода отражает небо
-    float sp2b=pow(max(0.,dot(n,H)),9.);                                                     // широкий мягкий блик + узкий яркий
-    col+=wv*(sp*.38+sp2b*.05)*vec3(1.,.96,.88)*lit;
-    float rim=pow(clamp((rr-.80)/.20,0.,1.),1.6)*(.10+.90*lit);
-    vec3 at=vec3(.36,.62,1.)*rim*.95;col=1.-(1.-clamp(col,0.,1.))*(1.-at);
-    col*=.80+.20*Z;
+    vec3 day=texture2D(D,uv).rgb;
+    vec3 night=texture2D(N,uv).rgb;
+    vec4 mk=texture2D(M,uv);float water=mk.r;float cloud=texture2D(M,uc).g;
+    // солнце: сбоку, чуть сзади камеры; ndl>0 день
+    vec3 L=normalize(vec3(-.86,.26,.44));float ndl=dot(n,L);
+    float dm=smoothstep(-.10,.16,ndl);                                      // 0 ночь -> 1 день, мягкий терминатор
+    // освещение дневной стороны: диффузный свет + немного скругления к краю
+    float diff=clamp(ndl*1.25+.16,0.,1.);
+    vec3 col=day*(.20+1.05*diff);
+    // сумерки: красноватая полоса вдоль терминатора
+    float twi=smoothstep(-.14,.02,ndl)*(1.-smoothstep(.02,.26,ndl));
+    col=mix(col,col*vec3(1.5,.78,.55),twi*.55);
+    // облака: белые, освещены солнцем, дают тень на поверхность
+    float cLit=clamp(ndl*1.2+.10,0.,1.);
+    vec2 sh=uv+vec2(-.0016,.0012);float cs=texture2D(M,sh).g;col*=1.-.38*cs*dm;
+    col=mix(col,vec3(1.)*(.12+.98*cLit),clamp(cloud*1.05,0.,1.)*.92);
+    // блик солнца на воде (спекуляр), не на суше и не под облаками
+    vec3 H=normalize(L+vec3(0.,0.,1.));float sp=pow(max(0.,dot(n,H)),70.);
+    col+=vec3(1.,.95,.85)*sp*water*(1.-cloud)*.55*dm;
+    // френель на воде: небесное отражение к краю
+    float fr=pow(1.-Z,3.);col+=vec3(.10,.22,.40)*fr*water*(1.-cloud)*dm*.9;
+    // ночь: тёмная земля + огни городов (гаснут под облаками, светятся тёплым)
+    vec3 nightBase=day*.035;
+    vec3 lights=night*vec3(1.55,1.18,.80)*(1.-cloud*.85);
+    vec3 nightCol=nightBase+lights*1.15;
+    col=mix(nightCol,col,dm);
+    // атмосфера: голубое свечение у края на освещённой стороне, тёмно-синее на ночной
+    float rim=pow(clamp((rr-.80)/.20,0.,1.),1.55);
+    vec3 atmDay=vec3(.30,.58,1.0),atmNight=vec3(.04,.09,.22);
+    vec3 at=mix(atmNight,atmDay,dm)*rim*1.25;
+    col=1.-(1.-clamp(col,0.,1.))*(1.-clamp(at,0.,1.));
+    col*=.84+.16*Z;
     gl_FragColor=vec4(col*a,a);
   }`;
   function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){window.__glErr=gl.getShaderInfoLog(o);return null}return o}
@@ -612,49 +618,41 @@ function makeEarthGL(cv,dayImg,wcImg){
   gl.attachShader(pr,a);gl.attachShader(pr,b);gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return null;gl.useProgram(pr);
   const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const T={};
   function tex(img,unit){const t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t}
-  tex(dayImg,0);tex(wcImg,1);
-  const U=n=>gl.getUniformLocation(pr,n);gl.uniform1i(U('D'),0);gl.uniform1i(U('M'),1);
-  const uA=U('A'),uCA=U('CA'),uLAT=U('LAT'),uPX=U('PX'),uTS=U('TS'),uQ=U('Q');let qual=1;
-  return {gl,setQ(q){qual=q},draw(angle,latDeg){gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.uniform1f(uA,angle);gl.uniform1f(uCA,angle*1.06);gl.uniform1f(uLAT,(latDeg===undefined?12:latDeg)*Math.PI/180);gl.uniform1f(uPX,1/(cv.width/2));gl.uniform1f(uTS,1/dayImg.width*.9);gl.uniform1f(uQ,qual);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
+  T.D=tex(dayImg,0);T.N=tex(nightImg,1);T.M=tex(maskImg,2);
+  const U=n=>gl.getUniformLocation(pr,n);gl.uniform1i(U('D'),0);gl.uniform1i(U('N'),1);gl.uniform1i(U('M'),2);
+  const uA=U('A'),uCA=U('CA'),uLAT=U('LAT'),uPX=U('PX'),uQ=U('Q');let qual=1;
+  function swap(unit,img){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,unit===0?T.D:unit===1?T.N:T.M);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img)}
+  return {gl,setQ(q){qual=q},swap,draw(angle,latDeg){gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uA,angle);gl.uniform1f(uCA,angle*1.06);gl.uniform1f(uLAT,(latDeg===undefined?12:latDeg)*Math.PI/180);gl.uniform1f(uPX,1/(cv.width/2));gl.uniform1f(uQ,qual);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
 }
 
-  // ---- курсы стягиваются к Земле: логотипы монет и флаги летят из космоса по дугам, у планеты уменьшаются и гаснут со вспышкой атмосферы. Только transform и opacity ----
-  const CN={el:[],on:false,def:[],hit:0,glow:0};
-  const CN_LIST=['btc','f_uz','eth','f_kz','usdt','f_ru','bnb','f_ua','sol','f_by','xrp','f_eu','ton','f_kg','doge','f_gb','trx','f_tj','ada','f_az','f_am','f_ge'];
+  // ---- 8 монет на двух наклонных орбитах вокруг Земли: проходят ЗА планетой и ПЕРЕД ней, у каждой цветное свечение; без хвостов и пересечений ----
+  const CN={el:[],on:false,def:[],ready:false};
+  const CN_COINS=[['btc','255,159,67'],['eth','120,150,255'],['usdt','60,210,160'],['bnb','255,200,60'],['sol','170,110,255'],['xrp','190,215,255'],['ton','70,170,255'],['doge','240,200,90']];
+  const CN_RINGS=[{tilt:-18,rx:1.42,ry:.95,dir:1,sp:.70},{tilt:22,rx:1.30,ry:.80,dir:-1,sp:.75}];
   function cnBuild(){
-    const box=document.getElementById('introRates');if(!box||CN.on||cal0)return;
-    CN_LIST.forEach((id,i)=>{const e=document.createElement('div');e.className='cn';
-      e.innerHTML='<i></i><img src="coins/'+id+'.webp" alt="" decoding="async" draggable="false">';
-      // сторона старта по кругу (золотой угол даёт равномерный разброс), у каждого своя дальность, размер и момент прилёта
-      const ang=(i*2.39996+.4)%(Math.PI*2),big=i%3===0;
-      const sz=big?58:44+((i*7)%4)*4;e.style.width=e.style.height=sz+'px';box.appendChild(e);CN.el.push(e);
-      CN.def.push({ang,sz,t0:.15+i*.14,dur:1.5+((i*5)%4)*.18,bend:(i%2?1:-1)*(.35+.25*((i*3)%3)/2),hit:false})});
+    const near=document.getElementById('introRates'),far=document.getElementById('introFar');if(!near||!far||CN.on||cal0)return;
+    CN_COINS.forEach((c,i)=>{const e=document.createElement('div');e.className='cn';e.style.setProperty('--gl',c[1]);
+      e.innerHTML='<img src="coins/'+c[0]+'.webp" alt="" decoding="async" draggable="false">';
+      CN.el.push(e);CN.def.push({ring:i%2,ph:Math.floor(i/2)*Math.PI/2+(i%2)*.79,sz:42,id:c[0],layer:''})});
     CN.on=true}
   function cnFrame(tm,cx,cy,R){
-    if(!CN.on)return;const W=vw(),H=vh();
-    let flash=0;
-    for(let i=0;i<CN.el.length;i++){const e=CN.el[i],c=CN.def[i];
-      const k=(tm-c.t0)/c.dur;
-      if(k<0){e.style.opacity=0;continue}
-      if(k>=1){e.style.opacity=0;if(!c.hit){c.hit=true;CN.hit++;CN.glow=1}continue}
-      // путь: из точки на окружности далеко за экраном к краю Земли по дуге; ease-in (разгон к цели)
-      const t=k*k*(3-2*k)*.6+k*k*.4,sa=Math.cos(c.ang),sb=Math.sin(c.ang);
-      const ca=Math.abs(Math.cos(c.ang)),sa2=Math.abs(Math.sin(c.ang)),edgeD=Math.min(ca>.001?(W/2+c.sz)/ca:1e9,sa2>.001?(H*.58+c.sz)/sa2:1e9),r0=Math.max(R*1.9,edgeD),r1=R*.98,rad=r0+(r1-r0)*t,bend=c.bend*(1-t)*Math.sin(Math.PI*t)*1.1,ang=c.ang+bend;
-      const x=cx+Math.cos(ang)*rad,y=cy+Math.sin(ang)*rad*.86;
-      const near=Math.min(1,Math.max(0,(rad-r1)/(r0-r1)));                 // 1 далеко, 0 у планеты
-      const sc=.55+.60*near*(1-near)*2+0.45*(1-near)*(1-near)*0+.35*(1-near*.4);
-      const inScr=Math.min(1,Math.max(0,Math.min(x+c.sz,W-x+c.sz,y+c.sz,H-y+c.sz)/(c.sz*1.4))),op=inScr*Math.min(1,(rad-r1)/(R*.10)+.15);
-      e.style.transform='translate3d('+(x-c.sz/2).toFixed(1)+'px,'+(y-c.sz/2).toFixed(1)+'px,0) scale('+Math.max(.2,(sc*(.45+.55*near)).toFixed(3))+')';
-      e.style.opacity=op.toFixed(3);e.style.zIndex=near>.45?'3':'1';
-      const tail=e.firstChild;if(tail){tail.style.width=Math.round(c.sz*(.5+near*2.6))+'px';tail.style.opacity=(.15+.55*near).toFixed(2);
-        tail.style.transform='rotate('+((Math.atan2(cy-y,cx-x))*180/Math.PI+180).toFixed(1)+'deg)'}}
-    // вспышка атмосферы: каждое «приземление» поднимает свечение и оно плавно гаснет
-    if(CN.glow>0){const g=document.getElementById('introGlow');if(g)g.style.opacity=(.55+.45*CN.glow).toFixed(3);CN.glow=Math.max(0,CN.glow-.07)}}
+    if(!CN.on)return;const near=document.getElementById('introRates'),far=document.getElementById('introFar');
+    const appear=Math.min(1,Math.max(0,(tm-.35)/.9)),sz=Math.round(R*.34);
+    for(let i=0;i<CN.el.length;i++){const e=CN.el[i],c=CN.def[i],ring=CN_RINGS[c.ring];
+      const tilt=ring.tilt*Math.PI/180,rx=R*ring.rx,ry=R*ring.ry,ang=c.ph+tm*ring.sp*ring.dir;
+      const x0=Math.cos(ang)*rx,z=Math.sin(ang),y0=z*ry*.5;
+      const x=cx+x0*Math.cos(tilt)-y0*Math.sin(tilt),y=cy+x0*Math.sin(tilt)+y0*Math.cos(tilt);
+      const front=z>0,sc=.72+.36*(z*.5+.5),dim=front?1:.42+.30*(z+1);                      // дальняя сторона тусклее и меньше
+      const layer=front?'n':'f';if(c.layer!==layer){(front?near:far).appendChild(e);c.layer=layer}
+      if(e.style.width!==sz+'px'){e.style.width=e.style.height=sz+'px'}
+      e.style.transform='translate3d('+(x-sz/2).toFixed(1)+'px,'+(y-sz/2).toFixed(1)+'px,0) scale('+sc.toFixed(3)+')';
+      e.style.opacity=(dim*appear).toFixed(3)}}
   // ---- звук заставки (5 с) на WebAudio: громкость через GainNode (audio.volume на iOS не работает), буфер декодируется заранее.
   // Автозапуск пробуем несколько раз за первые секунды; если платформа требует жест, любое касание/клик включает звук с НУЖНОЙ секунды (синхронно со шкалой) ----
   const SND={ctx:null,gain:null,buf:null,src:null,on:false,t0:0,vol:.9,tries:0,timer:0,stopped:false};
@@ -692,10 +690,10 @@ function makeEarthGL(cv,dayImg,wcImg){
     if(!spin||cal0)return false;
     try{
       const ld=src=>new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=src});
-      const [d,m]=await Promise.all([ld('assets/earth-day.jpg'),ld('assets/earth-wc.jpg')]);
+      const [d,n,m]=await Promise.all([ld('assets/earth-day.jpg'),ld('assets/earth-night.jpg'),ld('assets/earth-mask.jpg')]);
       spinPx=Math.max(512,Math.min(600,Math.round(size()*(devicePixelRatio||1))));   // родной размер экрана: на ×3 это ~730 px вместо растянутых 512
       spin.width=spin.height=spinPx;
-      spinGL=makeEarthGL(spin,d,m);if(!spinGL)return false;
+      spinGL=makeEarthGL(spin,d,n,m);if(!spinGL)return false;
       spinGL.draw(REST,LAT);return true}catch(e){return false}}
   (async function(){
     try{
