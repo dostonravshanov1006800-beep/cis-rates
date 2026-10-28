@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-kLF4yA2h7gU/rO3LMbwZQ1qtfhOLOeRu/EMaYkuVywM=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-ZDPwHlUdMD22IjCW2jGSPONxDhqbn/F7A7YyuHz6pZo=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro){document.documentElement.classList.add("intro");var q=+localStorage.iw_seen||0;if(q&&Date.now()-q<18e5)window.__quick=1}}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="86c8efc2ec">
+<meta name="app-version" content="605b60e49e">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
+<title>Info Wallet: курсы валют и крипты СНГ 24/7</title>
 <meta name="description" content="Курсы валют СНГ и Европы, топ-20 криптовалют, конвертер. Официальные курсы ЦБ. Обновление каждые 5 минут.">
-<meta property="og:title" content="CIS Rates: курсы валют и крипто СНГ"><meta property="og:image" content="assets/banner.png">
+<meta property="og:title" content="Info Wallet: курсы валют и крипты СНГ"><meta property="og:image" content="assets/banner.png">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/avatar-192.png">
 <style>
@@ -542,7 +542,7 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"><i class="sf"></i><i class="sm"></i><i class="sn"></i></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introTitle"><b>Info Wallet</b><span>Курсы валют и крипты</span></div><div id="introTap">Нажми, чтобы войти</div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div></div>
+<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"><i class="sf"></i><i class="sm"></i><i class="sn"></i></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introTitle"></div><div id="introTap">Нажми, чтобы войти</div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div></div>
 <div class="bg" aria-hidden="true"></div>
 <script>
 // ===== заставка: ОДНА Земля. Большая по центру, затем та же картинка улетает на место логотипа в шапке =====
@@ -643,7 +643,7 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
       vec3 env(vec3 r){float y=r.y*.5+.5;vec3 sky=mix(vec3(.05,.07,.14),vec3(.55,.70,1.0),pow(y,1.4));
         float sun=pow(max(0.,dot(normalize(r),normalize(vec3(-.6,.5,.65)))),40.);float rim=pow(max(0.,dot(normalize(r),normalize(vec3(.7,-.2,.4)))),10.);
         return sky*.8+vec3(1.,.93,.78)*sun*1.1+vec3(.35,.5,1.)*rim*.5;}
-      void main(){vec3 Cm=C*(.62/max(.30,dot(C,vec3(.30,.59,.11))))*.92+vec3(.06);vec3 N=normalize(n);if(!gl_FrontFacing)N=-N;vec3 Vd=vec3(0.,0.,1.);vec3 R=reflect(-Vd,N);float fr=pow(1.-max(0.,dot(N,Vd)),3.);
+      void main(){vec3 Cm=C*(.80/max(.30,dot(C,vec3(.30,.59,.11))))+vec3(.10);vec3 N=normalize(n);if(!gl_FrontFacing)N=-N;vec3 Vd=vec3(0.,0.,1.);vec3 R=reflect(-Vd,N);float fr=pow(1.-max(0.,dot(N,Vd)),3.);
         vec3 e=env(R);vec3 base;
         if(k>.5){ // ребро: рифлёный металл (рёбра по окружности)
           float rid=abs(fract(uv.x*48.)-.5)*2.;base=Cm*(.58+.22*rid);base=base*e*.92+e*.06;
@@ -697,7 +697,7 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
   const CN={on:false,gl:[null,null],cv:[null,null],list:[],ph:[],ready:false};
   const CN_SET=[['btc',[1,.62,.2]],['usdt',[.15,.75,.6]],['ton',[.2,.6,1]],['eth',[.5,.6,1]],['doge',[.95,.78,.3]],['trx',[.95,.25,.25]],['bnb',[.98,.8,.2]]];
   // орбиты: наклон кольца (рад), полуоси (в радиусах Земли), скорость (рад/с), начальная фаза, наклон оси вращения монеты
-  const CN_ORB=[{tl:-.32,a:1.46,b:.62,w:.84,p:.0},{tl:.38,a:1.36,b:.55,w:-.72,p:2.1},{tl:-.12,a:1.52,b:.70,w:.62,p:4.0},{tl:.5,a:1.40,b:.50,w:-.90,p:1.0},{tl:-.5,a:1.32,b:.58,w:.78,p:3.2},{tl:.14,a:1.48,b:.66,w:-.66,p:5.2},{tl:-.26,a:1.38,b:.48,w:.70,p:2.8}];
+  const CN_ORB=[{tl:-.32,a:1.46,b:.62,w:.84,p:5.07},{tl:.38,a:1.36,b:.55,w:-.72,p:2.44},{tl:-.12,a:1.52,b:.70,w:.62,p:1.69},{tl:.5,a:1.40,b:.50,w:-.90,p:1.27},{tl:-.5,a:1.32,b:.58,w:.78,p:1.96},{tl:.14,a:1.48,b:.66,w:-.66,p:4.14},{tl:-.26,a:1.38,b:.48,w:.70,p:0.02}];
   async function cnBuild(){
     const near=document.getElementById('introRates'),far=document.getElementById('introFar');if(!near||!far||CN.on||cal0||quick)return;
     try{
@@ -727,9 +727,9 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
       const ang=o.p+tm*o.w*(1+.16*Math.sin(tm*.9+i));
       const kx=Math.min(1,(innerWidth/2-R*.30-10)/(o.a*R)),ex=Math.cos(ang)*o.a*R*kx,ey=Math.sin(ang)*o.b*R,z=Math.sin(ang);              // z>0: монета ближе к камере (перед Землёй)
       const x=cx+ex*Math.cos(o.tl)-ey*Math.sin(o.tl),y=cy+ex*Math.sin(o.tl)+ey*Math.cos(o.tl);
-      const s=R*(.30+.09*z)*(.5+.5*appear);                                              // дальше = мельче
+      const s=R*(.36+.10*z)*(.5+.5*appear);                                              // дальше = мельче
       const dim=(z>0?1:.62+.38*(z+1))*appear;
-      const c={i,x,y:y-cnY,s,rx:.45+.35*Math.sin(tm*.7+i*1.3),ry:tm*(1.4+.25*i)+i,rz:.28*Math.sin(tm*.5+i),a:dim,z:0,gl:z>0?1:.6};
+      const c={i,x,y:y-cnY,s,rx:.18*Math.sin(tm*.8+i*1.3),ry:.62*Math.sin(tm*.9+i*1.7),rz:.14*Math.sin(tm*.5+i),a:dim,z:0,gl:z>0?1:.6};
       (z>0?front:back).push(c)}
     CN.gl[0].draw(back);CN.gl[1].draw(front)}
   // ---- звук заставки (5 с) на WebAudio: громкость через GainNode (audio.volume на iOS не работает), буфер декодируется заранее.
