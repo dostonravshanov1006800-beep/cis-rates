@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-hJ18BiGqkla8mPd1e7wLzB2Xl+QeZmrcy/yhkmBvZEY=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-Y1RauPC4+UBg9jj63EjI1Z5WFx0ICNYO0j3UO4dqDdk=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="fe2b6eba65">
+<meta name="app-version" content="f693226bdd">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -91,15 +91,10 @@ html[data-theme=light] #intro{background:radial-gradient(120% 80% at 50% 38%,#f6
 @keyframes skyDrift{from{transform:translate3d(-8px,6px,0) scale(1.03)}to{transform:translate3d(8px,-6px,0) scale(1.03)}}
 html[data-theme=light] #introSky{display:none}
 #introRates{position:fixed;inset:0;z-index:204;pointer-events:none}
-.ir{position:absolute;left:0;top:0;display:flex;align-items:center;gap:9px;padding:9px 14px 9px 10px;border-radius:999px;color:#f5f7ff;font:600 13px/1.1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",Roboto,system-ui,sans-serif;white-space:nowrap;
-  background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06) 55%,rgba(255,255,255,.04));box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 rgba(255,255,255,.22),0 10px 28px rgba(2,4,18,.5);opacity:0;will-change:transform,opacity}
-.ir .ic{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font:700 11px/1 system-ui,sans-serif;color:#0b1020;background:#fff;overflow:hidden}
-.ir .ic img{width:100%;height:100%;object-fit:cover;display:block}
-.ir .tx{display:flex;flex-direction:column;gap:3px;min-width:0}
-.ir .tx b{font-weight:700;font-size:12px;letter-spacing:.04em;color:rgba(235,242,255,.78)}
-.ir .tx span{font-variant-numeric:tabular-nums;font-size:14px}
-.ir .ch{font-size:11px;font-weight:700;margin-left:2px;font-variant-numeric:tabular-nums}
-.ir .ch.u{color:rgb(52,227,154)}.ir .ch.d{color:rgb(255,93,115)}
+#introFar{position:fixed;inset:0;z-index:2;pointer-events:none}
+.cn{position:absolute;left:0;top:0;border-radius:50%;opacity:0;will-change:transform,opacity;contain:layout paint;backface-visibility:hidden}
+.cn img{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 6px 18px rgba(2,4,18,.55),0 0 0 1px rgba(255,255,255,.10)}
+.cn i{position:absolute;right:50%;top:50%;height:2px;margin-top:-1px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(170,200,255,.55));transform-origin:100% 50%;pointer-events:none}
 #introTitle{position:fixed;left:0;right:0;z-index:201;text-align:center;pointer-events:none;color:#f5f7ff;opacity:0}
 #introTitle b{display:block;font:800 22px/1.1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif;letter-spacing:.02em}
 #introTitle span{display:block;margin-top:7px;font:500 12.5px/1.2 -apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif;color:rgba(190,212,255,.78);letter-spacing:.06em;text-transform:uppercase}
@@ -536,7 +531,7 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introStars"></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct"><span>CIS Rates</span><b>0%</b></div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div><div id="introTitle"><b>CIS Rates</b><span>курсы валют и крипты</span></div></div>
+<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct"><span>CIS Rates</span><b>0%</b></div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div><div id="introTitle"><b>CIS Rates</b><span>курсы валют и крипты</span></div></div>
 <div class="bg" aria-hidden="true"></div>
 <script>
 // ===== заставка: ОДНА Земля. Большая по центру, затем та же картинка улетает на место логотипа в шапке =====
@@ -622,32 +617,33 @@ function makeEarthGL(cv,dayImg,wcImg){
     gl.uniform1f(uA,angle);gl.uniform1f(uCA,angle*1.06);gl.uniform1f(uLAT,(latDeg===undefined?12:latDeg)*Math.PI/180);gl.uniform1f(uPX,1/(cv.width/2));gl.uniform1f(uTS,1/dayImg.width*.9);gl.uniform1f(uQ,qual);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
 }
 
-  // ---- орбитальные карточки курсов: данные из кэша приложения (rcache); без кэша показываем только названия пар, цифр не выдумываем ----
-  const RT={el:[],items:[],on:false,t0:0};
-  function rtData(){
-    const out=[];try{const c=JSON.parse(localStorage.rcache||'null'),r=c&&c.r;
-      const fx=(code,flag)=>{const w=r&&r.world,v=w&&w[code];return v?{k:code+'/USD',v:(1/v>=10?(1/v).toFixed(2):(1/v).toFixed(3)),ch:null,fl:flag}:{k:code+'/USD',v:'',ch:null,fl:flag}};
-      const cr=sym=>{const a=r&&r.crypto&&r.crypto.find(x=>x.sym===sym);return a?{k:sym+'/USD',v:a.usd>=1000?Math.round(a.usd).toLocaleString('ru-RU'):a.usd.toFixed(2),ch:a.ch24h,im:a.img,sym}:{k:sym+'/USD',v:'',ch:null,sym}};
-      out.push(fx('EUR','eu'),cr('BTC'),cr('ETH'),fx('GBP','gb'))}catch(e){}
-    return out.length?out:[{k:'EUR/USD',v:''},{k:'BTC/USD',v:'',sym:'BTC'},{k:'ETH/USD',v:'',sym:'ETH'},{k:'GBP/USD',v:''}]}
-  function rtBuild(){
-    const box=document.getElementById('introRates');if(!box||RT.on||cal0)return;RT.items=rtData();
-    RT.items.forEach((d,i)=>{const e=document.createElement('div');e.className='ir';
-      const ic=d.im?'<span class="ic"><img src="'+d.im+'" alt="" referrerpolicy="no-referrer"></span>':(d.fl?'<span class="ic"><img src="flags/'+d.fl+'.png" alt=""></span>':'<span class="ic">'+(d.sym||d.k.slice(0,1))+'</span>');
-      const chg=d.ch==null?'':'<span class="ch '+(d.ch>=0?'u':'d')+'">'+(d.ch>=0?'+':'')+d.ch.toFixed(1)+'%</span>';
-      e.innerHTML=ic+'<span class="tx"><b>'+d.k+'</b>'+(d.v?'<span>'+d.v+'</span>':'')+'</span>'+chg;box.appendChild(e);RT.el.push(e)});
-    RT.on=true}
-  // положение на эллипсе вокруг Земли: фаза ph (0..1) + время; z>0 впереди Земли, z<0 за ней (скрывается и уменьшается)
-  function rtFrame(tm,cx,cy,R){
-    const n=RT.el.length,W=vw(),fade=Math.min(1,tm/1.2);
-    for(let i=0;i<n;i++){const e=RT.el[i];
-      const w=e.offsetWidth||120,h=e.offsetHeight||40;
-      const ph=(i/n+tm*0.07)%1,a=ph*Math.PI*2,x=Math.cos(a),z=Math.sin(a);               // z: -1 далеко за Землёй, +1 перед ней
-      // горизонтальный размах ограничен шириной экрана: карточка целиком остаётся в видимой зоне (отступ 10 px)
-      const rx=Math.min(R*1.22,W/2-w*.5*(.8+.22*z)-10),ry=R*.46,px=cx+x*rx,py=cy+z*ry+R*.18;
-      const sc=.80+.22*z,op=Math.max(0,Math.min(1,(z+.55)/.9));                          // за Землёй мягко тают, перед ней яркие
-      e.style.transform='translate3d('+(px-w/2).toFixed(1)+'px,'+(py-h/2).toFixed(1)+'px,0) scale('+sc.toFixed(3)+')';
-      e.style.opacity=(op*fade).toFixed(3);e.style.zIndex=z>0?'1':'0'}}
+  // ---- логотипы монет пролетают мимо Земли: разная глубина, скорость и дуга. Дальние уходят ЗА Землю (слой ниже канваса), ближние летят перед ней. Только transform и opacity ----
+  const CN={el:[],far:[],near:[],on:false,def:[]};
+  const COIN_LIST=['btc','eth','usdt','bnb','xrp','sol','ton','doge','trx','ada','btc','eth'];     // 12 пролётов; BTC и ETH повторяются на разной глубине
+  function cnBuild(){
+    const boxN=document.getElementById('introRates'),boxF=document.getElementById('introFar');if(!boxN||!boxF||CN.on||cal0)return;
+    // глубина d: 0 = далеко (мелкая, тусклая, медленная, ЗА Землёй), 1 = близко (крупная, чёткая, быстрая, ПЕРЕД Землёй)
+    const depth=[.95,.22,.72,.10,.86,.40,.16,.62,.05,.78,.30,.55];
+    COIN_LIST.forEach((id,i)=>{const d=depth[i],sz=Math.round(28+d*44),e=document.createElement('div');e.className='cn';e.style.width=e.style.height=sz+'px';
+      e.innerHTML='<i></i><img src="coins/'+id+'.webp" alt="" decoding="async" draggable="false">';
+      CN.def.push({d,sz,dir:i%2?1:-1,dur:8.2-d*3.6,pre:(i*.618%1)*(8.2-d*3.6),lane:((i*5+2)%12)/11,amp:.012+.018*((i*7)%5)/4,spin:.9+(i%4)*.5,tilt:(i%2?1:-1)*(.05+.05*d)});
+      (d>.5?boxN:boxF).appendChild(e);CN.el.push(e)});
+    CN.on=true}
+  function cnFrame(tm,cx,cy,R){
+    if(!CN.on)return;const W=vw(),H=vh();
+    // свободная зона считается ОДИН раз: ниже заголовка (его top выставляется при старте, поэтому считаем от формулы, а не от измерения) и выше подписи процентов
+    if(!CN.zone){const S=size(),titleBottom=Math.round(H*.42-S/2-72)+46,pc=document.getElementById('introPct').getBoundingClientRect();CN.zone=[titleBottom+26,Math.min(pc.top,document.getElementById('introBar').getBoundingClientRect().top)-30]}
+    const y0=CN.zone[0],y1=CN.zone[1],span=Math.max(80,y1-y0);
+    for(let i=0;i<CN.el.length;i++){const e=CN.el[i],c=CN.def[i];
+      let u=((tm+c.pre)/c.dur)%1.0;
+      const m=c.sz+34,x=c.dir>0?-m+(W+2*m)*u:W+m-(W+2*m)*u;
+      const hh=c.sz/2+2,lo=y0+hh,hi=y1-hh,arc=Math.sin(u*Math.PI*2*(.8+c.d*.4)+i)*(hi-lo)*c.amp*1.6;
+      const y=Math.max(lo,Math.min(hi,lo+c.lane*(hi-lo)+arc));                                  // дуга, но центр монеты с учётом её размера строго внутри свободной зоны
+      const edge=Math.min(1,u*7,(1-u)*7),dim=.34+.66*c.d,fade=Math.min(1,tm/1.0);
+      const sx=.90+.10*Math.abs(Math.cos(tm*c.spin+i*1.7));                                    // лёгкое «вращение» вокруг вертикальной оси: сжатие по X
+      e.style.transform='translate3d('+(x-c.sz/2).toFixed(1)+'px,'+(y-c.sz/2).toFixed(1)+'px,0) rotate('+(c.tilt*Math.sin(u*Math.PI*2)).toFixed(3)+'rad) scale('+sx.toFixed(3)+',1)';
+      e.style.opacity=(edge*dim*fade).toFixed(3);
+      const tail=e.firstChild;if(tail){tail.style.width=Math.round(c.sz*(.9+c.d*1.8))+'px';tail.style.transform='scaleX('+(c.dir>0?-1:1)+')';tail.style.opacity=(.22+.5*c.d).toFixed(2)}}}
   // ---- звук заставки (10 с): пробуем сразу, при запрете браузера включаем по первому касанию с нужной секунды; на выходе плавно гасим ----
   const SND={a:null,on:false,t0:0,vol:.85};
   function sndInit(){if(cal0)return;try{const a=new Audio('assets/loading.mp3');a.preload='auto';a.volume=0;a.loop=false;a.setAttribute('playsinline','');SND.a=a}catch(e){SND.a=null}}
@@ -694,7 +690,7 @@ function makeEarthGL(cv,dayImg,wcImg){
       const INTRO_MS=10000;                                                  // сколько секунд идёт заполнение шкалы (меняется одной цифрой)
       const T=cal0?0:INTRO_MS,t0=performance.now();
       const sky=document.getElementById('introSky'),ttl=document.getElementById('introTitle');
-      if(!cal0){if(sky)sky.classList.add('on');rtBuild();if(ttl){const S=size();ttl.style.top=Math.round(vh()*.42-S/2-72)+'px';ttl.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:800,delay:250,easing:'ease-out',fill:'forwards'})}}
+      if(!cal0){if(sky)sky.classList.add('on');cnBuild();if(ttl){const S=size();ttl.style.top=Math.round(vh()*.42-S/2-72)+'px';ttl.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:800,delay:250,easing:'ease-out',fill:'forwards'})}}
       SND.t0=t0;if(SND.a){SND_EV.forEach(n=>addEventListener(n,sndGesture,true));sndStart()}   // пробуем сразу; если запрещено, сыграет с первого касания
       const perf={tier:0,n:0,sum:0,last:0,from:0};
       // авто-деградация по реальной частоте кадров на этом устройстве: окно в 40 кадров; средний кадр >20 мс (<50 к/с) => следующий уровень
@@ -707,7 +703,7 @@ function makeEarthGL(cv,dayImg,wcImg){
       const TURNS=1;                                                         // один спокойный оборот за заставку; к концу замедляется и встаёт ровно на ракурс значка
       const K0=.85,W=1/(K0+(1-K0)/2),spinQ=k=>{if(k>=1)return 1;if(k<K0)return k*W;const u=k-K0;return W*(K0+u-u*u/(2*(1-K0)))};
       await new Promise(res=>{(function step(){const now=performance.now(),k=T?Math.min(1,(now-t0)/T):1,e=T>3000?k:1-Math.pow(1-k,2);fill.style.transform='scaleX('+e.toFixed(3)+')';pct.lastElementChild.textContent=Math.round(e*100)+'%';
-        if(RT.on&&!flying){const S=size();rtFrame((now-t0)/1000,vw()/2,vh()*.42,S/2)}
+        if(CN.on&&!flying){const S=size();cnFrame((now-t0)/1000,vw()/2,vh()*.42,S/2)}
         if(spinOK){spinGL.draw(REST+spinQ(k)*TURNS*2*Math.PI,LAT);
           perfStep(now);}
         k<1?requestAnimationFrame(step):res()})()});
