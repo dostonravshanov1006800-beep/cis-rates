@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-CJagb+5u1GeD8L9A1cREVIaOAEb9CY3xwv0gFoiVung=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-EuwnZyyZBu1mF/+S4F+j+OTjmA1IroOEx8UmB6K34sY=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro){document.documentElement.classList.add("intro");var q=+localStorage.iw_seen||0;if(q&&Date.now()-q<18e5)window.__quick=1}}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="b308471101">
+<meta name="app-version" content="29a3c230ec">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -25,7 +25,7 @@
   /* цвет */
   --bg0:#070b1a;--bg1:#140d2b;
   --w:255,255,255;--sh:2,4,18;                  /* цвет стеклянных слоёв и теней: переключается темой */
-  --tx:#f5f7ff;--tx2:rgba(235,238,255,.62);--tx3:rgba(235,238,255,.38);
+  --tx:#f5f7ff;--tx2:rgba(235,238,255,.72);--tx3:rgba(235,238,255,.56);
   --acc:#7aa7ff;--acc2:#a9c4ff;--up:#34e39a;--dn:#ff5d73;--gold:#ffc94d;
   /* сетка 4pt */
   --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s8:32px;--s10:40px;
@@ -486,7 +486,7 @@ html.lite .nv .drop{transition-duration:.25s}
 /* нижний текст: часть дизайна, а не сноска. Тонкая стеклянная плашка, мелкий приглушённый текст, место под панелью */
 footer{margin:var(--s5) var(--s4) calc(112px + env(safe-area-inset-bottom,0px));padding:var(--s3) var(--s4);border-radius:var(--r-l);font-size:11px;line-height:1.5;letter-spacing:.1px;color:var(--tx3);background:rgba(var(--w),.03);position:relative}
 footer::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(150deg,rgba(var(--w),.22),rgba(var(--w),.05) 40%,rgba(var(--w),.02) 70%,rgba(var(--w),.10));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-footer span:last-child{opacity:.8}
+footer span:last-child{opacity:1}
 /* долгое нажатие: никакого меню, выделения, перетаскивания ссылок и предпросмотра адреса */
 html,body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 a,img,svg,button{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
@@ -508,8 +508,8 @@ input,select,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-ca
 :root{--tu:52,227,154;--td:255,93,115}
 html[data-theme=light]{
   --bg0:#eef2fb;--bg1:#dfe6f7;--w:255,255,255;--sh:40,56,110;--tu:12,150,96;--td:214,48,74;
-  --tx:#0d1330;--tx2:rgba(13,19,48,.72);--tx3:rgba(13,19,48,.68);
-  --acc:#2f6bff;--acc2:#5b8cff;--up:#0a7c4e;--dn:#c8213f;--gold:#8f5800;
+  --tx:#0d1330;--tx2:rgba(13,19,48,.78);--tx3:rgba(13,19,48,.74);
+  --acc:#2f6bff;--acc2:#2a5ee0;--up:#0a7c4e;--dn:#c8213f;--gold:#8f5800;
   --g-fill:linear-gradient(145deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.74) 50%,rgba(255,255,255,.62) 100%);
   --g-fill-hi:linear-gradient(145deg,rgba(255,255,255,1) 0%,rgba(255,255,255,.88) 55%,rgba(255,255,255,.8) 100%);
   --g-rim:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -10px 18px -12px rgba(var(--sh),.14);
@@ -798,8 +798,8 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
       const sndReady=sndInit();
       const spinReady=spinInit();
       await wait(Promise.all([fly.decode?fly.decode():0,real.decode?real.decode():0,document.fonts&&document.fonts.ready].map(x=>Promise.resolve(x).catch(()=>0))));
-      let spinOK=false;                                                      // вращение подключится само, когда придут карты; шкала и звук от этого не ждут
-      spinReady.then(ok=>{if(!ok||window.__introDone||flying)return;spinOK=true;spinPlace();spin.style.opacity='1';spin.animate([{opacity:0},{opacity:1}],{duration:450,easing:'ease-out',fill:'backwards'})});
+      let spinOK=false,spinFailed=false;                                                      // вращение подключится само, когда придут карты; шкала и звук от этого не ждут
+      spinReady.then(ok=>{if(!ok){spinFailed=true;return}if(window.__introDone||flying)return;spinOK=true;spinPlace();spin.style.opacity='1';spin.animate([{opacity:0},{opacity:1}],{duration:450,easing:'ease-out',fill:'backwards'})});
       // короткая пауза: Telegram успевает прислать safe area, и шапка встаёт на своё место
       // мягкий наезд в начале, как в референсе: Земля появляется с лёгким увеличением (только opacity+transform)
       if(!cal0){fly.animate([{opacity:0,transform:'scale(.86)'},{opacity:1,transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.22,.8,.3,1)',fill:'backwards'});glow.animate([{opacity:0},{opacity:1}],{duration:520,fill:'backwards'})}
@@ -823,7 +823,7 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
       const K0=.85,W=1/(K0+(1-K0)/2),spinQ=k=>{if(k>=1)return 1;if(k<K0)return k*W;const u=k-K0;return W*(K0+u-u*u/(2*(1-K0)))};
       // РЕАЛЬНЫЙ прогресс: карты Земли 30%, монеты 20%, звук 15%, первые курсы 35%. Линия идёт к этому значению плавно (не прыгает).
       let shown=0,tapped=false,tapAt=0;
-      const realP=()=>(spinOK?.30:0)+((CN.ready||quick)?.20:0)+((SND.buf||SND.stopped||!SND.ctx)?.15:0)+((window.__rendered||window.R)?.35:0);
+      const realP=()=>((spinOK||spinFailed)?.30:0)+((CN.ready||quick)?.20:0)+((SND.buf||SND.stopped||!SND.ctx)?.15:0)+((window.__rendered||window.R)?.35:0);
       const onTap=()=>{if(tapped)return;tapped=true;tapAt=performance.now();try{Telegram.WebApp.HapticFeedback.impactOccurred('light')}catch(e){}};
       addEventListener('pointerdown',onTap,{once:true,capture:true});addEventListener('touchstart',onTap,{once:true,capture:true,passive:true});
       const ease3=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,clamp01=x=>Math.max(0,Math.min(1,x)),seg=(a,b,x)=>clamp01((x-a)/(b-a));

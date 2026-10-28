@@ -113,7 +113,7 @@ def bg():  # БНБ даёт «евро за 1 единицу». Лев жёст
 
 def rs():  # Сербия: exchange_middle = динаров за parity единиц
     j = json.loads(raw("https://kurs.resenje.org/api/v1/rates/today"))["rates"]
-    return pack("RSD", "НБ Сербии", {r["code"]: float(r["exchange_middle"]) / (float(r.get("parity") or 1)) for r in j})
+    return pack("RSD", "НБ Сербии", {r["code"]: float(r["exchange_middle"]) / (float(r.get("parity") or 1) or 1.0) for r in j})
 
 
 def ecb():  # ЕЦБ: к евро. EUR -> EUR=1; доллар и др.: 1 EUR = X валюты => 1 валюта = 1/X евро
@@ -121,7 +121,7 @@ def ecb():  # ЕЦБ: к евро. EUR -> EUR=1; доллар и др.: 1 EUR = 
     d = {"EUR": 1.0}
     for c in root.iter():
         if c.tag.split("}")[-1] == "Cube" and c.get("currency"):
-            d[c.get("currency")] = 1.0 / float(c.get("rate"))
+            if float(c.get("rate") or 0) > 0: d[c.get("currency")] = 1.0 / float(c.get("rate"))
     return pack("EUR", "ЕЦБ", d)
 
 
@@ -148,6 +148,7 @@ def gb():  # Банк Англии: USD за 1 GBP  => фунтов за 1 USD =
     csv = raw(f"https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp?csv.x=yes&Datefrom={t}&Dateto=now&SeriesCodes=XUDLUSS&CSVF=TN&UsingCodes=Y")
     last = [l for l in csv.strip().splitlines() if "," in l][-1].split(",")[1]
     usd_per_gbp = float(last)
+    if usd_per_gbp <= 0: raise ValueError("Банк Англии: нулевой курс")
     return pack("GBP", "Банк Англии", {"USD": 1.0 / usd_per_gbp})
 
 

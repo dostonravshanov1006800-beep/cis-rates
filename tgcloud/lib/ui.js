@@ -1,5 +1,5 @@
 import { FLAG, OFF, rate, convert, toUSD } from './rates.js';
-import { ALERT_CHANNEL } from './config.js';
+import { ALERT_CHANNEL, APP_URL } from './config.js';
 
 export const fmt = (n, d) => {
   if (n == null || isNaN(n)) return '—';
@@ -22,7 +22,8 @@ const esc = s => String(s).replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;',
 export function menu(R, cc, name) {
   const c = R.countries[cc], r = rate(R, cc, 'USD') || { r: 1, d: 0, src: '' };
   return [`⭐ <b>CIS Rates</b> — курсы СНГ и Европы 24/7\n${name ? `Привет, ${esc(name)}! 👋\n` : ''}\n${c.flag} ${c.name}: <b>1 USD = ${fmt(r.r)} ${c.sym}</b> ${arrow(r.d)}\n<i>${r.src} · ${upd(R)}</i>\n\nВыбери раздел 👇`,
-    kb([[btn('💵 Курс валют', 'cur'), btn('🎯 Подбор', 'pick')],
+    kb([[{ text: '🌐 Открыть Info Wallet', web_app: { url: APP_URL } }],
+        [btn('💵 Курс валют', 'cur'), btn('🎯 Подбор', 'pick')],
         [btn('₿ Крипта', 'cry:0'), btn('🗂 Каталог стран', 'cat:cis')],
         [btn('💱 Конвертер', 'conv'), btn('🔔 Алерты', 'alerts')],
         [btn('🌍 Моя страна', 'ctry'), btn('ℹ️ О боте', 'about')],

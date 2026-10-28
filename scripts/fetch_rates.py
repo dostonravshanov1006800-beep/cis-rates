@@ -95,8 +95,9 @@ try:
             "cap":x["market_cap"],"vol":x["total_volume"],"img":x["image"]})
     # TON отдельно, если не попал в топ
     if not any(c["sym"]=="TON" for c in out["crypto"]):
-        t = get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=the-open-network&price_change_percentage=1h,24h,7d")[0]
-        out["crypto"].insert(3, {"sym":"TON","name":"Toncoin","usd":t["current_price"],"ch1h":round(t.get("price_change_percentage_1h_in_currency") or 0,2),
+        _t = get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=the-open-network&price_change_percentage=1h,24h,7d")
+        t = _t[0] if _t else None
+        if t: out["crypto"].insert(3, {"sym":"TON","name":"Toncoin","usd":t["current_price"],"ch1h":round(t.get("price_change_percentage_1h_in_currency") or 0,2),
             "ch24h":round(t.get("price_change_percentage_24h_in_currency") or 0,2),"ch7d":round(t.get("price_change_percentage_7d_in_currency") or 0,2),
             "cap":t["market_cap"],"vol":t["total_volume"],"img":t["image"]})
     out["crypto"] = out["crypto"][:20]

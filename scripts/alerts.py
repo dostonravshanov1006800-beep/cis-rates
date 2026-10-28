@@ -96,5 +96,5 @@ keep = dict(last)
 if sent_ok:
     for k, v in now.items():
         thr = CRYPTO_THR if k.startswith("c:") else FIAT_THR
-        if k not in keep or abs(v - keep[k]) / keep[k] >= thr - 1e-9: keep[k] = v
+        if k not in keep or not keep[k] or abs(v - keep[k]) / keep[k] >= thr - 1e-9: keep[k] = v
 json.dump(keep, open("data/alert_state.json", "w"))

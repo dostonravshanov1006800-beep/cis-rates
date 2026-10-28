@@ -122,7 +122,7 @@ for x in need_gecko:
     time.sleep(6)
 
 for sym in list(out["crypto"]):
-    if CUR.get(sym) and abs(out["crypto"][sym][-1] / CUR[sym] - 1) > 0.05:
+    if CUR.get(sym) and out["crypto"][sym] and abs(out["crypto"][sym][-1] / CUR[sym] - 1) > 0.05:
         print("удалён негодный старый ряд", sym); del out["crypto"][sym]
 os.makedirs("data", exist_ok=True)
 json.dump(out, open(P, "w", encoding="utf-8"), separators=(",", ":"))
