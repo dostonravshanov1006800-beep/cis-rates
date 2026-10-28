@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-VEppkyfcqt/tA5/4vmrQo9TKXX0COAjiGIPYrRmqtRc=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-IaUKMJwCSmtB4vxHSDbsfFdbL8PD/9kRlkXn7wybgSM=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro){document.documentElement.classList.add("intro");var q=+localStorage.iw_seen||0;if(q&&Date.now()-q<18e5)window.__quick=1}}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="99c8197a8e">
+<meta name="app-version" content="c1a8607918">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>Info Wallet: курсы валют и крипты СНГ 24/7</title>
@@ -86,7 +86,7 @@ html.intro #hdrEarth{visibility:hidden}
 html[data-theme=light] #intro{background:radial-gradient(120% 80% at 50% 38%,#f6f9ff 0%,#e9effb 60%,#dfe7f7 100%)}
 #introSpin{position:fixed;left:0;top:0;z-index:203;border-radius:50%;display:block;pointer-events:none;opacity:0}
 #introEarth{position:fixed;left:0;top:0;z-index:202;border-radius:50%;object-fit:cover;display:block;transform-origin:top left;will-change:transform;pointer-events:none;user-select:none;-webkit-user-drag:none}
-#introSky{position:absolute;inset:-2%;pointer-events:none;background:url(assets/sky.jpg) center/cover no-repeat;opacity:0;transition:opacity .9s ease;will-change:transform}
+#introSky{position:absolute;inset:-4%;pointer-events:none;background:radial-gradient(ellipse 120% 40% at 50% 48%,rgba(140,80,220,.26),rgba(15,30,80,.14) 60%,transparent 85%),radial-gradient(ellipse 85% 45% at 25% 30%,rgba(112,38,180,.30),transparent 70%),radial-gradient(ellipse 65% 75% at 75% 65%,rgba(14,125,160,.25),transparent 65%),radial-gradient(ellipse 110% 35% at 50% 50%,rgba(35,65,150,.35),transparent 75%),radial-gradient(circle at 60% 30%,rgba(215,45,180,.18),transparent 50%),radial-gradient(ellipse 100% 25% at 45% 55%,rgba(225,130,10,.12),transparent 65%),url(assets/sky.jpg) center/cover no-repeat;opacity:0;transition:opacity .9s ease;will-change:transform}
 #introSky.on{opacity:1;animation:skyDrift 40s ease-in-out infinite alternate}
 @keyframes skyDrift{from{transform:translate3d(-8px,6px,0) scale(1.03)}to{transform:translate3d(8px,-6px,0) scale(1.03)}}
 html[data-theme=light] #introSky{display:none}
@@ -99,10 +99,10 @@ html[data-theme=light] .cn{position:absolute;left:0;top:0;border-radius:50%;opac
 .cn::before{content:"";position:absolute;inset:-26%;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--gl),.55),rgba(var(--gl),.16) 55%,transparent 100%);filter:none;z-index:-1}
 .cn img{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 8px 20px rgba(2,4,18,.6)}
 #introStars{position:absolute;inset:-3%;pointer-events:none}
-#introStars i{position:absolute;inset:0;background-repeat:no-repeat;background-position:center;background-size:cover;will-change:transform,opacity}
-#introStars .sf{background-image:url(assets/stars_far.webp)}
-#introStars .sm{background-image:url(assets/stars_mid.webp)}
-#introStars .sn{background-image:url(assets/stars_near.webp);animation:stP3 4.6s linear forwards}
+#introStars i{position:absolute;inset:0;background-repeat:no-repeat;background-position:center;background-size:cover;will-change:transform,opacity;contain:strict}
+#introStars .sf{background-image:url(assets/stars_far.webp);animation:stP1 12s ease-in-out infinite alternate}
+#introStars .sm{background-image:url(assets/stars_mid.webp);animation:stP2 7.5s ease-in-out infinite alternate,stTw 3s ease-in-out infinite alternate}
+#introStars .sn{background-image:url(assets/stars_near.webp);animation:stP3 4.6s ease-in-out infinite alternate,stTw 2.2s ease-in-out .5s infinite alternate}
 @keyframes stP1{from{transform:translate3d(0,0,0)}to{transform:translate3d(-12px,6px,0)}}
 @keyframes stP2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-40px,20px,0)}}
 @keyframes stP3{from{transform:translate3d(0,0,0)}to{transform:translate3d(-92px,46px,0)}}
@@ -122,20 +122,20 @@ html[data-theme=light] #introBar{box-shadow:inset 0 0 0 1px rgba(47,107,255,.35)
 html[data-theme=light] #introBar{background:rgba(47,107,255,.14)}
 html[data-theme=light] #introBar i{background:linear-gradient(90deg,#2f6bff,#5b8dff);box-shadow:0 0 10px rgba(47,107,255,.45)}
 html[data-theme=light] #introTap{color:rgba(13,19,48,.78)}
-#introCandles{position:fixed;left:0;right:0;z-index:202;width:100%;pointer-events:none;opacity:0}
+#introCandles{position:fixed;left:0;right:0;z-index:202;width:100%;pointer-events:none;opacity:0;transform:translateZ(0);contain:layout paint}
 #introCandles.on{opacity:1;transition:opacity .6s ease}
-#introTape{position:fixed;left:0;right:0;bottom:0;height:calc(54px + env(safe-area-inset-bottom,0px));z-index:203;pointer-events:none;overflow:hidden;opacity:0;
+#introTape{position:fixed;left:0;right:0;bottom:0;height:calc(52px + env(safe-area-inset-bottom,0px));z-index:203;pointer-events:none;overflow:hidden;opacity:0;
   background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.09));border-top:1px solid rgba(255,255,255,.12);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent)}
 #introTape.on{opacity:1;transition:opacity .6s ease}
-#introTape .tp{position:absolute;left:0;top:0;height:54px;display:flex;align-items:center;gap:26px;padding-left:20px;white-space:nowrap;will-change:transform;animation:tpRun 28s linear infinite}
-#introTape .it{display:inline-flex;align-items:center;gap:8px;font:700 13px/1 Inter,-apple-system,system-ui,sans-serif;color:#eaf1ff}
-#introTape .it img{width:24px;height:24px;border-radius:50%;display:block}
-#introTape .it u{text-decoration:none;font-weight:600;color:rgba(214,228,255,.78)}
+#introTape .tp{position:absolute;left:0;top:0;height:52px;display:flex;align-items:center;gap:24px;white-space:nowrap;will-change:transform;animation:tpRun 30s linear infinite}
+#introTape .it{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;font:700 13px/1 Inter,-apple-system,system-ui,sans-serif;color:#eaf1ff}
+#introTape .it img{width:22px;height:22px;border-radius:50%;display:block;flex-shrink:0}
+#introTape .it u{text-decoration:none;font-weight:600;color:rgba(214,228,255,.85);margin:0 2px}
 #introTape .it .up{color:#34d399}#introTape .it .dn{color:#f87171}
 @keyframes tpRun{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 html[data-theme=light] #introTape{background:linear-gradient(180deg,rgba(13,19,48,.03),rgba(13,19,48,.07));border-top-color:rgba(13,19,48,.14)}
-html[data-theme=light] #introTape .it{color:#0d1330}html[data-theme=light] #introTape .it u{color:rgba(13,19,48,.72)}
+html[data-theme=light] #introTape .it{color:#0d1330}html[data-theme=light] #introTape .it u{color:rgba(13,19,48,.78)}
 html[data-theme=light] #introTape .it .up{color:#047857}html[data-theme=light] #introTape .it .dn{color:#b91c1c}
 @media (prefers-reduced-motion:reduce){#introTape .tp{animation:none}}
 #introGlow{position:fixed;left:0;top:0;z-index:201;border-radius:50%;pointer-events:none;will-change:opacity;
@@ -562,47 +562,196 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
 <div class="bg" aria-hidden="true"></div>
 <script>
 
-// ===== заставка: свечи и бегущая лента логотипов внизу (лёгкий canvas 2D + CSS, без WebGL) =====
+// ===== заставка: свечи и бегущая лента логотипов внизу (лёгкий canvas 2D + CSS) =====
 (function(){
   const cv=document.getElementById('introCandles'),tp=document.getElementById('introTape');
   if(!cv||!tp||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   const TOP=['BTC','ETH','TON','SOL','XRP','BNB','DOGE','TRX','ADA','USDT'];
   const fmt=v=>v>=1000?Math.round(v).toLocaleString('en-US'):v>=1?v.toFixed(2):v.toFixed(4);
-  function candles(arr,n){ // ряд цен -> n свечей OHLC (группировка по соседним точкам + лёгкий разброс)
-    const a=arr.filter(x=>x>0),k=Math.max(1,Math.floor(a.length/n)),o=[];
-    for(let i=0;i+k<=a.length&&o.length<n;i+=k){const g=a.slice(i,i+k+1);const op=g[0],cl=g[g.length-1];const mx=Math.max(...g),mn=Math.min(...g);const pad=(mx-mn)*.18+op*.0006;o.push([op,mx+pad,mn-pad,cl])}
-    return o}
-  function draw(c,t){ // t 0..1: сколько свечей уже нарисовано
-    const W=cv.clientWidth,H=cv.clientHeight,dpr=Math.min(2,devicePixelRatio||1);
-    if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr)}
-    const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);
-    const light=document.documentElement.dataset.theme==='light',n=c.length;
-    const mx=Math.max(...c.map(q=>q[1])),mn=Math.min(...c.map(q=>q[2])),pad=(mx-mn)*.08;
-    const Y=v=>H-6-(v-(mn-pad))/((mx+pad)-(mn-pad))*(H-12);
-    x.strokeStyle=light?'rgba(13,19,48,.07)':'rgba(255,255,255,.07)';x.lineWidth=1;
-    for(let i=1;i<4;i++){const y=Math.round(H*i/4)+.5;x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke()}
-    const step=W/n,bw=Math.max(3,Math.min(10,step*.56)),vis=Math.floor(t*n),part=t*n-vis;
-    for(let i=0;i<Math.min(n,vis+1);i++){
-      const q=c[i],up=q[3]>=q[0],col=up?(light?'#059669':'#34d399'):(light?'#dc2626':'#f87171'),cx=step*(i+.5),k=i===vis?part:1;
-      x.globalAlpha=.25+.75*(i/n)*.6+.4*k;x.strokeStyle=col;x.fillStyle=col;x.lineWidth=1.4;
-      x.beginPath();x.moveTo(cx,Y(q[1]));x.lineTo(cx,Y(q[2]));x.stroke();
-      const y1=Y(Math.max(q[0],q[3])),y2=Y(Math.min(q[0],q[3]));x.fillRect(cx-bw/2,y1,bw,Math.max(2,(y2-y1)*k))}
-    x.globalAlpha=1}
+  const fmtTag=v=>v>=1000?'$'+Math.round(v).toLocaleString('en-US'):v>=1?'$'+v.toFixed(2):'$'+v.toFixed(4);
+  const fmtScale=v=>v>=1000?'$'+(v/1000).toFixed(1)+'k':v>=1?'$'+v.toFixed(1):'$'+v.toFixed(3);
+
+  function prepareMeta(arr, n, W, H){
+    if(!arr||!arr.length||!W||!H)return null;
+    const pts=arr.filter(x=>typeof x==='number'&&x>0);
+    if(!pts.length)return null;
+    const count=Math.min(40,Math.max(18,n));
+    const step=Math.max(1,Math.floor(pts.length/count));
+    const raw=[];
+    for(let i=0;i<count;i++){
+      const chunk=pts.slice(i*step, i===count-1?pts.length:(i+1)*step+1);
+      if(!chunk.length)continue;
+      const op=chunk[0], cl=chunk[chunk.length-1];
+      const mx=Math.max(...chunk), mn=Math.min(...chunk);
+      const body=Math.abs(cl-op);
+      const uPad=Math.max(mx-Math.max(op,cl), body*0.35, op*0.0005);
+      const lPad=Math.max(Math.min(op,cl)-mn, body*0.35, op*0.0005);
+      raw.push([op, Math.max(op,cl)+uPad, Math.min(op,cl)-lPad, cl]);
+    }
+
+    const scaleW=52;
+    const chartW=W-scaleW;
+    const topP=12, botP=14, chartH=H-topP-botP;
+    const pMax=Math.max(...raw.map(q=>q[1]));
+    const pMin=Math.min(...raw.map(q=>q[2]));
+    const pad=(pMax-pMin)*0.08||10;
+    const yMax=pMax+pad, yMin=pMin-pad;
+    const Y=v=>topP+(1-(v-yMin)/(yMax-yMin))*chartH;
+
+    const cStep=chartW/raw.length;
+    const bw=Math.max(3,Math.min(9,Math.floor(cStep*0.62)));
+
+    const candles=raw.map((q, i)=>{
+      const isGreen=q[3]>=q[0];
+      const cx=Math.round(cStep*(i+0.5))+.5;
+      const yHi=Y(q[1]), yLo=Y(q[2]);
+      const yOp=Y(q[0]), yCl=Y(q[3]);
+      const yTop=Math.min(yOp,yCl), yBot=Math.max(yOp,yCl);
+      const bH=Math.max(2, yBot-yTop);
+      return {
+        op:q[0], cl:q[3], isGreen, cx, yHi, yLo, yTop, bH, bw,
+        colDark: isGreen?'#34d399':'#f87171',
+        colLight: isGreen?'#059669':'#dc2626',
+        tagStr: fmtTag(q[3]),
+        lastY: Math.round(Y(q[3]))+.5
+      };
+    });
+
+    const levels=[0.2, 0.5, 0.8];
+    const gridLevels=levels.map(l=>({
+      gy: Math.round(topP+chartH*l)+.5,
+      str: fmtScale(yMax-l*(yMax-yMin))
+    }));
+
+    return { candles, scaleW, chartW, gridLevels, W, H };
+  }
+
+  function draw(meta, t){
+    if(!meta)return;
+    const W=cv.clientWidth, H=cv.clientHeight;
+    if(!W||!H)return;
+    const dpr=Math.min(2,window.devicePixelRatio||1);
+    const tw=Math.round(W*dpr), th=Math.round(H*dpr);
+    if(cv.width!==tw||cv.height!==th){cv.width=tw;cv.height=th;}
+    const x=cv.getContext('2d');
+    x.setTransform(dpr,0,0,dpr,0,0);
+    x.clearRect(0,0,W,H);
+
+    const light=document.documentElement.dataset.theme==='light';
+    const { candles, scaleW, chartW, gridLevels } = meta;
+    const n=candles.length;
+
+    // 1. Тонкая сетка
+    x.strokeStyle=light?'rgba(13,19,48,.07)':'rgba(255,255,255,.06)';
+    x.lineWidth=1;
+    x.fillStyle=light?'rgba(13,19,48,.72)':'rgba(214,228,255,.72)';
+    x.font='600 10px Inter,-apple-system,sans-serif';
+    x.textAlign='left';
+    x.textBaseline='middle';
+
+    for(let l=0;l<gridLevels.length;l++){
+      const g=gridLevels[l];
+      x.beginPath();
+      x.moveTo(0,g.gy);
+      x.lineTo(chartW,g.gy);
+      x.stroke();
+      x.fillText(g.str, chartW+6, g.gy);
+    }
+
+    // 2. Свечи
+    const visCount=Math.min(n, Math.floor(t*n)+1);
+    for(let i=0;i<visCount;i++){
+      const cd=candles[i];
+      const col=light?cd.colLight:cd.colDark;
+      const factor=(i===visCount-1&&t<1)?(t*n-Math.floor(t*n)):1;
+
+      x.strokeStyle=col;
+      x.lineWidth=1.2;
+      x.beginPath();
+      x.moveTo(cd.cx, cd.yHi);
+      x.lineTo(cd.cx, cd.yLo);
+      x.stroke();
+
+      x.fillStyle=col;
+      x.fillRect(cd.cx-cd.bw/2, cd.yTop, cd.bw, cd.bH*factor);
+    }
+
+    // 3. Последняя цена
+    const lastIdx=Math.min(n-1, Math.max(0, visCount-1));
+    const lc=candles[lastIdx];
+    if(lc){
+      const tagCol=light?lc.colLight:lc.colDark;
+      x.save();
+      x.beginPath();
+      x.setLineDash([3,3]);
+      x.strokeStyle=tagCol;
+      x.lineWidth=1;
+      x.moveTo(0, lc.lastY);
+      x.lineTo(chartW, lc.lastY);
+      x.stroke();
+      x.restore();
+
+      const tagW=scaleW-4, tagH=16;
+      const tagX=chartW+2, tagY=lc.lastY-tagH/2;
+      x.fillStyle=tagCol;
+      x.beginPath();
+      if(x.roundRect){x.roundRect(tagX, tagY, tagW, tagH, 3)}else{x.rect(tagX, tagY, tagW, tagH)}
+      x.fill();
+
+      x.fillStyle='#ffffff';
+      x.font='700 10px Inter,-apple-system,sans-serif';
+      x.textAlign='center';
+      x.textBaseline='middle';
+      x.fillText(lc.tagStr, tagX+tagW/2, lc.lastY+0.5);
+    }
+  }
+
   window.__introBottom=async function(){
     try{
-      const [r,s]=await Promise.all([fetch('data/rates.json').then(x=>x.json()),fetch('data/series.json').then(x=>x.json())]);
-      const cr={};(r.crypto||[]).forEach(q=>{cr[q.sym]=q});const ser=s.crypto||{};
-      const items=TOP.filter(k=>cr[k]&&cr[k].usd>0).map(k=>({k,price:cr[k].usd,ch:cr[k].ch24h||0,arr:ser[k]||[]}));
+      const [r,s,h]=await Promise.all([
+        fetch('data/rates.json').then(x=>x.json()).catch(()=>({})),
+        fetch('data/series.json').then(x=>x.json()).catch(()=>({})),
+        fetch('data/history.json').then(x=>x.json()).catch(()=>([]))
+      ]);
+      const cr={};(r.crypto||[]).forEach(q=>{cr[q.sym]=q});
+      const items=TOP.filter(k=>cr[k]&&cr[k].usd>0).map(k=>({k,price:cr[k].usd,ch:cr[k].ch24h||0}));
       if(!items.length)return;
-      const cell=i=>`<span class="it"><img src="coins/${i.k.toLowerCase()}.webp" alt="" width="24" height="24">${i.k}<u>$${fmt(i.price)}</u><b class="${i.ch>=0?'up':'dn'}">${i.ch>=0?'+':''}${(+i.ch).toFixed(2)}%</b></span>`;
-      const html=items.map(cell).join('');tp.querySelector('.tp').innerHTML=html+html;tp.classList.add('on');
-      const base=(items.find(i=>i.k==='BTC')||items[0]).arr,c=candles(base.length>8?base:[...base,...base],Math.max(14,Math.min(34,Math.floor(innerWidth/12))));
-      const by=Math.round(innerHeight-Math.max(56,innerHeight*.085)-8),h=Math.round(Math.min(150,innerHeight*.17));
-      cv.style.top=(by-h-44)+'px';cv.style.height=h+'px';cv.classList.add('on');
-      const t0=performance.now(),D=3600;(function f(now){const t=Math.min(1,(now-t0)/D);draw(c,t);if(t<1&&document.getElementById('introCandles'))requestAnimationFrame(f)})(t0);
-    }catch(e){}}
+
+      const cell=i=>`<span class="it"><img src="coins/${i.k.toLowerCase()}.webp" alt="" width="22" height="22">${i.k}<u>$${fmt(i.price)}</u><b class="${i.ch>=0?'up':'dn'}">${i.ch>=0?'+':''}${(+i.ch).toFixed(2)}%</b></span>`;
+      const html=items.map(cell).join('');
+      const tpEl=tp.querySelector('.tp');
+      tpEl.innerHTML=html+html;
+      tp.classList.add('on');
+
+      let btcPts=[];
+      if(Array.isArray(h)&&h.length>0){
+        btcPts=h.map(x=>x.BTC).filter(v=>typeof v==='number'&&v>0);
+      }
+      if(!btcPts.length&&s.crypto&&s.crypto.BTC){
+        btcPts=s.crypto.BTC;
+      }
+
+      const by=Math.round(innerHeight-Math.max(52, innerHeight*.08)-8), hPx=Math.round(Math.min(140, innerHeight*.16));
+      cv.style.top=(by-hPx-42)+'px';
+      cv.style.height=hPx+'px';
+      cv.classList.add('on');
+
+      const W=cv.clientWidth, H=cv.clientHeight||hPx;
+      const candleCount=Math.min(36, Math.max(20, Math.floor((W-56)/10)));
+      const meta=prepareMeta(btcPts, candleCount, W, H);
+      if(!meta)return;
+
+      const t0=performance.now(), D=2200;
+      (function f(now){
+        const t=Math.min(1,(now-t0)/D);
+        draw(meta,t);
+        if(t<1&&document.getElementById('introCandles'))requestAnimationFrame(f);
+      })(t0);
+    }catch(e){}
+  };
   window.__introBottom();
 })();
+
 // ===== заставка: ОДНА Земля. Большая по центру, затем та же картинка улетает на место логотипа в шапке =====
 (function(){
   const root=document.documentElement,intro=document.getElementById('intro'),fly=document.getElementById('introEarth'),glow=document.getElementById('introGlow'),bar=document.getElementById('introBar'),pct=document.getElementById('introTitle'),tap=document.getElementById('introTap'),fill=bar&&bar.firstElementChild;
@@ -640,33 +789,31 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
     vec3 day=texture2D(D,uv).rgb;
     vec3 night=texture2D(N,uv).rgb;
     vec4 mk=texture2D(M,uv);float water=mk.r;float cloud=texture2D(M,uc).g;
-    // солнце: сбоку, чуть сзади камеры; ndl>0 день
-    vec3 L=normalize(vec3(-.86,.26,.44));float ndl=dot(n,L);
-    float dm=smoothstep(-.10,.16,ndl);                                      // 0 ночь -> 1 день, мягкий терминатор
-    // освещение дневной стороны: диффузный свет + немного скругления к краю
+            // солнце: сбоку, чуть сзади камеры; ndl>0 день
+    vec3 L=vec3(-.86,.26,.44);float ndl=dot(n,L);
+    float dm=smoothstep(-.03,.06,ndl);                                      // чёткий терминатор
+    // освещение дневной стороны
     float diff=clamp(ndl*1.25+.16,0.,1.);
     vec3 col=day*(.20+1.05*diff);
-    // сумерки: красноватая полоса вдоль терминатора
-    float twi=smoothstep(-.14,.02,ndl)*(1.-smoothstep(.02,.26,ndl));
-    col=mix(col,col*vec3(1.5,.78,.55),twi*.55);
+    // сумерки: узкая сумеречная полоса вдоль терминатора
+    float twi=smoothstep(-.06,.00,ndl)*(1.-smoothstep(.00,.10,ndl));
+    col=mix(col,col*vec3(1.6,.72,.45),twi*.65);
     // облака: белые, освещены солнцем, дают тень на поверхность
     float cLit=clamp(ndl*1.2+.10,0.,1.);
-    vec2 sh=uv+vec2(-.0016,.0012);float cs=texture2D(M,sh).g;col*=1.-.38*cs*dm;
+    vec2 sh=uv+vec2(-.0016,.0012);float cs=texture2D(M,sh).g;col*=1.-.35*cs*dm;
     col=mix(col,vec3(1.)*(.12+.98*cLit),clamp(cloud*1.05,0.,1.)*.92);
-    // блик солнца на воде (спекуляр), не на суше и не под облаками
-    vec3 H=normalize(L+vec3(0.,0.,1.));float sp=pow(max(0.,dot(n,H)),70.);
-    col+=vec3(1.,.95,.85)*sp*water*(1.-cloud)*.55*dm;
-    // френель на воде: небесное отражение к краю
-    float fr=pow(1.-Z,3.);col+=vec3(.10,.22,.40)*fr*water*(1.-cloud)*dm*.9;
-    // ночь: тёмная земля + огни городов (гаснут под облаками, светятся тёплым)
-    vec3 nightBase=day*.035;
-    vec3 lights=night*vec3(1.55,1.18,.80)*(1.-cloud*.85);
-    vec3 nightCol=nightBase+lights*1.15;
+    // блик солнца на воде (спекуляр)
+    vec3 H=vec3(-.503,.152,.842);float sp=pow(max(0.,dot(n,H)),80.);
+    col+=vec3(1.,.96,.88)*sp*1.8*water*(1.-cloud*.85)*dm;
+    // ночь: тёмная земля + ночные огни городов на тёмной стороне
+    vec3 nightBase=day*.02;
+    vec3 lights=night*vec3(1.85,1.35,.75)*(1.-cloud*.80);
+    vec3 nightCol=nightBase+lights*1.30;
     col=mix(nightCol,col,dm);
-    // атмосфера: голубое свечение у края на освещённой стороне, тёмно-синее на ночной
-    float rim=pow(clamp((rr-.80)/.20,0.,1.),1.55);
-    vec3 atmDay=vec3(.30,.58,1.0),atmNight=vec3(.04,.09,.22);
-    vec3 at=mix(atmNight,atmDay,dm)*rim*1.25;
+    // тонкая атмосферная дымка по краю диска (Френель, голубая)
+    float fr=pow(1.-Z,3.2);float rim=pow(smoothstep(.70,1.0,rr),1.8);
+    vec3 atmBlue=vec3(.22,.62,1.0),atmNight=vec3(.03,.08,.24);
+    vec3 at=mix(atmNight,atmBlue,dm)*(fr*.80+rim*.60)*1.3;
     col=1.-(1.-clamp(col,0.,1.))*(1.-clamp(at,0.,1.));
     col*=.84+.16*Z;
     gl_FragColor=vec4(col*a,a);
