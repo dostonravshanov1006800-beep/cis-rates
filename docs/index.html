@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-++i/QLfiXeQ8JlnfDte3FGV+2YS3SoEijqEau1uNiSg=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-/7UeB4GrR+FvlK3XsNvB0y0J2OF7PlgOntMUqQ5nDvk=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="349369ff4c">
+<meta name="app-version" content="8e908a4ecf">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -92,6 +92,12 @@ html[data-theme=light] #intro{background:radial-gradient(120% 80% at 50% 38%,#f6
 html[data-theme=light] #introSky{display:none}
 #introRates{position:fixed;inset:0;z-index:204;pointer-events:none}
 #introFar{position:fixed;inset:0;z-index:2;pointer-events:none}
+#introSnd{position:fixed;right:max(16px,env(safe-area-inset-right));top:max(14px,var(--tg-content-safe-area-inset-top,0px));z-index:205;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#e8f0ff;opacity:0;pointer-events:auto;cursor:pointer;
+  background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06));box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 8px 22px rgba(2,4,18,.5);-webkit-tap-highlight-color:transparent;transition:opacity .4s ease,transform .2s ease}
+#introSnd.show{opacity:1;animation:sndPulse 1.6s ease-in-out infinite}
+#introSnd svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@keyframes sndPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+html[data-theme=light] #introSnd{display:none}
 .cn{position:absolute;left:0;top:0;border-radius:50%;opacity:0;will-change:transform,opacity;contain:layout paint;backface-visibility:hidden}
 .cn img{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 6px 18px rgba(2,4,18,.55),0 0 0 1px rgba(255,255,255,.10)}
 .cn i{position:absolute;right:50%;top:50%;height:2px;margin-top:-1px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(170,200,255,.6));transform-origin:100% 50%;pointer-events:none}
@@ -531,7 +537,7 @@ html[data-theme=light].lite .seg,html[data-theme=light].lite .hdr-btn{background
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct"><span></span><b>0%</b></div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div></div>
+<div id="intro" aria-hidden="true"><div id="introSky"></div><div id="introFar"></div><div id="introStars"></div><div id="introGlow"></div><div id="introBar"><i></i></div><div id="introPct"><span></span><b>0%</b></div><img id="introEarth" src="assets/earth-512.webp" alt="" decoding="async" draggable="false"><canvas id="introSpin" width="192" height="192" aria-hidden="true"></canvas><div id="introRates"></div><div id="introSnd" role="button" aria-label="Включить звук"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg></div></div>
 <div class="bg" aria-hidden="true"></div>
 <script>
 // ===== заставка: ОДНА Земля. Большая по центру, затем та же картинка улетает на место логотипа в шапке =====
@@ -649,20 +655,35 @@ function makeEarthGL(cv,dayImg,wcImg){
         tail.style.transform='rotate('+((Math.atan2(cy-y,cx-x))*180/Math.PI+180).toFixed(1)+'deg)'}}
     // вспышка атмосферы: каждое «приземление» поднимает свечение и оно плавно гаснет
     if(CN.glow>0){const g=document.getElementById('introGlow');if(g)g.style.opacity=(.55+.45*CN.glow).toFixed(3);CN.glow=Math.max(0,CN.glow-.07)}}
-  // ---- звук заставки (10 с): пробуем сразу, при запрете браузера включаем по первому касанию с нужной секунды; на выходе плавно гасим ----
-  const SND={a:null,on:false,t0:0,vol:.85};
-  function sndInit(){if(cal0)return;try{const a=new Audio('assets/loading.mp3');a.preload='auto';a.volume=0;a.loop=false;a.setAttribute('playsinline','');SND.a=a}catch(e){SND.a=null}}
-  function sndFade(to,ms,cb){const a=SND.a;if(!a)return cb&&cb();const from=a.volume,t=performance.now();(function f(){const k=Math.min(1,(performance.now()-t)/ms);try{a.volume=Math.max(0,Math.min(1,from+(to-from)*k))}catch(e){}k<1?requestAnimationFrame(f):(cb&&cb())})()}
-  const SND_EV=['touchstart','pointerdown','click','keydown'];
-  async function sndStart(){                                               // во время шкалы: при необходимости перематывает на текущую секунду
-    const a=SND.a;if(!a||SND.on||window.__introDone)return;
-    try{const pos=Math.max(0,(performance.now()-SND.t0)/1000);if(pos>=9.9)return;
-      if(a.readyState>0&&Math.abs(a.currentTime-pos)>.25)a.currentTime=pos;
-      await a.play();SND.on=true;a.volume=0;sndFade(SND.vol,pos<.5?600:250);SND_EV.forEach(n=>removeEventListener(n,sndGesture,true))}catch(e){SND.on=false}}   // NotAllowedError: ждём касания
+  // ---- звук заставки (5 с) на WebAudio: громкость через GainNode (audio.volume на iOS не работает), буфер декодируется заранее.
+  // Автозапуск пробуем несколько раз за первые секунды; если платформа требует жест, любое касание/клик включает звук с НУЖНОЙ секунды (синхронно со шкалой) ----
+  const SND={ctx:null,gain:null,buf:null,src:null,on:false,t0:0,vol:.9,tries:0,timer:0,stopped:false};
+  const SND_EV=['touchend','pointerup','click','keyup','touchstart','pointerdown','mousedown'];
+  async function sndInit(){
+    if(cal0)return;
+    try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+      SND.ctx=new C();SND.gain=SND.ctx.createGain();SND.gain.gain.value=0;SND.gain.connect(SND.ctx.destination);
+      const r=await fetch('assets/loading.mp3');const ab=await r.arrayBuffer();
+      SND.buf=await new Promise((ok,no)=>SND.ctx.decodeAudioData(ab,ok,no));        // callback-форма: работает и в старых WebView
+    }catch(e){SND.ctx=null}}
+  function sndPlayNow(){                                                          // реально запускает воспроизведение с текущей секунды шкалы
+    if(!SND.ctx||!SND.buf||SND.on||SND.stopped||window.__introDone)return false;
+    const pos=Math.max(0,(performance.now()-SND.t0)/1000);if(pos>=SND.buf.duration-.15)return false;
+    try{const src=SND.ctx.createBufferSource();src.buffer=SND.buf;src.connect(SND.gain);
+      const t=SND.ctx.currentTime;SND.gain.gain.cancelScheduledValues(t);SND.gain.gain.setValueAtTime(0,t);SND.gain.gain.linearRampToValueAtTime(SND.vol,t+(pos<.5?.5:.2));
+      src.start(0,pos);SND.src=src;SND.on=true;const ib=document.getElementById('introSnd');if(ib)ib.classList.remove('show');return true}catch(e){return false}}
+  async function sndStart(){                                                       // «разбудить» контекст и играть; без жеста resume() не выполнится
+    const c=SND.ctx;if(!c||SND.on||SND.stopped)return;
+    try{if(c.state!=='running')await Promise.race([c.resume(),new Promise(r=>setTimeout(r,400))])}catch(e){}
+    if(c.state==='running'&&SND.buf){if(sndPlayNow())sndUnbind()}}
+  function sndUnbind(){SND_EV.forEach(n=>removeEventListener(n,sndGesture,true));clearInterval(SND.timer)}
   function sndGesture(){sndStart()}
-  function sndStop(){const a=SND.a;if(!a)return;SND_EV.forEach(n=>removeEventListener(n,sndGesture,true));
-    if(!SND.on){try{a.pause()}catch(e){}return}sndFade(0,350,()=>{try{a.pause()}catch(e){}SND.on=false})}
-  document.addEventListener('visibilitychange',()=>{if(!SND.a)return;if(document.hidden&&SND.on){try{SND.a.pause()}catch(e){}SND.on=false}else if(!document.hidden&&!window.__introDone&&SND.t0)sndStart()});
+  function sndStop(){SND.stopped=true;sndUnbind();
+    if(!SND.ctx||!SND.on){try{SND.ctx&&SND.ctx.close()}catch(e){}return}
+    try{const t=SND.ctx.currentTime;SND.gain.gain.cancelScheduledValues(t);SND.gain.gain.setValueAtTime(SND.gain.gain.value,t);SND.gain.gain.linearRampToValueAtTime(0,t+.35);
+      setTimeout(()=>{try{SND.src&&SND.src.stop()}catch(e){}try{SND.ctx.close()}catch(e){}SND.on=false},420)}catch(e){}}
+  document.addEventListener('visibilitychange',()=>{if(!SND.ctx||SND.stopped)return;
+    if(document.hidden){try{SND.ctx.suspend()}catch(e){}}else if(!window.__introDone){try{SND.ctx.resume()}catch(e){}if(!SND.on)sndStart()}});
   // ---- вращение настоящей Земли (карта NASA) на canvas: рисуется только пока идёт шкала, затем останавливается на ракурсе значка ----
   const spin=document.getElementById('introSpin'),REST=60*Math.PI/180,LAT=12;
   let spinGL=null,spinPx=512,flying=false;
@@ -683,7 +704,7 @@ function makeEarthGL(cv,dayImg,wcImg){
       real=document.getElementById('hdrEarth');if(!real){done();return}
       real.style.visibility='hidden';
       // 1) картинка заставки и настоящий значок декодированы, шрифты готовы: размеры и позиция больше не поменяются
-      sndInit();
+      const sndReady=sndInit();
       const spinReady=spinInit();
       await wait(Promise.all([fly.decode?fly.decode():0,real.decode?real.decode():0,document.fonts&&document.fonts.ready].map(x=>Promise.resolve(x).catch(()=>0))));
       let spinOK=false;                                                      // вращение подключится само, когда придут карты; шкала и звук от этого не ждут
@@ -696,7 +717,10 @@ function makeEarthGL(cv,dayImg,wcImg){
       const T=cal0?0:INTRO_MS,t0=performance.now();
       const sky=document.getElementById('introSky');
       if(!cal0){if(sky)sky.classList.add('on');cnBuild()}
-      SND.t0=t0;if(SND.a){SND_EV.forEach(n=>addEventListener(n,sndGesture,true));sndStart()}   // пробуем сразу; если запрещено, сыграет с первого касания
+      SND.t0=t0;if(!cal0){SND_EV.forEach(n=>addEventListener(n,sndGesture,true));
+        // автозапуск: первая попытка сразу, затем каждые 250 мс до 3 с (буфер мог ещё декодироваться); если платформа требует жест, ждём касания
+        SND.timer=setInterval(()=>{SND.tries++;sndStart();if(SND.on||SND.tries>12)clearInterval(SND.timer)},250);sndReady.then(()=>sndStart());
+        const ib=document.getElementById('introSnd');setTimeout(()=>{if(ib&&!SND.on&&!SND.stopped&&!window.__introDone)ib.classList.add('show')},900)}
       const perf={tier:0,n:0,sum:0,last:0,from:0};
       // авто-деградация по реальной частоте кадров на этом устройстве: окно в 40 кадров; средний кадр >20 мс (<50 к/с) => следующий уровень
       // уровень 0: полный шейдер (резкость, шум, родной размер) -> 1: лёгкий шейдер -> 2: лёгкий шейдер и буфер меньше (не ниже 512)
@@ -715,7 +739,7 @@ function makeEarthGL(cv,dayImg,wcImg){
       if(spinOK){spin.width=spin.height=512;spinGL.setQ(1);spinGL.draw(REST,LAT)}            // финал на неподвижной Земле: буфер 512 и ровно ракурс значка (его рисовал тот же шейдер)
       await sleep(cal0?0:180);
       flying=true;
-      [document.getElementById('introRates'),document.getElementById('introFar')].forEach(e=>e&&e.animate([{opacity:1},{opacity:0}],{duration:300,easing:'ease-out',fill:'forwards'}));
+      [document.getElementById('introRates'),document.getElementById('introFar'),document.getElementById('introSnd')].forEach(e=>e&&e.animate([{opacity:1},{opacity:0}],{duration:300,easing:'ease-out',fill:'forwards'}));
       sndStop();
       place();
       if(spinOK){spin.style.display='none'}                                   // вращение закончено: дальше летит тот же кадр (<img>) на место значка
