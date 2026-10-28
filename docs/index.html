@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-D5zmUqdal8qfXpnXlo3lpW4iqYKN5qogHCDa0LakT0Q=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7bhgzJumnxu1a2ecxlzG1XemFBcf6U5t3YLA5TBdHTI=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-GzDj8HMD1xFu1y6RbDBBB7PbJgustd32/fYTCtkLthg=' 'sha256-cK7yB9NSbBRq0qeTygJ6OhtFXkLDAFHFps2Y9Xnb4CE=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro){document.documentElement.classList.add("intro");var q=+localStorage.iw_seen||0;if(q&&Date.now()-q<18e5)window.__quick=1}}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="dadfeefbe6">
+<meta name="app-version" content="98c8101530">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>Info Wallet: курсы валют и крипты СНГ 24/7</title>
@@ -699,6 +699,7 @@ function makeEarthGL(cv,dayImg,nightImg,maskImg){
   // орбиты: наклон кольца (рад), полуоси (в радиусах Земли), скорость (рад/с), начальная фаза, наклон оси вращения монеты
   const CN_ORB=[{tl:-.32,a:1.46,b:.62,w:.84,p:5.07},{tl:.38,a:1.36,b:.55,w:-.72,p:2.44},{tl:-.12,a:1.52,b:.70,w:.62,p:1.69},{tl:.5,a:1.40,b:.50,w:-.90,p:1.27},{tl:-.5,a:1.32,b:.58,w:.78,p:1.96},{tl:.14,a:1.48,b:.66,w:-.66,p:4.14},{tl:-.26,a:1.38,b:.48,w:.70,p:0.02}];
   async function cnBuild(){
+    return; // по просьбе владельца: в заставке только Земля, без логотипов монет
     const near=document.getElementById('introRates'),far=document.getElementById('introFar');if(!near||!far||CN.on||CN.busy||cal0||quick)return;CN.busy=true;
     try{
       const imgs=await Promise.all(CN_SET.map(async c=>{const i=new Image();i.src='coins/'+c[0]+'.webp';await i.decode();return {img:i,rgb:c[1]}}));
