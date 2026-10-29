@@ -24,7 +24,7 @@ export default async function (q) {
   const R = await getRates(), text = (q.query || '').trim(), res = [];
   const upd = ui.upd(R);
   // кнопки в один ряд на всю ширину: длинный текст не обрезается
-  const markup = { inline_keyboard: [[ui.ico({ text: '🌐 Info Wallet', url: `https://t.me/${BOT}?startapp` })], [ui.ico({ text: '💱 Курсы и конвертер в боте', url: `https://t.me/${BOT}?start=rates` })]] };
+  const markup = { inline_keyboard: [[ui.ico({ text: '🌐 Info Wallet', url: `https://t.me/${BOT}?startapp` })], [ui.ico({ text: '💱 Курсы в боте', url: `https://t.me/${BOT}?start=rates` })]] };
   const seen = new Set();
   const add = (id, title, desc, html, thumb) => { if (seen.has(id) || res.length >= 40) return; seen.add(id);
     res.push({ type: 'article', id: String(id).slice(0, 60), title, description: desc, thumbnail_url: thumb || ICON, thumbnail_width: 256, thumbnail_height: 256,
