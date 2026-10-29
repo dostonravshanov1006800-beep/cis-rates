@@ -155,4 +155,4 @@ export function parse(text) {
   const src = norm(words[0]), dst = words[1] ? norm(words[1]) : null;
   return { amt, src, dst: dst && dst !== src ? dst : null };
 }
-export { convert };
+export { convert, norm };
