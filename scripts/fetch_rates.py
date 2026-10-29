@@ -145,6 +145,25 @@ if crypto_stale and world_stale and prev.get("updated"):
     print("ВНИМАНИЕ: крипта и мировые курсы не получены, метка времени сохранена прежней")
 out["health"] = {"crypto_ok": not crypto_stale, "world_ok": not world_stale, "official_ok": sorted(k for k in COUNTRIES if k in out["official"])}
 
+# 2b. Свежесть курсов ЦБ: помним, когда курс каждого банка в последний раз ИЗМЕНИЛСЯ (по значению, не по формату даты банка).
+# ЦБ публикуют раз в рабочий день; если курс не менялся больше 4 суток (выходные и праздники не в счёт), помечаем его устаревшим.
+try:
+    sp = "data/cb_state.json"
+    try: st = json.load(open(sp, encoding="utf-8"))
+    except Exception: st = {}
+    now_iso = out["updated"]; stale = []
+    for cc, o in out["official"].items():
+        fp = round(sum(v["rate"] for v in o["rates"].values()), 6)
+        rec = st.get(cc) or {}
+        if rec.get("fp") != fp: rec = {"fp": fp, "changed": now_iso}
+        st[cc] = rec
+        age_h = (datetime.fromisoformat(now_iso) - datetime.fromisoformat(rec["changed"])).total_seconds() / 3600
+        o["changed"] = rec["changed"]                        # когда банк в последний раз изменил курс
+        if age_h > 96: stale.append(cc)
+    json.dump(st, open(sp, "w"), separators=(",", ":"))
+    out["health"]["official_stale"] = sorted(stale)
+except Exception as e: print("cb_state:", e)
+
 os.makedirs("data", exist_ok=True)
 json.dump(out, open("data/rates.json","w",encoding="utf-8"), ensure_ascii=False, separators=(",",":"))
 
