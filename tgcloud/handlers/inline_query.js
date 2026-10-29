@@ -1,14 +1,18 @@
 import { api } from 'sdk';
 import { getRates } from '../lib/rates.js';
 import * as ui from '../lib/ui.js';
+import { APP_URL } from '../lib/config.js';
 
 const plain = h => h.replace(/<[^>]+>/g, '');
 
 // @Well_Currency_bot 100 usd  →  быстрые карточки в любом чате
 export default async function (q) {
   const R = await getRates(), text = (q.query || '').trim(), res = [];
-  const add = (id, title, desc, html) => res.push({ type: 'article', id, title, description: desc,
-    input_message_content: { message_text: html, parse_mode: 'HTML', link_preview_options: { is_disabled: true } } });
+  const BOT = 'Well_Currency_bot', ICON = APP_URL + 'assets/avatar-256.webp';
+  // кнопки под сообщением: мини-апп и бот (сообщение в группе подписывается «via @Well_Currency_bot»)
+  const markup = { inline_keyboard: [[{ text: '🌐 Открыть Info Wallet', url: `https://t.me/${BOT}?startapp` }, { text: '🤖 Бот', url: `https://t.me/${BOT}` }]] };
+  const add = (id, title, desc, html) => res.push({ type: 'article', id, title, description: desc, thumbnail_url: ICON, thumbnail_width: 256, thumbnail_height: 256,
+    input_message_content: { message_text: html, parse_mode: 'HTML', link_preview_options: { is_disabled: true } }, reply_markup: markup });
   const p = ui.parse(text);
   if (p) {
     const dsts = p.dst ? [p.dst] : ['UZS', 'RUB', 'KZT', 'USD', 'EUR'].filter(c => c !== p.src);
@@ -18,7 +22,9 @@ export default async function (q) {
         `💱 ${ui.fmt(p.amt)} ${p.src} = <b>${ui.fmt(v)} ${d}</b>\n<i>CIS Rates · ${ui.upd(R)}</i>`);
     }
   }
-  if (!res.length) {
+  if (!text) add('card', 'Info Wallet · курсы валют СНГ и Европы', 'Официальные курсы и топ-20 крипты. Отправить карточку в чат',
+    `🌍 <b>Info Wallet</b>\nКурсы валют СНГ и Европы и топ-20 крипты\n<i>${ui.upd(R)}</i>`);
+  if (!res.length || !text) {
     for (const cc of ['UZ', 'RU', 'KZ', 'UA']) {
       const c = R.countries[cc], r = R.official[cc]?.rates?.USD; if (!r) continue;
       add(`r-${cc}`, `${c.flag} 1 USD = ${ui.fmt(r.rate)} ${c.sym}`, `Официальный курс · ${c.name}`,
