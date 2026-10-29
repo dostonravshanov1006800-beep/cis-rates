@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-hxU4celkMZmpYZTkqqbuwqVuXhL4yP8otsSbtoPOCpQ=' 'sha256-Wf8lqQGZYsiFUJbzxkqj3WrnuC64bcMSBHVcuC52k9w=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LUTzErjhHnRrTSoHmUKFDpyNeV/4OUWpXzcFNClkA0I=' 'sha256-yzOm8umFKUw+z6OY0+pDIKJ1qoYWew1WSMKk9chScoY=' 'sha256-hxU4celkMZmpYZTkqqbuwqVuXhL4yP8otsSbtoPOCpQ=' 'sha256-PSRR1XYtnCHTEuvCEKVAvXVkPaOkSYRIe5Zr3frSaoY=' 'sha256-syvLtHbgGRd/ctDJcXg+UHjQHI4I6fDriypiguPJXdU=' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://coin-images.coingecko.com https://assets.coingecko.com https://flagcdn.com https://*.githubusercontent.com; connect-src 'self' https://api.gateio.ws wss://api.gateio.ws wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com wss://data-stream.binance.vision https://data-api.binance.vision https://open.er-api.com https://api.coinbase.com https://api.country.is https://get.geojs.io; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 
 <meta charset="UTF-8">
 <!-- restore 1132 -->
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.cr_intro)document.documentElement.classList.add("intro")}catch(e){}</script>
 <script>(function(){try{var m=localStorage.cr_theme||"dark",d=document.documentElement;if(m==="auto")m=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.setAttribute("data-theme",m==="light"?"light":"dark")}catch(e){}})()</script>
-<meta name="app-version" content="789de931a5">
+<meta name="app-version" content="6ca5ed2370">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>CIS Rates: курсы валют и крипто СНГ онлайн 24/7</title>
@@ -942,7 +942,10 @@ function render(){
        if(vv&&vv.textContent!==t)vv.textContent=t;if(cc_&&cc_.innerHTML!==h)cc_.innerHTML=h});
    }else{
      fd.innerHTML=items.map(([k,v],n)=>`<div class="card in-view" style="animation-delay:${Math.min(n,10)*45}ms"><div class="l"><span>${flagImg(k)}${k}</span><span>${esc(c.cur)}</span></div><div class="v">${fmt(v.r)}</div><div class="c">${chgHTML(v.d)}</div></div>`).join('');fd.dataset.sig=sig}}
-  $('src').textContent=t('m.src')+' '+(R.official[cc]?bn(R.official[cc].src):t('m.market')+' (ExchangeRate-API)')+' · '+c.sym;
+  // если банк давно не менял курс (больше 4 суток), честно пишем дату, а не выдаём его за свежий
+  const stl=(R.health&&R.health.official_stale||[]).includes(cc)&&R.official[cc]&&R.official[cc].changed;
+  const stlTxt=stl?' ('+new Date(R.official[cc].changed).toLocaleDateString(UL==='uz'?'uz':UL==='en'?'en-GB':'ru-RU',{day:'numeric',month:'short'})+')':'';
+  $('src').textContent=t('m.src')+' '+(R.official[cc]?bn(R.official[cc].src)+stlTxt:t('m.market')+' (ExchangeRate-API)')+' · '+c.sym;
   // крипта
   $('clist').innerHTML=R.crypto.map(x=>{const v=x.ch24h;return `<div class="row ${metric===x.sym?'on':''}" data-m="${esc(x.sym)}"><img src="${safeUrl(x.img)}" width="40" height="40" decoding="async" alt=""><div class="n"><b>${esc(x.sym)}</b><small>${esc(x.name)}</small></div>${spark(((SR.crypto[x.sym]||[]).slice(0,-1)).concat([x.usd]),trendColor(SR.crypto[x.sym]))||'<span></span>'}<div class="p"><b>$${fmt(x.usd)}</b><small class="${v>=0?'up':'dn'}">${v>=0?'+':''}${v}%</small></div></div>`}).join('');
   $('clist').onclick=e=>{const r=e.target.closest('[data-m]');if(r){metric=r.dataset.m;render();$('chartS').scrollIntoView({behavior:'smooth'})}};
