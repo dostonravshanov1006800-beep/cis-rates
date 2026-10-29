@@ -5,10 +5,10 @@ import { APP_URL } from '../lib/config.js';
 
 const plain = h => h.replace(/<[^>]+>/g, '');
 
-// @Well_Currency_bot 100 usd  →  быстрые карточки в любом чате
+// @infowallet_app 100 usd  →  быстрые карточки в любом чате
 export default async function (q) {
   const R = await getRates(), text = (q.query || '').trim(), res = [];
-  const BOT = 'Well_Currency_bot', ICON = APP_URL + 'assets/avatar-256.webp';
+  const BOT = 'infowallet_app', ICON = APP_URL + 'assets/avatar-256.webp';
   // кнопки под сообщением: мини-апп и бот (сообщение в группе подписывается «via @Well_Currency_bot»)
   const markup = { inline_keyboard: [[{ text: '🌐 Открыть Info Wallet', url: `https://t.me/${BOT}?startapp` }, { text: '🤖 Бот', url: `https://t.me/${BOT}` }]] };
   const add = (id, title, desc, html) => res.push({ type: 'article', id, title, description: desc, thumbnail_url: ICON, thumbnail_width: 256, thumbnail_height: 256,
