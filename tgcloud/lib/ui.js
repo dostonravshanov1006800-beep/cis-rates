@@ -7,7 +7,34 @@ export const fmt = (n, d) => {
   return n.toLocaleString('ru-RU', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(/[\u00a0\u202f]/g, ' ');
 };
 const arrow = d => d > 0 ? '🟢▲' : d < 0 ? '🔴▼' : '⚪';
-export const btn = (text, data) => ({ text, callback_data: data });
+// Анимированные эмодзи из пака RestrictedEmoji: ведущий символ подписи заменяется иконкой кнопки (у кого нет Premium, Telegram покажет обычный значок)
+const ICONS = {
+  '💵': '5375296873982604963',
+  '💶': '5375296873982604963',
+  '₿': '5379600444098093058',
+  '🌐': '5399898266265475100',
+  'ℹ': '5372981976804366741',
+  '📢': '5469903029144657419',
+  '«': '5465226866321268133',
+  '◀': '5465226866321268133',
+  '🎯': '5350460637182993292',
+  '🗂': '5431736674147114227',
+  '💱': '5471899089425667918',
+  '🔔': '5242628160297641831',
+  '🌍': '5399898266265475100',
+  '🖼': '5375074927252621134',
+  '🔄': '5264727218734524899',
+  '💰': '5375296873982604963'
+};
+const lead = t => { const m = t.match(/^(\p{Extended_Pictographic}|[₿«◀▶])\uFE0F?\s*/u); return m ? m : null; };
+export const ico = o => {
+  const m = lead(o.text); if (!m) return o;
+  const id = ICONS[m[1]]; if (!id) return o;
+  const rest = o.text.slice(m[0].length).trim();
+  if (!rest) return o;                                  // кнопка из одного символа (🔄): оставляем как есть, подпись нужна
+  return Object.assign({}, o, { text: rest, icon_custom_emoji_id: id });
+};
+export const btn = (text, data) => ico({ text, callback_data: data });
 const kb = rows => ({ inline_keyboard: rows });
 // Время обновления + честная пометка, если данные устарели (>30 мин)
 const age = R => Math.max(0, Math.round((Date.now() - Date.parse(R.updated)) / 60000));
@@ -22,12 +49,12 @@ const esc = s => String(s).replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;',
 export function menu(R, cc, name) {
   const c = R.countries[cc], r = rate(R, cc, 'USD') || { r: 1, d: 0, src: '' };
   return [`⭐ <b>CIS Rates</b> — курсы СНГ и Европы 24/7\n${name ? `Привет, ${esc(name)}! 👋\n` : ''}\n${c.flag} ${c.name}: <b>1 USD = ${fmt(r.r)} ${c.sym}</b> ${arrow(r.d)}\n<i>${r.src} · ${upd(R)}</i>\n\nВыбери раздел 👇`,
-    kb([[{ text: '🌐 Открыть Info Wallet', web_app: { url: APP_URL } }],
+    kb([[ico({ text: '🌐 Открыть Info Wallet', web_app: { url: APP_URL } })],
         [btn('💵 Курс валют', 'cur'), btn('🎯 Подбор', 'pick')],
         [btn('₿ Крипта', 'cry:0'), btn('🗂 Каталог', 'cat:cis')],
         [btn('💱 Конвертер', 'conv'), btn('🔔 Алерты', 'alerts')],
         [btn('🌍 Моя страна', 'ctry'), btn('ℹ️ О боте', 'about')],
-        [btn('🖼 Картинка', 'img'), { text: '📢 Наш канал', url: `https://t.me/${ALERT_CHANNEL}` }]])];
+        [btn('🖼 Картинка', 'img'), ico({ text: '📢 Наш канал', url: `https://t.me/${ALERT_CHANNEL}` })]])];
 }
 
 export function cur(R, cc) {
@@ -111,7 +138,7 @@ export function coin(R, sym, cc) {
 export const conv = () => ['💱 <b>Конвертер</b>\n\nПиши в чат пару валют:\n<code>5000 rub uzs</code>\n<code>0.5 btc usd</code>\n<code>1000 ton rub</code>\n\nА просто <code>500 usd</code> откроет <b>подбор</b> по всем странам СНГ и Европы.\n\nПоддерживаются 24 валюты и топ-20 крипты.', kb([[btn('🎯 Подбор', 'pick'), BACK[0]]])];
 export const about = () => ['⭐ <b>CIS Rates</b>\n\n• 24 страны: СНГ + Европа\n• Официальные ЦБ: 🇺🇿 🇷🇺 🇰🇿 🇺🇦 🇧🇾\n• ТОП-20 криптовалют\n• Подбор лучшего обмена, конвертер, алерты\n• Обновление каждые 5 минут\n\n/start /rates /pick /crypto /catalog', kb([BACK])];
 export const alertsScreen = () => [`🔔 <b>Сигналы о скачках курса</b>\n\nПодпишись на наш канал: бот публикует там мгновенные сигналы, когда USD в СНГ меняется ≥0.3% или BTC/ETH/TON/SOL ≥3%.\n\nУведомления приходят всем подписчикам канала, настраивать ничего не нужно.`,
-  { inline_keyboard: [[{ text: '📢 Открыть канал', url: `https://t.me/${ALERT_CHANNEL}` }], [btn('« Меню', 'menu')]] }];
+  { inline_keyboard: [[ico({ text: '📢 Открыть канал', url: `https://t.me/${ALERT_CHANNEL}` })], [btn('« Меню', 'menu')]] }];
 
 // парсер «500 usd», «$500», «100 евро в рубли», «1.000,50 eur»
 const ALIAS = {};
