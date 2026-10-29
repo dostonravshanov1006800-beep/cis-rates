@@ -23,8 +23,10 @@ jobs:
           TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_TOKEN }}
         run: |
           npm ci --silent 2>/dev/null || npm install --silent
+          # в чистой среде нет снимка облака: сначала синхронизируем его (файлы проекта не трогаем), затем выкладываем только отличия
+          npx tgcloud fetch
           npx tgcloud status || true
-          npx tgcloud push
+          npx tgcloud push || { echo "push не прошёл, смотрим отличия"; npx tgcloud diff | head -60; exit 1; }
           npx tgcloud status
       - name: Check bot
         env:
