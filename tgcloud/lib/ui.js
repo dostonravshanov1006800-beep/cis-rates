@@ -35,6 +35,13 @@ export const ico = o => {
   return Object.assign({}, o, { text: rest, icon_custom_emoji_id: id });
 };
 export const btn = (text, data) => ico({ text, callback_data: data });
+// ширина подписи в знаках Telegram (эмодзи и флаг = 2) и раскладка: две кнопки в ряд только если обе помещаются (≤13), иначе по одной на всю ширину
+export const tw = t => { let n = 0; for (const ch of t) { const c = ch.codePointAt(0); if (c === 0xFE0F || c === 0x200D) continue; n += (c >= 0x1F000 || (c >= 0x2600 && c < 0x27C0)) ? 2 : 1; } return n; };
+export const flow = (btns, max = 13) => { const rows = []; let pend = null;
+  for (const b of btns) { const ok = tw(b.text) + (b.icon_custom_emoji_id ? 3 : 0) <= max;
+    if (!ok) { if (pend) { rows.push([pend]); pend = null; } rows.push([b]); continue; }
+    if (pend) { rows.push([pend, b]); pend = null; } else pend = b; }
+  if (pend) rows.push([pend]); return rows; };
 const kb = rows => ({ inline_keyboard: rows });
 // Время обновления + честная пометка, если данные устарели (>30 мин)
 const age = R => Math.max(0, Math.round((Date.now() - Date.parse(R.updated)) / 60000));
@@ -62,13 +69,12 @@ export function cur(R, cc) {
   for (const x of OFF) { const r = rate(R, cc, x); if (!r) continue; src ||= r.src;
     L.push(`${FLAG[x] || ''} <b>${x}</b>  ${fmt(r.r)} ${arrow(r.d)}${r.d ? ' ' + Math.abs(r.d).toFixed(2) : ''}`); }
   L.push(`\n<i>${src} · ${upd(R)}</i>`);
-  return [L.join('\n'), kb([[btn('🌍 Другая страна', 'ctry'), btn('🔄', 'cur')], BACK])];
+  return [L.join('\n'), kb([[btn('🌍 Другая страна', 'ctry')], [btn('🔄 Обновить', 'cur'), BACK[0]]])];
 }
 
 export function ctry(R, region) {
-  const cs = Object.entries(R.countries).filter(([, c]) => !region || c.region === region), rows = []; let row = [];
-  for (const [k, c] of cs) { row.push(btn(`${c.flag} ${c.name}`, 'cc:' + k)); if (row.length === 2) { rows.push(row); row = []; } }
-  if (row.length) rows.push(row);
+  const cs = Object.entries(R.countries).filter(([, c]) => !region || c.region === region);
+  const rows = flow(cs.map(([k, c]) => btn(`${c.flag} ${c.name}`, 'cc:' + k)));
   rows.unshift([btn(region === 'cis' ? '• СНГ •' : 'СНГ', 'ctry:cis'), btn(region === 'eu' ? '• Европа •' : 'Европа', 'ctry:eu')]);
   rows.push(BACK);
   return ['🌍 <b>Выбери страну</b>\nВсе курсы будут в её валюте:', kb(rows)];
@@ -98,14 +104,14 @@ export function pick(R, amt, src, region, cc) {
   const cr = [f('USDT') && `${fmt(usd / f('USDT').usd)} USDT`, f('TON') && `${fmt(usd / f('TON').usd)} TON`, f('BTC') && `${fmt(usd / f('BTC').usd, 6)} BTC`].filter(Boolean);
   if (cr.length) L.push(`₿ <b>Крипто-маршрут</b>: ${cr.join(' · ')}`);
   L.push(`\n<i>🏛 официальный курс ЦБ · остальное рыночное · ${upd(R)}</i>`);
-  const sw = r => btn(region === r ? `• ${names[r]} •` : names[r], `pk:${amt}:${src}:${r}`);
+  const sw = r => btn(region === r ? `•${names[r]}` : names[r], `pk:${amt}:${src}:${r}`);
   return [L.join('\n'), kb([[sw('all'), sw('cis'), sw('eu')],
     [btn('×10', `pk:${amt * 10}:${src}:${region}`), btn('÷10', `pk:${amt / 10}:${src}:${region}`), btn('USD', `pk:${amt}:USD:${region}`), btn('EUR', `pk:${amt}:EUR:${region}`), btn('RUB', `pk:${amt}:RUB:${region}`)],
     [btn('🗂 Каталог', 'cat:cis'), BACK[0]]])];
 }
 
 export const pickHelp = () => ['🎯 <b>Подбор обмена</b>\n\nНапиши сумму и валюту, и я покажу, сколько это будет в каждой стране СНГ и Европы + крипто-маршрут:\n\n<code>500 usd</code>\n<code>100000 rub</code>\n<code>2000 eur</code>\n\nИли выбери готовую сумму 👇',
-  kb([[btn('💵 100 USD', 'pk:100:USD:all'), btn('💶 500 EUR', 'pk:500:EUR:all')], [btn('🇷🇺 50000 RUB', 'pk:50000:RUB:all'), btn('🇰🇿 500000 KZT', 'pk:500000:KZT:all')], BACK])];
+  kb([...flow([btn('💵 100 USD', 'pk:100:USD:all'), btn('💶 500 EUR', 'pk:500:EUR:all'), btn('🇷🇺 50 000 RUB', 'pk:50000:RUB:all'), btn('🇰🇿 500 000 KZT', 'pk:500000:KZT:all')]), BACK])];
 
 const bar = v => { const n = Math.max(0, Math.min(7, Math.round(Math.abs(v) / 2))); return (v >= 0 ? '🟩' : '🟥').repeat(Math.max(1, Math.min(n, 5))); };
 const sgn = v => (v > 0 ? '+' : '') + v + '%';
@@ -132,7 +138,7 @@ export function coin(R, sym, cc) {
   if (locv) L.push(`${c.flag} <b>${fmt(locv)} ${c.sym}</b>`);
   L.push('', `1ч   ${dot(x.ch1h)} ${sgn(x.ch1h)}`, `24ч  ${dot(x.ch24h)} ${sgn(x.ch24h)}  ${bar(x.ch24h)}`, `7д   ${dot(x.ch7d)} ${sgn(x.ch7d)}  ${bar(x.ch7d)}`,
     '', `Тренд: ${mood}`, `Капитализация: $${fmt(x.cap / 1e9, 1)} млрд`, `Объём 24ч: $${fmt(x.vol / 1e9, 2)} млрд`, `\n<i>CoinGecko · ${upd(R)}</i>`);
-  return [L.join('\n'), kb([[btn('◀️ К списку', 'cry:0'), btn('🔄', 'coin:' + sym)], [btn('🎯 Сколько получу', `pk:1:${sym}:all`), BACK[0]]])];
+  return [L.join('\n'), kb([[btn('🎯 Сколько получу', `pk:1:${sym}:all`)], [btn('◀️ К списку', 'cry:0'), btn('🔄', 'coin:' + sym)], BACK])];
 }
 
 export const conv = () => ['💱 <b>Конвертер</b>\n\nПиши в чат пару валют:\n<code>5000 rub uzs</code>\n<code>0.5 btc usd</code>\n<code>1000 ton rub</code>\n\nА просто <code>500 usd</code> откроет <b>подбор</b> по всем странам СНГ и Европы.\n\nПоддерживаются 24 валюты и топ-20 крипты.', kb([[btn('🎯 Подбор', 'pick'), BACK[0]]])];
