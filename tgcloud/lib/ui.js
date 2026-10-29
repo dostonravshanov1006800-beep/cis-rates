@@ -24,10 +24,10 @@ export function menu(R, cc, name) {
   return [`⭐ <b>CIS Rates</b> — курсы СНГ и Европы 24/7\n${name ? `Привет, ${esc(name)}! 👋\n` : ''}\n${c.flag} ${c.name}: <b>1 USD = ${fmt(r.r)} ${c.sym}</b> ${arrow(r.d)}\n<i>${r.src} · ${upd(R)}</i>\n\nВыбери раздел 👇`,
     kb([[{ text: '🌐 Открыть Info Wallet', web_app: { url: APP_URL } }],
         [btn('💵 Курс валют', 'cur'), btn('🎯 Подбор', 'pick')],
-        [btn('₿ Крипта', 'cry:0'), btn('🗂 Каталог стран', 'cat:cis')],
+        [btn('₿ Крипта', 'cry:0'), btn('🗂 Каталог', 'cat:cis')],
         [btn('💱 Конвертер', 'conv'), btn('🔔 Алерты', 'alerts')],
         [btn('🌍 Моя страна', 'ctry'), btn('ℹ️ О боте', 'about')],
-        [btn('🖼 Картинка курсов', 'img'), { text: '📢 Наш канал', url: `https://t.me/${ALERT_CHANNEL}` }]])];
+        [btn('🖼 Картинка', 'img'), { text: '📢 Наш канал', url: `https://t.me/${ALERT_CHANNEL}` }]])];
 }
 
 export function cur(R, cc) {
